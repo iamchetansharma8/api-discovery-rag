@@ -1,0 +1,794 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "InLife Screening API",
+        "description": "An API allowing consumers to create a set of clients to be submitted for screening by GCS",
+        "contact": {
+            "name": "Service Desk",
+            "url": "https://www.bankofapis.com/support"
+        },
+        "license": {
+            "name": "Commercial Licence",
+            "url": "https://www.bankofapis.com/commercial-licence"
+        },
+        "version": "1.2.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com/screening/v1/inlife"
+        }
+    ],
+    "tags": [
+        {
+            "name": "InLife Screening",
+            "description": "Endpoints for InLife Screening queries."
+        }
+    ],
+    "paths": {
+        "/people": {
+            "post": {
+                "tags": [
+                    "InLifeScreening"
+                ],
+                "summary": "Add a person's details for screening",
+                "operationId": "addPerson",
+                "parameters": [
+                    {
+                        "name": "x-fapi-interaction-id",
+                        "in": "header",
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "A list of person attributes to use for screening.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PersonForScreening"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/Success"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "415": {
+                        "$ref": "#/components/responses/UnsupportedMediaType"
+                    },
+                    "420": {
+                        "$ref": "#/components/responses/SuccessWithDataQuality"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "inlifescreening"
+                        ]
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        },
+        "/companies": {
+            "post": {
+                "tags": [
+                    "InLifeScreening"
+                ],
+                "summary": "Add a company's details for screening",
+                "operationId": "addCompany",
+                "parameters": [
+                    {
+                        "name": "x-fapi-interaction-id",
+                        "in": "header",
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "A list of company attributes to use for screening.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CompanyForScreening"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "$ref": "#/components/responses/Success"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "415": {
+                        "$ref": "#/components/responses/UnsupportedMediaType"
+                    },
+                    "420": {
+                        "$ref": "#/components/responses/SuccessWithDataQuality"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/components/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "inlifescreening"
+                        ]
+                    }
+                ],
+                "x-codegen-request-body-name": "body"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "PersonForScreening": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ClientDetails"
+                    },
+                    {
+                        "$ref": "#/components/schemas/PersonDetails"
+                    }
+                ]
+            },
+            "CompanyForScreening": {
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ClientDetails"
+                    },
+                    {
+                        "$ref": "#/components/schemas/CompanyDetails"
+                    }
+                ]
+            },
+            "ClientDetails": {
+                "required": [
+                    "clientId",
+                    "nameOrAddressSeq"
+                ],
+                "x-recommended": [
+                    "address",
+                    "city",
+                    "countryName",
+                    "customerStatus",
+                    "primaryAmlCountry"
+                ],
+                "type": "object",
+                "properties": {
+                    "clientId": {
+                        "maxLength": 64,
+                        "type": "string",
+                        "example": "client00002"
+                    },
+                    "nameOrAddressSeq": {
+                        "minimum": 1,
+                        "maximum": 999,
+                        "type": "integer",
+                        "format": "int32",
+                        "example": 1
+                    },
+                    "address": {
+                        "maxLength": 255,
+                        "type": "string",
+                        "example": "496 St. John’s Road, LEEDS, LS85 4PG"
+                    },
+                    "city": {
+                        "maxLength": 255,
+                        "type": "string",
+                        "example": "LEEDS"
+                    },
+                    "countryName": {
+                        "maxLength": 255,
+                        "type": "string",
+                        "example": "France"
+                    },
+                    "partyOpenDate": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1970-01-01"
+                    },
+                    "riskCountry": {
+                        "maxLength": 100,
+                        "type": "string",
+                        "example": "Taiwan"
+                    },
+                    "customerStatus": {
+                        "type": "string",
+                        "example": "C",
+                        "enum": [
+                            "A",
+                            "C"
+                        ]
+                    },
+                    "gid": {
+                        "maxLength": 64,
+                        "type": "string",
+                        "example": "Global Identifier"
+                    },
+                    "homePhone": {
+                        "maxLength": 50,
+                        "type": "string",
+                        "example": "01179876543"
+                    },
+                    "officePhone": {
+                        "maxLength": 50,
+                        "type": "string",
+                        "example": "01179876543"
+                    },
+                    "mobilePhone": {
+                        "maxLength": 50,
+                        "type": "string",
+                        "example": "07864856325"
+                    },
+                    "otherContact": {
+                        "maxLength": 100,
+                        "type": "string",
+                        "example": "johnwilkes@aol.com"
+                    },
+                    "primaryAmlCountry": {
+                        "maxLength": 2,
+                        "type": "string",
+                        "format": "[A-Z]{2}",
+                        "example": "GB"
+                    },
+                    "additionalAmlCountry1": {
+                        "maxLength": 2,
+                        "type": "string",
+                        "format": "[A-Z]{2}",
+                        "example": "GB"
+                    },
+                    "additionalAmlCountry2": {
+                        "maxLength": 2,
+                        "type": "string",
+                        "format": "[A-Z]{2}",
+                        "example": "GB"
+                    },
+                    "additionalAmlCountry3": {
+                        "maxLength": 2,
+                        "type": "string",
+                        "format": "[A-Z]{2}",
+                        "example": "GB"
+                    },
+                    "additionalAmlCountry4": {
+                        "maxLength": 2,
+                        "type": "string",
+                        "format": "[A-Z]{2}",
+                        "example": "GB"
+                    },
+                    "other": {
+                        "maxLength": 255,
+                        "type": "string",
+                        "example": "~SORT CODE : 12345|Region : EU|Alias : Johnny~"
+                    },
+                    "deltaId": {
+                        "description": "Deprecated. Any value passed in this field will be replaced with a generated value.",
+                        "type": "string",
+                        "example": "F",
+                        "enum": [
+                            "D",
+                            "F"
+                        ]
+                    }
+                }
+            },
+            "PersonDetails": {
+                "required": [
+                    "firstNames",
+                    "lastName"
+                ],
+                "x-recommended": [
+                    "maritalStatus"
+                ],
+                "type": "object",
+                "properties": {
+                    "firstNames": {
+                        "maxLength": 126,
+                        "type": "string",
+                        "format": "No special characters: `~!@#$%^&*(){}\\[\\]:;\"'<>?/",
+                        "example": "John Wilkes"
+                    },
+                    "lastName": {
+                        "maxLength": 126,
+                        "type": "string",
+                        "format": "No special characters: `~!@#$%^&*(){}\\[\\]:;\"'<>?/",
+                        "example": "Booth"
+                    },
+                    "nationalIdentificationNumber": {
+                        "maxLength": 64,
+                        "type": "string",
+                        "example": "BE014812T"
+                    },
+                    "passportNumber": {
+                        "maxLength": 64,
+                        "type": "string",
+                        "example": "01929292"
+                    },
+                    "dateOfBirth": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "1970-01-01"
+                    },
+                    "gender": {
+                        "type": "string",
+                        "example": "M",
+                        "enum": [
+                            "M",
+                            "F",
+                            "T",
+                            "R"
+                        ]
+                    },
+                    "birthPlace": {
+                        "maxLength": 100,
+                        "type": "string",
+                        "format": "Excluding characters: *?`!@#$%^&_={}\\[\\]|:;\"'<>",
+                        "example": "New Delhi"
+                    },
+                    "nationality": {
+                        "maxLength": 100,
+                        "type": "string",
+                        "format": "Excluding characters *?`!@#$%^&_={}\\[\\]|:;\"'<>",
+                        "example": "French"
+                    },
+                    "pepIndicator": {
+                        "type": "string",
+                        "example": "PEP",
+                        "enum": [
+                            "PEP",
+                            ""
+                        ]
+                    },
+                    "occupation": {
+                        "maxLength": 255,
+                        "type": "string",
+                        "example": "CEO"
+                    },
+                    "maritalStatus": {
+                        "type": "string",
+                        "example": "S",
+                        "enum": [
+                            "S",
+                            "M",
+                            "D",
+                            "W",
+                            "O"
+                        ]
+                    },
+                    "kpgIdentifier": {
+                        "type": "string",
+                        "example": "TF",
+                        "enum": [
+                            "CL",
+                            "AW",
+                            "CP",
+                            "CR",
+                            "ZB",
+                            "OO",
+                            "YB",
+                            "PP",
+                            "SA",
+                            "WB",
+                            "FB",
+                            "TB",
+                            "PB",
+                            "XB",
+                            "SB",
+                            "BB",
+                            "DB",
+                            "CB",
+                            "IB",
+                            "TF",
+                            "TV",
+                            "TI",
+                            "KP",
+                            "GU"
+                        ]
+                    },
+                    "kpgLinkToCustomer": {
+                        "maxLength": 64,
+                        "type": "string",
+                        "example": "client0005"
+                    }
+                }
+            },
+            "CompanyDetails": {
+                "required": [
+                    "companyName"
+                ],
+                "type": "object",
+                "properties": {
+                    "companyName": {
+                        "type": "string",
+                        "maxLength": 255,
+                        "example": "Grand, Arnaud le"
+                    },
+                    "bankIdentifierCode": {
+                        "maxLength": 11,
+                        "type": "string",
+                        "format": "[a-zA-Z0-9 ]*$",
+                        "example": "RBOSGB2102N"
+                    }
+                }
+            }
+        },
+        "responses": {
+            "SuccessWithDataQuality": {
+                "description": "Record accepted and stored. The record will be sent to GCS, but will be flagged as having Data Quality issues.",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "message",
+                                "details"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Data Quality Issues detected. The record will be processed by GCS but data quality issues have been recorded"
+                                },
+                                "details": {
+                                    "type": "array",
+                                    "maxItems": 36,
+                                    "items": {
+                                        "type": "string",
+                                        "example": "countryName should not be empty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Success": {
+                "description": "Record accepted and stored.",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                }
+            },
+            "BadRequest": {
+                "description": "Bad Request",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "title"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "Bad Request"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "UnsupportedMediaType": {
+                "description": "Unsupported Media Type",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "title"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "Unsupported Media Type"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Forbidden",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                }
+            },
+            "InternalServerError": {
+                "description": "Internal Server Error",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "title",
+                                "description"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "Internal Server Error"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "backend is non-functional, please try again later."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Resource Not Found",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                }
+            },
+            "ServiceUnavailable": {
+                "description": "Service Busy",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "message",
+                                "details"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Service Busy"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "example": "The InLife service is busy. please resubmit the request later."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "TooManyRequests": {
+                "description": "Too Many Requests",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "title",
+                                "description"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "title": {
+                                    "type": "string",
+                                    "example": "Too Many Requests"
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "example": "Requests are being rate limited, please slow down."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "Unauthorised": {
+                "description": "Unknown Client Identifier",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "message",
+                                "details"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Unknown Client Identifier"
+                                },
+                                "details": {
+                                    "type": "string",
+                                    "example": "The clientId passed in from the certificate was not recognised. Please contact the support team to register your clientId."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "ValidationFailure": {
+                "description": "Validation Failure",
+                "headers": {
+                    "x-fapi-interaction-id": {
+                        "description": "An RFC4122 UID used as a correlation id.",
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 64,
+                            "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                        }
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "required": [
+                                "message",
+                                "details"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "message": {
+                                    "type": "string",
+                                    "example": "Validation Failed"
+                                },
+                                "details": {
+                                    "type": "array",
+                                    "maxItems": 40,
+                                    "items": {
+                                        "type": "string",
+                                        "example": "clientId must not be empty"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "clientCreds": {
+                "type": "oauth2",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://secure1t.natwest.com/as/token.oauth2",
+                        "scopes": {
+                            "inlifescreening": "Grants access to the In Life Screening API"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,2055 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Payit Universal API ",
+        "description": "Universal API to access Payit Open Banking functions.",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://localhost:7061/api"
+        }
+    ],
+    "paths": {
+        "/health": {
+            "get": {
+                "tags": [
+                    "Health"
+                ],
+                "operationId": "Health",
+                "summary": "Health of API",
+                "description": "Retrive the API health",
+                "responses": {
+                    "200": {
+                        "description": "System is healthy"
+                    }
+                }
+            }
+        },
+        "/{CustomerID}/payit/bank-list": {
+            "get": {
+                "tags": [
+                    "Eligible Banks"
+                ],
+                "summary": "Eligible Banks",
+                "description": "List of eligible banks",
+                "operationId": "bank-list",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Indicates the Payit version used. For Payit version 3 use 'application/app.v3+json' value",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent to access the endpoint. Merchant can acquire the token. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "CustomerID",
+                        "in": "path",
+                        "description": "Unique identification assigned to customer",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The OK response",
+                        "headers": {
+                            "cache-control": {
+                                "description": "contains the list of active banks and logo URLs",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/eligibleBanksResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/{CustomerID}/payit": {
+            "post": {
+                "operationId": "merchant-payments",
+                "parameters": [
+                    {
+                        "description": "Unique identification assigned by the initiating party to unambiguously identify the transaction. This identification is passed on, unchanged, throughout the entire end-to-end chain. Related to EndToEndIdentification field in open banking journey",
+                        "in": "header",
+                        "name": "x-transaction-ID",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^[a-zA-Z0-9-]{36}$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Indicates the customers device or browser version",
+                        "in": "header",
+                        "name": "x-customer-device",
+                        "schema": {
+                            "maxLength": 40,
+                            "pattern": "^(?!\\s)(.*)(\\S)$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "x-user-consent is mandatory for embedded-merchant-payments.By setting this to true, you confirm that you have shown the mandatory Payit consent text and terms and that the customer has agreed to these elements. You should not pass this field as true unless this requirement is satisfied, as this may breach our combined regulatory obligations.",
+                        "in": "header",
+                        "name": "x-user-consent",
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    },
+                    {
+                        "description": "Indicates the customers browser name or app version",
+                        "in": "header",
+                        "name": "x-customer-app",
+                        "schema": {
+                            "maxLength": 40,
+                            "pattern": "^(?!\\s)(.*)(\\S)$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Accept is mandatory from header for embedded-merchant-payments.Indicates the Payit version used. For Payit version 3 use 'application/app.v3+json' value",
+                        "in": "header",
+                        "name": "Accept",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Access token to be sent to Payit project. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "in": "header",
+                        "name": "Authorization",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Unique identification assigned to customer",
+                        "in": "path",
+                        "name": "CustomerID",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "examples": {
+                                "Embedded": {
+                                    "$ref": "#/components/examples/embeddedReqModel"
+                                },
+                                "Hosted": {
+                                    "$ref": "#/components/examples/HostedReqModel"
+                                },
+                                "Scheduled": {
+                                    "$ref": "#/components/examples/scheduledReqModel"
+                                }
+                            },
+                            "schema": {
+                                "oneOf": [
+                                    {
+                                        "$ref": "#/components/schemas/initiatePaymentRequestModel"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/initiateEmbeddedPaymentRequestModel"
+                                    },
+                                    {
+                                        "$ref": "#/components/schemas/initiateScheduledPaymentRequestModel"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "description": "Request Body Parameters",
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/initiatePaymentPayItResponseModel"
+                                }
+                            }
+                        },
+                        "description": "The Created response",
+                        "headers": {
+                            "x-transaction-ID": {
+                                "description": "Payit Application will response with back with the Transaction id.",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                },
+                "summary": "Initiate Payments",
+                "tags": [
+                    "Create"
+                ]
+            }
+        },
+        "/{CustomerID}/payit/jwks": {
+            "get": {
+                "tags": [
+                    "Signature"
+                ],
+                "summary": "Retrive the signature",
+                "description": "To get the signature",
+                "operationId": "payit-publickey",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Accept from header",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Authorization from header",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "CustomerID",
+                        "in": "path",
+                        "description": "CustomerID from path",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The OK response",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/signatureResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/mechant-payments-confirm": {
+            "post": {
+                "tags": [
+                    "Payment Status"
+                ],
+                "summary": "Payment Confirmation Webhook",
+                "description": "This API will be hosted by merchants & Payit application will consume the API. Payit will consume this API when : -\nA> Payit returns the payment confirmation status back to merchant when Customer is in browser session.\nB> Payit experienced a non recoverable technical error in core PISP Journey.\nC> End customer decides to close the browser session while on core PISP screens",
+                "operationId": "merchant-payments-confirm",
+                "parameters": [
+                    {
+                        "name": "x-transaction-ID",
+                        "in": "header",
+                        "description": "Unique identification assigned by the initiating party to unambiguously identify the transaction. This identification is passed on, unchanged, throughout the entire end-to-end chain. Related to EndToEndIdentification field in open banking journey",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^[a-zA-Z0-9-]{36}$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payit-signature",
+                        "in": "header",
+                        "description": "signature to prevent replay attacks",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request Body Parameters",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/paymentConfirmationRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "The Created response",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/paymentConfirmationResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "code",
+                                        "id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/merchant-payments-confirm/paymentReferenceID/{paymentReferenceID}/tppReferenceID/{tppReferenceID}": {
+            "patch": {
+                "tags": [
+                    "Payment Status"
+                ],
+                "summary": "Awaiting Payment Status Update Webhook",
+                "description": "This Api will be hosted by merchants & Payit application will consume the API. Payit will consume this API when : -\nA> Payit returns the payment confirmation status back to merchant when original payment was a non terminal status",
+                "operationId": "merchant-payment-awaiting",
+                "parameters": [
+                    {
+                        "name": "x-transaction-ID",
+                        "in": "header",
+                        "description": "Unique identification assigned by the initiating party to unambiguously identify the transaction. This identification is passed on, unchanged, throughout the entire end-to-end chain. Related to EndToEndIdentification field in open banking journey",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^[a-zA-Z0-9-]{36}$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "payit-signature",
+                        "in": "header",
+                        "description": "signature to prevent replay attacks",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "PaymentReferenceID",
+                        "in": "path",
+                        "description": "Payment reference generated by the banks",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "TPPReferenceID",
+                        "in": "path",
+                        "description": "The unique identifier generated by the TPP for the payment",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request Body Parameters",
+                    "content": {
+                        "application/json; charset=utf-8": {
+                            "schema": {
+                                "$ref": "#/components/schemas/paymentAwaitingRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "The Created response",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/paymentConfirmationAwaitingResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "code",
+                                        "id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/{CustomerID}/payit/refund": {
+            "post": {
+                "tags": [
+                    "Refund Request"
+                ],
+                "summary": "Refund Request",
+                "description": "Initiates a new refund payment flow",
+                "operationId": "merchant-refunds",
+                "parameters": [
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Indicates the Payit version used. For Payit version 3 use 'application/app.v3+json' value",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent. Merchant can acquire the access token. Verb 'Bearer' needs to be used before the access token",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "CustomerID",
+                        "in": "path",
+                        "description": "CustomerID from path",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request Body Parameters",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/refundInitiationRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "The Created response",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/refundInitiationResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/merchant-refunds-confirm": {
+            "post": {
+                "tags": [
+                    "Refund Confirmation"
+                ],
+                "summary": "Refund Confirmation Webhook",
+                "description": "Merchant Api where Payit provide refund status",
+                "operationId": "merchant-refunds-confirm",
+                "parameters": [
+                    {
+                        "name": "payit-signature",
+                        "in": "header",
+                        "description": "signature generated by Payit application to prevent replay attacks",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Request Body Parameters",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/refundConfirmationRequestModel"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "The Created response",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/refundConfirmationResponseModel"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        },
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/{CustomerID}/payit/reconciliation/{filetype}/{date}/{run}": {
+            "get": {
+                "tags": [
+                    "Reconciliation Files"
+                ],
+                "operationId": "reconciliation",
+                "description": "Reconciliation File direct URL",
+                "summary": "Reconciliation Files",
+                "parameters": [
+                    {
+                        "name": "filetype",
+                        "in": "path",
+                        "description": "Type of reconciliation files available for merchant to download. The files are of below types :-  a) Failed - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is failed b) Successful - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is Successful  c) Inprogress - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is Inprogress d) InprogCompleted - The transaction originated BEFORE the reconciliation file generation window and terminal status of the transaction is Successful/Rejected **** Sample file generation window - from 2018-06-05T00:00:00+00:00 till 2017-04-05T23:59:59+00:00***",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 15,
+                            "type": "string",
+                            "enum": [
+                                "Failed",
+                                "Successful",
+                                "Inprogress",
+                                "InprogCompleted"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "description": "date for which the file needs to be download for. Format is 2018-06-05",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "run",
+                        "in": "path",
+                        "description": "Applicable for the intra date multiple reconciliation file. If the merchant has one file generated per reconciliation file generation window ie - from 2018-06-05T00:00:00+00:00 till 2018-06-05T23:59:59+00:00 , Then set the field as 0001",
+                        "required": true,
+                        "schema": {
+                            "maxLength": 4,
+                            "pattern": "^(?!\\s)(.*)(\\S)$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent to Payit project. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Unique identification assigned to customer",
+                        "in": "path",
+                        "name": "CustomerID",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The OK response",
+                        "headers": {
+                            "daterun": {
+                                "description": "date on which the file was generated.",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/reconciliationFileResponseModel"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "required": [
+                                        "Code",
+                                        "Id"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "Code": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "High level textual error code, to help categorise the errors."
+                                        },
+                                        "Id": {
+                                            "maxLength": 40,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                        },
+                                        "Message": {
+                                            "maxLength": 500,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                        }
+                                    },
+                                    "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                                }
+                            }
+                        },
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/{CustomerID}/payit/reconciliation-version/{reconciliationVersion}": {
+            "post": {
+                "tags": [
+                    "Reconciliation Version"
+                ],
+                "summary": "Reconciliation Version",
+                "description": "to be used when the merchant wants to receive the latest version of reconciliation files",
+                "operationId": "reconciliation-version",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "description": "Unique identification assigned to customer",
+                        "in": "path",
+                        "name": "CustomerID",
+                        "required": true,
+                        "schema": {
+                            "pattern": "^\\S{1,36}$",
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "reconciliationVersion",
+                        "in": "path",
+                        "description": "Version to be saved and used from now on, can only be one of the supported versions",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "The OK response",
+                        "headers": {
+                            "daterun": {
+                                "description": "date on which the file was generated.",
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json; charset=utf-8": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/reconciliationVersionResponse"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Version not supported or merchant doesn't exist."
+                    },
+                    "401": {
+                        "description": "Unauthorized to access"
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/problemDetails"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "examples": {
+            "embeddedReqModel": {
+                "summary": "Embedded payments Request Body",
+                "value": {
+                    "Data": {
+                        "bankId": "1234",
+                        "merchantId": "680000030507740",
+                        "amount": 19,
+                        "currency": "GBP",
+                        "country": "UK",
+                        "fpReference": "Invoice001",
+                        "description": "double hamburger",
+                        "merchantDisplayName": "bobs burgers",
+                        "redirectUrl": "https://payment.natwestpayit.com/status",
+                        "paymentContext": {
+                            "deliveryAddress": {
+                                "countryCode": "GB",
+                                "townName": "London"
+                            },
+                            "merchantCategoryCode": "1688",
+                            "merchantCustomerIdentification": "merchCust1109946",
+                            "paymentContextCode": "EcommerceGoods"
+                        },
+                        "instructedAccounts": {
+                            "identification": "77141261909834",
+                            "bankName": "Lloyds UK PLC",
+                            "preferredAccountInfo": {
+                                "identification": "66141261909899",
+                                "user": "PlX0jEYtTfpkG59cY662FRxgRimKkY1H0DlN20xiWmFdgOaiR0"
+                            }
+                        }
+                    }
+                }
+            },
+            "HostedReqModel": {
+                "summary": "Hosted payments Request Body",
+                "value": {
+                    "Data": {
+                        "merchantId": "680000030507740",
+                        "amount": 19,
+                        "currency": "GBP",
+                        "country": "UK",
+                        "fpReference": "Invoice001",
+                        "description": "double hamburger",
+                        "merchantDisplayName": "bobs burgers",
+                        "redirectUrl": "https://payment.natwestpayit.com/status",
+                        "paymentContext": {
+                            "deliveryAddress": {
+                                "countryCode": "GB",
+                                "townName": "London"
+                            },
+                            "merchantCategoryCode": "1688",
+                            "merchantCustomerIdentification": "merchCust1109946",
+                            "paymentContextCode": "EcommerceGoods"
+                        },
+                        "instructedAccounts": {
+                            "identification": "77141261909834",
+                            "bankName": "Lloyds UK PLC",
+                            "preferredAccountInfo": {
+                                "identification": "66141261909899",
+                                "user": "PlX0jEYtTfpkG59cY662FRxgRimKkY1H0DlN20xiWmFdgOaiR0"
+                            }
+                        }
+                    }
+                }
+            },
+            "scheduledReqModel": {
+                "summary": "Scheduled payments Request Body",
+                "value": {
+                    "Data": {
+                        "merchantId": "680000030507740",
+                        "amount": 1,
+                        "currency": "GBP",
+                        "country": "UK",
+                        "fpReference": "Invoice001",
+                        "description": "double hamburger",
+                        "merchantDisplayName": "bobs burgers",
+                        "redirectUrl": "https://payment.natwestpayit.com/status",
+                        "paymentContext": {
+                            "deliveryAddress": {
+                                "countryCode": "GB",
+                                "townName": "London"
+                            },
+                            "merchantCategoryCode": "1688",
+                            "merchantCustomerIdentification": "merchCust1109946",
+                            "paymentContextCode": "EcommerceGoods"
+                        },
+                        "instructedAccounts": {
+                            "identification": "77141261909834",
+                            "bankName": "Lloyds UK PLC",
+                            "preferredAccountInfo": {
+                                "identification": "66141261909899",
+                                "user": "PlX0jEYtTfpkG59cY662FRxgRimKkY1H0DlN20xiWmFdgOaiR0"
+                            }
+                        },
+                        "schedulePayment": {
+                            "requestedExecutionDateTime": "2023-03-27T14:06:19.678Z"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "eligibleBanks": {
+                "type": "object",
+                "properties": {
+                    "BankName": {
+                        "type": "string",
+                        "example": "Royal Bank of Scotland"
+                    },
+                    "BankID": {
+                        "type": "string",
+                        "example": "1234"
+                    },
+                    "LogoUrl": {
+                        "type": "string",
+                        "example": "https://payitpreproduksppdnossb.blob.core.windows.net/banklogos/RBoS_V3.svg"
+                    },
+                    "BankTemporarilyUnavailable": {
+                        "type": "boolean",
+                        "example": false
+                    }
+                }
+            },
+            "eligibleBanksResponseModel": {
+                "type": "object",
+                "properties": {
+                    "PaymentTermsLink": {
+                        "type": "string",
+                        "example": "https://payitpreproduksppdnossb.blob.core.windows.net/documents/NatWest-Payit-User-Terms.pdf"
+                    },
+                    "eligibleBanks": {
+                        "type": "array",
+                        "description": "contains the list of active banks and logo URLs",
+                        "items": {
+                            "$ref": "#/components/schemas/eligibleBanks"
+                        }
+                    }
+                }
+            },
+            "paymentAwaitingRequestModel": {
+                "required": [
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "Specifies the status of payment in code form.",
+                        "enum": [
+                            "PaymentApproved",
+                            "PaymentRejected",
+                            "PaymentNotprocessed",
+                            "PaymentedStatusUnknown",
+                            "PaymentAwaitingApproval",
+                            "CustomerAbortedJourney",
+                            "TechnicalError"
+                        ]
+                    }
+                }
+            },
+            "paymentConfirmationAwaitingResponse": {
+                "required": [
+                    "merchantAcknowledgementId"
+                ],
+                "type": "object",
+                "properties": {
+                    "merchantAcknowledgementId": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "A unique identifier generated by the Merchant on receipt  of the payment status update."
+                    },
+                    "creationDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "paymentConfirmationRequestModel": {
+                "required": [
+                    "paymentUpdate"
+                ],
+                "type": "object",
+                "properties": {
+                    "paymentUpdate": {
+                        "$ref": "#/components/schemas/paymentUpdate"
+                    }
+                }
+            },
+            "paymentConfirmationResponse": {
+                "required": [
+                    "merchantAcknowledgementId"
+                ],
+                "type": "object",
+                "properties": {
+                    "merchantAcknowledgementId": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "A unique identifier generated by the Merchant on receipt  of the payment status update."
+                    },
+                    "creationDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "paymentUpdate": {
+                "type": "object",
+                "required": [
+                    "paymentReferenceID",
+                    "status",
+                    "fpReference",
+                    "statusDateTime",
+                    "tppReferenceID"
+                ],
+                "properties": {
+                    "paymentReferenceID": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,35}$",
+                        "type": "string",
+                        "description": "The unique identifier generated by the bank for the payment",
+                        "example": "BigCo-21343"
+                    },
+                    "tppReferenceID": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,35}$",
+                        "type": "string",
+                        "description": "The unique identifier generated by the TPP for the payment",
+                        "example": "alphan123221"
+                    },
+                    "fpReference": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\s]{1,18}$",
+                        "type": "string",
+                        "description": "The reference of the payment",
+                        "example": "Invoice1234"
+                    },
+                    "description": {
+                        "pattern": "^[a-zA-Z0-9 ]*",
+                        "type": "string",
+                        "description": "Description for the payment, to be displayed to the user",
+                        "example": "Payment for order 453364"
+                    },
+                    "status": {
+                        "type": "string",
+                        "description": "Specifies the status of payment in code form.",
+                        "enum": [
+                            "CustomerAbortedJourney",
+                            "PaymentApproved",
+                            "PaymentRejected",
+                            "PaymentNotprocessed",
+                            "PaymentedStatusUnknown",
+                            "PaymentAwaitingApproval",
+                            "TechnicalError"
+                        ]
+                    },
+                    "eventName": {
+                        "type": "string",
+                        "description": "For 'CustomerAbortedJourney' status, extra details will be provided at which step the journey is aborted at. For 'OtherError', 'TechnicalError', 'PaymentRejected' statuses empty value is sent",
+                        "example": "BANK_LOGIN_JOURNEY_PRESENTED"
+                    },
+                    "statusDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource status was updated All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "pemResponseModel": {
+                "type": "object",
+                "properties": {
+                    "kid": {
+                        "type": "string",
+                        "example": "bxUfWlopqIhfwe-2gkMWrWUVRgM"
+                    },
+                    "kty": {
+                        "type": "string",
+                        "example": "RSA"
+                    },
+                    "content": {
+                        "type": "string",
+                        "example": "MIIGaDCCBVCgAwIBAgIEWgA6jjANBgkqhkiG9w0BAQsFADBEMQswCQYDVQQGEwJHQjEUMBIGA1UEChMLT3BlbkJhbmtpbmcxHzAdBgNVBAMTFk9wZW5CYW5raW5nIElzc3VpbmcgQ0EwHhcNMjIwNzAxMTExNjM1WhcNMjMwODAxMTE0NjM1WjBtMQswCQYDVQQGEwJHQjEmMCQGA1UEChMdTmF0aW9uYWwgV2VzdG1pbnN0ZXIgQmFuayBQbGMxGTAXBgNVBGETEFBTREdCLUZDQS0xMjE4NzgxGzAZBgNVBAMTEjAwMTU4MDAwMDBqZnd4WEFBUTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOb9O7Zp+REwlMUw1ppLboTyQ0z6Rb7dKKjyukUGmUQF60uv2uGFUCjjexeLshTlgVHSmU3yJJ8qVvBaLyNMJlH08W3Tbba7WHMEt6dp5dptssX2xy6NPHn7tXK9+8pmnTubOfhlYhYM02KCjJiSeFt6JbnyjSyqTRC7V961EQeYvP1UY+qyS30gRKv5EOJEKYYuWU+qHpZ1dAfkm0nzZKkmalAMrNFOYd1DfCIkBCm7CSPsYoPlYtEMT9HAHZOrxUiwDkOMpw/e0uw9hcqEkKVlviHT5GoZIsMPdYKlNmDYBEAfSz+lR/R1f9dMIfTQeK9Z6mMqRELzdT168Uznj7cCAwEAAaOCAzcwggMzMA4GA1UdDwEB/wQEAwIGwDCBkQYIKwYBBQUHAQMEgYQwgYEwEwYGBACORgEGMAkGBwQAjkYBBgIwagYGBACBmCcCMGAwOTARBgcEAIGYJwECDAZQU1BfUEkwEQYHBACBmCcBAwwGUFNQX0FJMBEGBwQAgZgnAQQMBlBTUF9JQwwbRmluYW5jaWFsIENvbmR1Y3QgQXV0aG9yaXR5DAZHQi1GQ0EwFQYDVR0lBA4wDAYKKwYBBAGCNwoDDDCCAVIGA1UdIASCAUkwggFFMIIBQQYLKwYBBAGodYEGAQEwggEwMDUGCCsGAQUFBwIBFilodHRwOi8vb2IudHJ1c3Rpcy5jb20vcHJvZHVjdGlvbi9wb2xpY2llczCB9gYIKwYBBQUHAgIwgekMgeZUaGlzIENlcnRpZmljYXRlIGlzIHNvbGVseSBmb3IgdXNlIHdpdGggT3BlbiBCYW5raW5nIExpbWl0ZWQgYW5kIGFzc29jaWF0ZWQgT3BlbiBCYW5raW5nIFNlcnZpY2VzLiBJdHMgcmVjZWlwdCwgcG9zc2Vzc2lvbiBvciB1c2UgY29uc3RpdHV0ZXMgYWNjZXB0YW5jZSBvZiB0aGUgT3BlbiBCYW5raW5nIExpbWl0ZWQgQ2VydGlmaWNhdGUgUG9saWN5IGFuZCByZWxhdGVkIGRvY3VtZW50cyB0aGVyZWluLjByBggrBgEFBQcBAQRmMGQwJgYIKwYBBQUHMAGGGmh0dHA6Ly9vYi50cnVzdGlzLmNvbS9vY3NwMDoGCCsGAQUFBzAChi5odHRwOi8vb2IudHJ1c3Rpcy5jb20vcHJvZHVjdGlvbi9pc3N1aW5nY2EuY3J0MCsGA1UdEQQkMCKCIGFwaS5vcGVuYmFua2luZy5wcmQtbWV0dGxlLmNvLnVrMD8GA1UdHwQ4MDYwNKAyoDCGLmh0dHA6Ly9vYi50cnVzdGlzLmNvbS9wcm9kdWN0aW9uL2lzc3VpbmdjYS5jcmwwHwYDVR0jBBgwFoAUn0m/TjanrMMPK8hH9B8pG8B5CwUwHQYDVR0OBBYEFKIWZ92nwdupEWPE4La26YU7y2tFMA0GCSqGSIb3DQEBCwUAA4IBAQAP2SdXmU3kbNoAVbhqpMv8zCNFX8A5IhJ+QucT6Lhk/RLpz4Ty0QvEyqTJaz3+fcBIQwGYWWfEksAC7e2Y3/Fur5x+0sDAYPprAVWGovIKUzAnEQQC0yYH3kZSqVuyZqDSDSsQRs+55FdwrTtv4R0M2B1e2PZmT1kuvONy6SAl65C6myJqy9P43FInYmUj0rNg9SEAVoATN+701soWJfk4ZxqEyNfvfRobh2AYh1925jTwPX/TwIeoNFcxKAIgH7cfLNi1L9xG+Nn2iqNXL0Kj8cQJvhgNMf1M/CoN4gFC0Ywtx3o3h9qrT3AP1t40ZQoVWXBG3Vz9Fzgj5pq5GaIn"
+                    },
+                    "e": {
+                        "type": "string",
+                        "example": "AQAB"
+                    },
+                    "n": {
+                        "type": "string",
+                        "example": "5v07tmn5ETCUxTDWmktuhPJDTPpFvt0oqPK6RQaZRAXrS6_a4YVQKON7F4uyFOWBUdKZTfIknypW8FovI0wmUfTxbdNttrtYcwS3p2nl2m2yxfbHLo08efu1cr37ymadO5s5-GViFgzTYoKMmJJ4W3olufKNLKpNELtX3rURB5i8_VRj6rJLfSBEq_kQ4kQphi5ZT6oelnV0B-SbSfNkqSZqUAys0U5h3UN8IiQEKbsJI-xig-Vi0QxP0cAdk6vFSLAOQ4ynD97S7D2FyoSQpWW-IdPkahkiww91gqU2YNgEQB9LP6VH9HV_10wh9NB4r1nqYypEQvN1PXrxTOePtw"
+                    },
+                    "x5u": {
+                        "type": "string",
+                        "example": "https://keystore.openbanking.org.uk/0015800000jfwxXAAQ/bxUfWlopqIhfwe-2gkMWrWUVRgM.pem"
+                    },
+                    "use": {
+                        "type": "string",
+                        "example": "sig"
+                    },
+                    "x5t": {
+                        "type": "string",
+                        "example": "XM93ga4I4z-8iX4UxR_4qnMxoqw="
+                    },
+                    "x5t#S256": {
+                        "type": "string",
+                        "example": "kB6mANprX12FF8Bvlest1hjmdU7k_CVff1Iy1tQdgfo="
+                    }
+                }
+            },
+            "problemDetails": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "format": "int32",
+                        "nullable": true
+                    },
+                    "detail": {
+                        "type": "string"
+                    },
+                    "instance": {
+                        "type": "string"
+                    },
+                    "extensions": {
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "object"
+                        }
+                    }
+                }
+            },
+            "refundAckTransactionModel": {
+                "type": "object",
+                "required": [
+                    "tppReferenceID",
+                    "xtransactionID",
+                    "refundAmount",
+                    "refundStatus",
+                    "tppRefundACKId"
+                ],
+                "properties": {
+                    "xtransactionID": {
+                        "maxLength": 31,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the original payment end to end id generated by merchant for the transaction.",
+                        "example": "xxxccccdrhehdh12342shshw"
+                    },
+                    "tppReferenceID": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the original payment transaction id / ttp id generated by payit application for the transaction.",
+                        "example": "111ascyyydrhehdh34432"
+                    },
+                    "refundAmount": {
+                        "type": "number",
+                        "description": "contains the amount to be refunded to payment service user (PSU), Can contain full or the partial amount.  Goodwill refund will be checks for the threshold set.",
+                        "format": "string",
+                        "example": 33.3
+                    },
+                    "tppRefundACKId": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the payit ack generated at merchant refund response.",
+                        "example": "tthfndjejdnsnai384"
+                    },
+                    "refundStatus": {
+                        "maxLength": 20,
+                        "type": "string",
+                        "description": "current status of the refund",
+                        "enum": [
+                            "RefundValidated",
+                            "RefundInitated",
+                            "RefundRejected",
+                            "RefundSuccessful",
+                            "RefundReScheduled"
+                        ]
+                    },
+                    "additionalInformation": {
+                        "maxLength": 100,
+                        "type": "string",
+                        "description": "additional information aiding status of the refund",
+                        "example": "Merchant brand is not in correct status"
+                    },
+                    "fpReference": {
+                        "maxLength": 18,
+                        "minLength": 10,
+                        "type": "string",
+                        "description": "contains the payment unique fpReference generated by Payit",
+                        "example": "111aswedfgtyhj34"
+                    },
+                    "refundDescription": {
+                        "maxLength": 50,
+                        "type": "string",
+                        "description": "contains the reason of the refund sent by merchant",
+                        "example": "don't like the product"
+                    },
+                    "refundFpReference": {
+                        "maxLength": 18,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains a unique refund id generated for refund transactions.",
+                        "example": "tthfndjejdnsnai384"
+                    }
+                }
+            },
+            "refundConfirmationRequest": {
+                "type": "object",
+                "required": [
+                    "brandId",
+                    "companyId"
+                ],
+                "properties": {
+                    "companyId": {
+                        "pattern": "^\\S{1,36}$",
+                        "type": "string",
+                        "description": "The unique identifier used when onboarding - Parent Company id",
+                        "example": "BigCo-2134"
+                    },
+                    "brandId": {
+                        "pattern": "^\\S{1,36}$",
+                        "type": "string",
+                        "description": "The unique identifier used when onboarding - Brand id",
+                        "example": "Brand-1"
+                    },
+                    "refundAckTransaction": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/refundAckTransactionModel"
+                        }
+                    }
+                }
+            },
+            "reconciliationVersionResponse": {
+                "required": [
+                    "CreationDateTime",
+                    "ReconciliationVersion"
+                ],
+                "type": "object",
+                "properties": {
+                    "ReconciliationVersion": {
+                        "type": "string",
+                        "description": "The version that you will receive from now on.",
+                        "example": "3"
+                    },
+                    "CreationDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. \n An example is below: 2021-04-05T10:43:07+00:00",
+                        "format": "date-time",
+                        "example": "2021-04-05T10:43:07.000Z"
+                    }
+                }
+            },
+            "reconciliationFileResponseModel": {
+                "type": "object",
+                "description": "contains the direct URL for the Reconciliation file location",
+                "example": {
+                    "Filename": "Inprogress",
+                    "ReconFileURL": "https://Payit.usetyl.com/inprogress.csv"
+                },
+                "properties": {
+                    "Filename": {
+                        "type": "string"
+                    },
+                    "ReconFileURL": {
+                        "type": "string"
+                    }
+                }
+            },
+            "refundConfirmationRequestModel": {
+                "required": [
+                    "data"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/refundConfirmationRequest"
+                    }
+                }
+            },
+            "refundConfirmationResponse": {
+                "required": [
+                    "MerchantAcknowledgementId"
+                ],
+                "type": "object",
+                "properties": {
+                    "MerchantAcknowledgementId": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "A unique identifier generated by the Merchant on receipt  of the payment status update."
+                    },
+                    "CreationDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "refundConfirmationResponseModel": {
+                "required": [
+                    "Data"
+                ],
+                "type": "object",
+                "properties": {
+                    "Data": {
+                        "$ref": "#/components/schemas/refundConfirmationResponse"
+                    }
+                }
+            },
+            "refundInitiationRequestModel": {
+                "required": [
+                    "data"
+                ],
+                "type": "object",
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/refundPaymentRequest"
+                    }
+                }
+            },
+            "refundInitiationResponseModel": {
+                "required": [
+                    "Data"
+                ],
+                "type": "object",
+                "properties": {
+                    "Data": {
+                        "$ref": "#/components/schemas/refundPaymentResponse"
+                    }
+                }
+            },
+            "refundPaymentRequest": {
+                "required": [
+                    "merchantId",
+                    "refundTransaction",
+                    "totalNumberOfRefund",
+                    "totalRefundAmount"
+                ],
+                "type": "object",
+                "properties": {
+                    "merchantId": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]$",
+                        "type": "string",
+                        "description": "The unique identifier used when onboarding - merchant id",
+                        "example": "merchant-1"
+                    },
+                    "totalNumberOfRefund": {
+                        "type": "integer",
+                        "description": "this field contains total number of refund count. Insure maximum 999 individual refund request per API call",
+                        "example": 1
+                    },
+                    "totalRefundAmount": {
+                        "type": "number",
+                        "description": "this field contains total refund amount",
+                        "format": "string",
+                        "example": 33.3
+                    },
+                    "refundTransaction": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/refundTransactionModel"
+                        }
+                    }
+                }
+            },
+            "refundPaymentResponse": {
+                "type": "object",
+                "required": [
+                    "CreationDateTime",
+                    "tppRefundACKId"
+                ],
+                "properties": {
+                    "tppRefundACKId": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,35}$",
+                        "type": "string",
+                        "description": "The unique identifier generated by the merchant for the refund response",
+                        "example": "alphan123221"
+                    },
+                    "CreationDateTime": {
+                        "type": "string",
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.\nAll date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "refundTransactionModel": {
+                "type": "object",
+                "required": [
+                    "paymentReferenceID",
+                    "tppReferenceID",
+                    "xtransactionID",
+                    "refundAmount"
+                ],
+                "properties": {
+                    "xtransactionID": {
+                        "maxLength": 31,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the original payment end to end id generated by merchant for the transaction.",
+                        "example": "xxxccccdrhehdh12342shshw"
+                    },
+                    "tppReferenceID": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the original payment transaction id / ttp id generated by payit application for the transaction.",
+                        "example": "111ascyyydrhehdh34432"
+                    },
+                    "paymentReferenceID": {
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string",
+                        "description": "contains the orignial payment id supplied to merchant by payit application for the transaction.",
+                        "example": "tthfndjejdnsnai384"
+                    },
+                    "refundAmount": {
+                        "type": "number",
+                        "description": "contains the amount to be refunded to payment service user (PSU), Can contain full or the partial amount.  Goodwill refund will be checks for the threshold set.",
+                        "format": "string",
+                        "example": 33.3
+                    },
+                    "refundDescription": {
+                        "maxLength": 50,
+                        "type": "string",
+                        "description": "Description for the refund, to be displayed to the user",
+                        "example": "refund for order #453364 / 11.06.2018"
+                    }
+                }
+            },
+            "signatureResponseModel": {
+                "required": [
+                    "keys"
+                ],
+                "type": "object",
+                "properties": {
+                    "keys": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/pemResponseModel"
+                        }
+                    }
+                }
+            },
+            "deliveryAddressModel": {
+                "properties": {
+                    "countryCode": {
+                        "description": "For Ecommerce Goods payments, alongside the paymentContext code field, this is also mandatory.",
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "pattern": "GB",
+                        "type": "string"
+                    },
+                    "townName": {
+                        "description": "For Ecommerce Goods payments, alongside the paymentContext code field, this is also mandatory.",
+                        "example": "London",
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "countryCode",
+                    "townName"
+                ],
+                "type": "object"
+            },
+            "initiateEmbeddedPaymentRequest": {
+                "properties": {
+                    "amount": {
+                        "format": "double",
+                        "pattern": "^\\d{1,13}\\.\\d{1,2}$",
+                        "type": "number"
+                    },
+                    "bankId": {
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "country": {
+                        "pattern": "^[A-Z]{2}$",
+                        "type": "string"
+                    },
+                    "currency": {
+                        "pattern": "^[A-Z]{3}$",
+                        "type": "string"
+                    },
+                    "description": {
+                        "maxLength": 120,
+                        "minLength": 0,
+                        "pattern": "[a-zA-Z0-9 ]*",
+                        "type": "string"
+                    },
+                    "fpReference": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\s]{1,10}$",
+                        "type": "string"
+                    },
+                    "instructedAccounts": {
+                        "$ref": "#/components/schemas/instructedAccountsModel"
+                    },
+                    "merchantDisplayName": {
+                        "description": "Reserved - use as advised by Payit",
+                        "maxLength": 75,
+                        "type": "string"
+                    },
+                    "merchantId": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]$",
+                        "type": "string"
+                    },
+                    "paymentContext": {
+                        "$ref": "#/components/schemas/paymentContextModel"
+                    },
+                    "redirectUrl": {
+                        "maxLength": 2000,
+                        "minLength": 0,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "bankId",
+                    "merchantId",
+                    "currency",
+                    "redirectUrl"
+                ],
+                "type": "object"
+            },
+            "initiateEmbeddedPaymentRequestModel": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/initiateEmbeddedPaymentRequest"
+                    }
+                },
+                "required": [
+                    "data"
+                ],
+                "type": "object"
+            },
+            "initiatePaymentPayItResponse": {
+                "properties": {
+                    "CreationDateTime": {
+                        "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format. All date-time fields in responses must include the timezone. An example is below: 2020-04-05T10:43:07+00:00",
+                        "format": "date-time",
+                        "type": "string"
+                    },
+                    "ResponseURL": {
+                        "description": "This URL will be the Bank login URL. You should redirect to this url, which could open in a browser or in the mobile app of the bank",
+                        "example": "https://sandbox.natwestpayit.com?hash=QywK-LqENdnTafXRKTkc9ODzsmvSzF9TRFx_P8Xl8oA&tppid=c7e2a6eea4594c38ae2e26f5978c5fd9&e2eid=lKYWziEyqsAOiNay2sOVdRd4Rwerdes&version=2&integration_type=HOSTED",
+                        "maxLength": 2000,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "TPPReferenceID": {
+                        "description": "The unique identifier generated by the TPP for the payment",
+                        "example": "21314f7657a94cb2b5a3b754c9697ec9",
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,35}$",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "CreationDateTime",
+                    "ResponseURL",
+                    "TPPReferenceID"
+                ],
+                "type": "object"
+            },
+            "initiatePaymentPayItResponseModel": {
+                "properties": {
+                    "Data": {
+                        "$ref": "#/components/schemas/initiatePaymentPayItResponse"
+                    }
+                },
+                "required": [
+                    "Data"
+                ],
+                "type": "object"
+            },
+            "initiatePaymentRequest": {
+                "properties": {
+                    "amount": {
+                        "format": "double",
+                        "pattern": "^\\d{1,13}\\.\\d{1,2}$",
+                        "type": "number"
+                    },
+                    "country": {
+                        "pattern": "^[A-Z]{2}$",
+                        "type": "string"
+                    },
+                    "currency": {
+                        "pattern": "^[A-Z]{3}$",
+                        "type": "string"
+                    },
+                    "description": {
+                        "maxLength": 120,
+                        "minLength": 0,
+                        "pattern": "[a-zA-Z0-9 ]*",
+                        "type": "string"
+                    },
+                    "fpReference": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\s]{1,10}$",
+                        "type": "string"
+                    },
+                    "instructedAccounts": {
+                        "$ref": "#/components/schemas/instructedAccountsModel"
+                    },
+                    "merchantDisplayName": {
+                        "description": "Reserved - use as advised by Payit",
+                        "maxLength": 75,
+                        "type": "string"
+                    },
+                    "merchantId": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]$",
+                        "type": "string"
+                    },
+                    "paymentContext": {
+                        "$ref": "#/components/schemas/paymentContextModel"
+                    },
+                    "redirectUrl": {
+                        "maxLength": 2000,
+                        "minLength": 0,
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "merchantId",
+                    "currency",
+                    "paymentContext",
+                    "redirectUrl"
+                ],
+                "type": "object"
+            },
+            "initiatePaymentRequestModel": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/initiatePaymentRequest"
+                    }
+                },
+                "required": [
+                    "data"
+                ],
+                "type": "object"
+            },
+            "initiateScheduledPaymentRequest": {
+                "properties": {
+                    "amount": {
+                        "format": "double",
+                        "pattern": "^\\d{1,13}\\.\\d{1,2}$",
+                        "type": "number"
+                    },
+                    "country": {
+                        "pattern": "^[A-Z]{2}$",
+                        "type": "string"
+                    },
+                    "currency": {
+                        "pattern": "^[A-Z]{3}$",
+                        "type": "string"
+                    },
+                    "description": {
+                        "maxLength": 120,
+                        "minLength": 0,
+                        "pattern": "[a-zA-Z0-9 ]*",
+                        "type": "string"
+                    },
+                    "fpReference": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\s]{1,10}$",
+                        "type": "string"
+                    },
+                    "instructedAccounts": {
+                        "$ref": "#/components/schemas/instructedAccountsModel"
+                    },
+                    "merchantDisplayName": {
+                        "description": "Reserved - use as advised by Payit",
+                        "maxLength": 75,
+                        "type": "string"
+                    },
+                    "merchantId": {
+                        "pattern": "^[a-zA-Z0-9\\.\\-\\+_]$",
+                        "type": "string"
+                    },
+                    "paymentContext": {
+                        "$ref": "#/components/schemas/paymentContextModel"
+                    },
+                    "redirectUrl": {
+                        "maxLength": 2000,
+                        "minLength": 0,
+                        "type": "string"
+                    },
+                    "schedulePayment": {
+                        "$ref": "#/components/schemas/schedulePaymentDataModel"
+                    }
+                },
+                "required": [
+                    "amount",
+                    "merchantId",
+                    "currency",
+                    "paymentContext",
+                    "redirectUrl"
+                ],
+                "type": "object"
+            },
+            "initiateScheduledPaymentRequestModel": {
+                "properties": {
+                    "data": {
+                        "$ref": "#/components/schemas/initiateScheduledPaymentRequest"
+                    }
+                },
+                "type": "object"
+            },
+            "instructedAccountsModel": {
+                "required": [
+                    "identification",
+                    "bankName"
+                ],
+                "properties": {
+                    "bankName": {
+                        "description": "contains the sort-code and the account number of the customer to suffice peer to peer transfers.  Brackets (eg. \"()\", \"[]\", \"{}\") are not allowed in this field.",
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "identification": {
+                        "description": "contains the sort-code and the account number of the customer to suffice peer to peer transfers",
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "preferredAccountInfo": {
+                        "$ref": "#/components/schemas/prefferedAcctInfoModel"
+                    }
+                },
+                "type": "object"
+            },
+            "paymentContextModel": {
+                "properties": {
+                    "deliveryAddress": {
+                        "$ref": "#/components/schemas/deliveryAddressModel"
+                    },
+                    "merchantCategoryCode": {
+                        "description": "For Ecommerce payments, alongside the paymentContext code field, this is also required. Category code conform to ISO 18245, related to the type of services or goods the merchant provides for the transaction.",
+                        "maxLength": 4,
+                        "minLength": 3,
+                        "type": "string"
+                    },
+                    "merchantCustomerIdentification": {
+                        "description": "For Ecommerce payments, alongside the paymentContext code field, this is also mandatory. The unique customer identifier of the PSU with the merchant.",
+                        "example": "merchCust1109946",
+                        "maxLength": 70,
+                        "minLength": 1,
+                        "pattern": "^[a-zA-Z0-9]+$",
+                        "type": "string"
+                    },
+                    "paymentContextCode": {
+                        "description": "A new field for payment context code is required as this is now mandated by a number of Banks to support payment monitoring. Valid for all payment types.",
+                        "example": "EcommerceGoods",
+                        "minLength": 1,
+                        "pattern": "BillPayment|EcommerceGoods|EcommerceServices|Other|PartyToParty",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "paymentContextCode"
+                ],
+                "type": "object"
+            },
+            "prefferedAcctInfoModel": {
+                "required": [
+                    "identification",
+                    "user"
+                ],
+                "description": "This block of information is required to be send by the merchant to Payit application for PEER to PEER payment. This contains the source account information.",
+                "properties": {
+                    "identification": {
+                        "description": "contains the sort-code only or the sort-code and the account number of the preferred account number for the customer",
+                        "maxLength": 35,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "user": {
+                        "description": "Contains an identifier for the customer. This field will be used for \"remember me functionality\". This might contain the customer email address",
+                        "maxLength": 50,
+                        "minLength": 1,
+                        "type": "string"
+                    }
+                },
+                "type": "object"
+            },
+            "schedulePaymentDataModel": {
+                "properties": {
+                    "requestedExecutionDateTime": {
+                        "description": "Date at which the end user (customer) want to initiate the payment to the payment requesting party. This is the date on which the debtor's account is to be debited. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the time zone. An example is below: 2017-04-05T10:43:07+00:00",
+                        "format": "date-time",
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "requestedExecutionDateTime"
+                ],
+                "type": "object"
+            }
+        }
+    }
+}

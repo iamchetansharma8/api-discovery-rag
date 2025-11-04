@@ -1,0 +1,535 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Indicative Bonds Price API Specification",
+        "description": "OAS3 for Indicative Bonds Price API",
+        "version": "v1"
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com/trade-execution/fixed-income/bonds/v1",
+            "description": "Production"
+        },
+        {
+            "url": "https://ob.sandbox.natwest.com/zerocode/fixed-income.org/IndicativeBondsPrice/v1",
+            "description": "Sandbox"
+        }
+    ],
+    "paths": {
+        "/indicative/quote": {
+            "get": {
+                "summary": "Get Indicative Bonds Price",
+                "tags": [
+                    "Indicative Bonds Price"
+                ],
+                "operationId": "get-indicative-bonds-price",
+                "parameters": [
+                    {
+                        "name": "Authorisation",
+                        "in": "header",
+                        "description": "Authorization Token",
+                        "required": true,
+                        "style": "simple",
+                        "explode": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "isin",
+                        "in": "query",
+                        "description": "Instrument Identifier - ISIN of the bond whose indicative price is requested.",
+                        "required": true,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": ""
+                    },
+                    {
+                        "name": "quantity",
+                        "in": "query",
+                        "description": "Number of units of given bond instrument whose indicative price is requested.",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": ""
+                    },
+                    {
+                        "name": "direction",
+                        "in": "query",
+                        "description": "Direction indicates Buy or Sell direction from customer standpoint. Only valid for customer with scope: indicativebondprice:advancedsearch.",
+                        "required": false,
+                        "style": "form",
+                        "explode": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/Direction"
+                        },
+                        "example": "Buy"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/IndicativeBondsPriceResponse"
+                                },
+                                "example": {
+                                    "data": {
+                                        "isin": "GB0004893086",
+                                        "quantity": "100000000",
+                                        "currency": "USD",
+                                        "mid": 131.07326,
+                                        "bid": 130.9975,
+                                        "ask": 131.048
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "oneOf": [
+                                        {
+                                            "$ref": "#/components/schemas/MissingIsin"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/InvalidDirection"
+                                        },
+                                        {
+                                            "$ref": "#/components/schemas/InvalidQuantity"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Unauthorized"
+                                }
+                            }
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Forbidden"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "NotFound",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/NotFound"
+                                }
+                            }
+                        }
+                    },
+                    "405": {
+                        "description": "MethodNotAllowed",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MethodNotAllowed"
+                                }
+                            }
+                        }
+                    },
+                    "415": {
+                        "description": "UnsupportedMediaType",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnsupportedMediaType"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "UnprocessableEntity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnrecognisedIsin"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "ServerError",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ServerError"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TPPOAuth2Security": [
+                            "indicativebondprice:search",
+                            "indicativebondpriceadvanced:search"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "TPPOAuth2Security": {
+                "type": "oauth2",
+                "description": "TPP client credential authorisation flow with the ASPSP",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://ob.sandbox.natwest.com/token",
+                        "scopes": {
+                            "indicativebondprice:search": "Indicative Bonds Price basic search",
+                            "indicativebondpriceadvanced:search": "Indicative Bonds Price advanced search"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "IndicativeBondsPriceResponse": {
+                "title": "Indicative Bonds Price Response",
+                "type": "object",
+                "properties": {
+                    "isin": {
+                        "type": "string",
+                        "description": "Instrument Identifier - ISIN of the the bond whose indicative price is requested."
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "Number of units of given bond instrument whose indicative price is requested."
+                    },
+                    "indicativePrice": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Indicative Price returned for bond instrument as per customer provided Bond ISIN. This will be the mid price i.e. (Bid + Ask)/2"
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currencies",
+                        "description": "Currency in which indicative price is denominated."
+                    },
+                    "priceType": {
+                        "$ref": "#/components/schemas/PriceType",
+                        "description": "Values: [Price , Yield]"
+                    },
+                    "priceFormat": {
+                        "$ref": "#/components/schemas/PriceFormat",
+                        "description": "Values: [32nds, Percent, Bps]"
+                    }
+                }
+            },
+            "Currencies": {
+                "type": "string",
+                "enum": [
+                    "GBP",
+                    "EUR",
+                    "USD",
+                    "SEK",
+                    "NOK"
+                ]
+            },
+            "PriceType": {
+                "type": "string",
+                "enum": [
+                    "Price",
+                    "Yield"
+                ]
+            },
+            "PriceFormat": {
+                "type": "string",
+                "enum": [
+                    "32nds",
+                    "Percent",
+                    "Bps"
+                ]
+            },
+            "Direction": {
+                "type": "string",
+                "enum": [
+                    "Buy",
+                    "Sell"
+                ]
+            },
+            "IndicativeBondsPriceAdvancedResponse": {
+                "title": "Indicative Bonds Price Advanced Response",
+                "type": "object",
+                "properties": {
+                    "isin": {
+                        "type": "string",
+                        "description": "Instrument Identifier - ISIN of the the bond whose indicative price is requested."
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "Number of units of given bond instrument whose indicative price is requested."
+                    },
+                    "direction": {
+                        "$ref": "#/components/schemas/Direction",
+                        "description": "Direction will indicate Buy or Sell direction from customer standpoint. Possible Values: Buy, Sell"
+                    },
+                    "indicativePrice": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Indicative Price returned for bond instrument as per customer provided Bond ISIN. This will be the mid price i.e. (Bid + Ask)/2"
+                    },
+                    "bidPrice": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Bank's Bid price to be returned for customer direction 'Sell'. This will be available only if 'Sell' direction is provided by Customer. In all other cases this will be NULL."
+                    },
+                    "askPrice": {
+                        "type": "number",
+                        "format": "double",
+                        "description": "Bank's Ask price to be returned for customer direction 'Buy'. This will be available only if 'Buy' direction is provided by Customer. In all other cases this will be NULL."
+                    },
+                    "currency": {
+                        "$ref": "#/components/schemas/Currencies",
+                        "description": "Currency in which indicative price or Bid/Ask Price is denominated."
+                    },
+                    "priceType": {
+                        "$ref": "#/components/schemas/PriceType",
+                        "description": "Values: [Price , Yield]"
+                    },
+                    "priceFormat": {
+                        "$ref": "#/components/schemas/PriceFormat",
+                        "description": "Values: [32nds, Percent, Bps]"
+                    }
+                }
+            },
+            "MissingIsin": {
+                "description": "Bad Request",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "400"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Bad Request"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Missing required field: isin"
+                    }
+                }
+            },
+            "InvalidDirection": {
+                "description": "Bad Request",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "400"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Bad Request"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Invalid direction: ${direction}"
+                    }
+                }
+            },
+            "InvalidQuantity": {
+                "description": "Bad Request",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "400"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Bad Request"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Invalid quantity"
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Unauthorized",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "401"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Unauthorized"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Access credentials not present or invalid."
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Forbidden",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "403"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Forbidden"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Forbidden"
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Not Found",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "404"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Not Found"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "You sent a request for a resource that does not exist."
+                    }
+                }
+            },
+            "MethodNotAllowed": {
+                "description": "Method Not Allowed",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "405"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Method Not Allowed"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Method Not Allowed"
+                    }
+                }
+            },
+            "UnsupportedMediaType": {
+                "description": "Unsupported Media Type",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "415"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Unsupported Media Type"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Unsupported Media Type"
+                    }
+                }
+            },
+            "UnrecognisedIsin": {
+                "description": "Unprocessable Entity",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "422"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Unprocessable Entity"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Unrecognised ISIN"
+                    }
+                }
+            },
+            "ServerError": {
+                "description": "ServerError",
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "HTTP status code",
+                        "example": "500"
+                    },
+                    "title": {
+                        "type": "string",
+                        "description": "Message describing the error",
+                        "example": "Internal Server Error"
+                    },
+                    "description": {
+                        "type": "string",
+                        "description": "Syntactic Error code",
+                        "example": "Our backend is non-functional, please try again later."
+                    }
+                }
+            }
+        }
+    }
+}

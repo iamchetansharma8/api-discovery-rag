@@ -1,0 +1,2506 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "PLG API Definition",
+        "version": "3.0.1",
+        "description": "PLG (Payment Link Generator) service API specification.",
+        "contact": {}
+    },
+    "basePath": "/plg",
+    "schemes": [
+        "https"
+    ],
+    "produces": [
+        "application/json; charset=utf-8"
+    ],
+    "consumes": [
+        "application/json; charset=utf-8"
+    ],
+    "tags": [
+        {
+            "name": "Create"
+        },
+        {
+            "name": "Cancel"
+        },
+        {
+            "name": "Historical Data"
+        },
+        {
+            "name": "One-time Link"
+        },
+        {
+            "name": "Reusable Link"
+        },
+        {
+            "name": "Reusable Links Payment Sessions"
+        },
+        {
+            "name": "Release"
+        },
+        {
+            "name": "Status"
+        },
+        {
+            "name": "Refund request"
+        },
+        {
+            "name": "Refund confirmation"
+        },
+        {
+            "name": "Reconciliation files"
+        },
+        {
+            "name": "Reconciliation Version"
+        },
+        {
+            "name": "Link Status"
+        }
+    ],
+    "paths": {
+        "/links": {
+            "post": {
+                "summary": "Create One-time Link",
+                "operationId": "post-links",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/LinkDefinitionResponse"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "401": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "403": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "500": {
+                        "$ref": "#/responses/ErrorResponse"
+                    }
+                },
+                "description": "Entry point to generate the payment link",
+                "security": [
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "x-transaction-ID",
+                        "description": "Payment definition initiator generated end-to-end transaction identifier. ",
+                        "required": true,
+                        "pattern": "^[a-zA-Z0-9-]{36}$"
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/LinkDefinitionRequest"
+                        },
+                        "x-examples": {},
+                        "description": ""
+                    }
+                ],
+                "tags": [
+                    "Create"
+                ]
+            }
+        },
+        "/links/{linkId}": {
+            "parameters": [
+                {
+                    "type": "string",
+                    "name": "linkId",
+                    "in": "path",
+                    "required": true,
+                    "description": "The PLG link identifier"
+                }
+            ],
+            "delete": {
+                "summary": "Cancel One-time Link",
+                "operationId": "delete-links-linkId",
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/responses/ErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "clientId": []
+                    }
+                ],
+                "description": "Entry point to provide for link abandon capability based on PLG identifier. ",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "companyId": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                    "minLength": 1,
+                                    "maxLength": 15
+                                },
+                                "brandId": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                    "minLength": 1,
+                                    "maxLength": 15
+                                }
+                            },
+                            "required": [
+                                "companyId",
+                                "brandId"
+                            ]
+                        }
+                    }
+                ],
+                "tags": [
+                    "Cancel"
+                ]
+            }
+        },
+        "/linkDetails": {
+            "post": {
+                "summary": "Retrieve Historical Links",
+                "operationId": "post-linkDetails",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/LinkDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse"
+                    }
+                },
+                "description": "Entry point to provide for criteria link search. Returns a paginated list of link details.",
+                "security": [
+                    {
+                        "clientId": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/LinkDetailsRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Historical Data",
+                    "One-time Link"
+                ]
+            }
+        },
+        "/reusableLinks": {
+            "post": {
+                "summary": "Create reusable link",
+                "operationId": "post-staticLink",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/LinkDefinitionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                },
+                "description": "Entry point to create reusable links.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "x-transaction-ID",
+                        "description": "Payment definition initiator generated end-to-end transaction identifier. ",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ReusableLinkDefinitionRequest"
+                        }
+                    }
+                ],
+                "security": [
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "tags": [
+                    "Create",
+                    "Reusable Link"
+                ]
+            },
+            "parameters": []
+        },
+        "/reusableLinks/{reusableLinkId}": {
+            "parameters": [
+                {
+                    "type": "string",
+                    "name": "reusableLinkId",
+                    "in": "path",
+                    "required": true
+                }
+            ],
+            "delete": {
+                "summary": "Cancel Reusable Link",
+                "operationId": "delete-reusable-links-linkId",
+                "responses": {
+                    "204": {
+                        "description": "No Content",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse"
+                    },
+                    "404": {
+                        "$ref": "#/responses/ErrorResponse"
+                    }
+                },
+                "security": [
+                    {
+                        "clientId": []
+                    }
+                ],
+                "description": "Entry point to provide for reusable link abandon capability based on PLG identifier. ",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "companyId": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                    "minLength": 1,
+                                    "maxLength": 15
+                                },
+                                "brandId": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                    "minLength": 1,
+                                    "maxLength": 15
+                                }
+                            },
+                            "required": [
+                                "companyId",
+                                "brandId"
+                            ]
+                        }
+                    }
+                ],
+                "tags": [
+                    "Cancel"
+                ]
+            }
+        },
+        "/reusableLinkDetails": {
+            "post": {
+                "summary": "Retrieve Historical Links",
+                "operationId": "post-reusableLinkDetails",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ReusableLinkDetailsResponse"
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/responses/ErrorResponse"
+                    }
+                },
+                "description": "Entry point to provide for criteria reusable link search. Returns a paginated list of reusable link details.",
+                "security": [
+                    {
+                        "clientId": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ReusableLinkDetailsRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Historical Data",
+                    "Reusable Link"
+                ]
+            },
+            "parameters": []
+        },
+        "/reusableLinksSessions": {
+            "parameters": [],
+            "post": {
+                "summary": "Retrieve Link Payment Sessions",
+                "operationId": "post-reusableLinksSessions-linkId",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ReusableLinkPaymentSessionsResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                },
+                "description": "Retrieve payment sessions associated with a reusable link.",
+                "security": [
+                    {
+                        "accessToken": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Authorization",
+                        "description": "Bearer accessToken",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "in": "header",
+                        "name": "Accept",
+                        "description": "application/app.v3+json",
+                        "required": true
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ReusableLinkPaymentSessionsRequest"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Historical Data",
+                    "Reusable Links Payment Sessions"
+                ]
+            }
+        },
+        "/info": {
+            "get": {
+                "summary": "POM Version",
+                "tags": [
+                    "Release"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "build": {
+                                    "type": "object",
+                                    "properties": {
+                                        "artifact": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "time": {
+                                            "type": "string"
+                                        },
+                                        "version": {
+                                            "type": "string",
+                                            "description": "The POM version"
+                                        },
+                                        "group": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "get-actuator-info",
+                "description": "Application snapshot information."
+            },
+            "parameters": []
+        },
+        "/health": {
+            "get": {
+                "summary": "Health",
+                "tags": [
+                    "Status"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "$ref": "#/definitions/HealthStatus"
+                                },
+                                "components": {
+                                    "type": "object",
+                                    "properties": {
+                                        "ping": {
+                                            "type": "object",
+                                            "properties": {
+                                                "status": {
+                                                    "$ref": "#/definitions/HealthStatus"
+                                                }
+                                            }
+                                        },
+                                        "refreshScope": {
+                                            "type": "object",
+                                            "properties": {
+                                                "status": {
+                                                    "$ref": "#/definitions/HealthStatus"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "operationId": "get-actuator-health",
+                "description": "Health-check endpoint."
+            },
+            "parameters": []
+        },
+        "/statusUpdates": {
+            "post": {
+                "summary": "Status Update Webhook",
+                "operationId": "post-user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "204": {
+                        "description": "",
+                        "schema": {
+                            "type": "object"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "405": {
+                        "description": "Method Not Allowed",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "406": {
+                        "description": "Not Acceptable",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "object",
+                            "properties": {}
+                        }
+                    }
+                },
+                "description": "Notifiy about changing PLG state",
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/StatusUpdate"
+                        },
+                        "description": "",
+                        "x-examples": {}
+                    }
+                ],
+                "security": [],
+                "tags": [
+                    "Link Status"
+                ]
+            },
+            "parameters": []
+        },
+        "/merchant-refunds": {
+            "post": {
+                "tags": [
+                    "Refund request"
+                ],
+                "summary": "Refund Request",
+                "description": "Initiates a new refund payment flow",
+                "operationId": "initiateRefundPayment",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent to Payit project. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Accept",
+                        "in": "header",
+                        "description": "Indicates the Payit version used. For Payit version 3 use 'application/app.v3+json' value",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Data",
+                        "in": "body",
+                        "description": "Default",
+                        "schema": {
+                            "properties": {
+                                "Data": {
+                                    "required": [
+                                        "brandId",
+                                        "companyId",
+                                        "refundTransaction",
+                                        "totalNumberOfRefund",
+                                        "totalRefundAmount"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "companyId": {
+                                            "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                            "type": "string",
+                                            "description": "The unique identifier used when onboarding - Parent Company id",
+                                            "example": "BigCo-21343"
+                                        },
+                                        "brandId": {
+                                            "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                            "type": "string",
+                                            "description": "The unique identifier used when onboarding - Brand id",
+                                            "example": "Brand-1"
+                                        },
+                                        "totalNumberOfRefund": {
+                                            "type": "integer",
+                                            "description": "this field contains total number of refund count. Insure maximum 999 individual refund request per API call",
+                                            "example": 1
+                                        },
+                                        "totalRefundAmount": {
+                                            "type": "number",
+                                            "description": "this field contains total refund amount",
+                                            "format": "string",
+                                            "example": 33.3
+                                        },
+                                        "refundTransaction": {
+                                            "type": "array",
+                                            "description": "contains one or more refund requests",
+                                            "items": {
+                                                "required": [
+                                                    "PaymentReferenceID",
+                                                    "TPPReferenceID",
+                                                    "XtransactionID",
+                                                    "refundAmount"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "XtransactionID": {
+                                                        "maxLength": 31,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the original payment end to end id generated by merchant for the transaction.",
+                                                        "example": "xxxccccdrhehdh12342shshw"
+                                                    },
+                                                    "TPPReferenceID": {
+                                                        "maxLength": 35,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the original payment transaction id / ttp id generated by payit application for the transaction.",
+                                                        "example": "111ascyyydrhehdh34432"
+                                                    },
+                                                    "PaymentReferenceID": {
+                                                        "maxLength": 35,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the orignial payment id supplied to merchant by payit application for the transaction.",
+                                                        "example": "tthfndjejdnsnai384"
+                                                    },
+                                                    "refundAmount": {
+                                                        "type": "number",
+                                                        "description": "contains the amount to be refunded to payment service user (PSU), Can contain full or the partial amount.  Goodwill refund will be checks for the threshold set.",
+                                                        "format": "string",
+                                                        "example": 33.3
+                                                    },
+                                                    "refundDescription": {
+                                                        "maxLength": 50,
+                                                        "type": "string",
+                                                        "description": "Description for the refund, to be displayed to the user",
+                                                        "example": "refund for order #453364 / 11.06.2018"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            "required": [
+                                "brandId",
+                                "companyId",
+                                "refundTransaction",
+                                "totalNumberOfRefund",
+                                "totalRefundAmount"
+                            ]
+                        },
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Response Payload from Payit Application",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tppRefundACKId": {
+                                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,35}$",
+                                    "type": "string",
+                                    "description": "The unique identifier generated by the merchant for the refund response",
+                                    "example": "alphan123221"
+                                },
+                                "CreationDateTime": {
+                                    "type": "string",
+                                    "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.\nAll date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                                    "format": "date-time"
+                                }
+                            },
+                            "required": [
+                                "CreationDateTime",
+                                "tppRefundACKId"
+                            ]
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "required": [
+                                "Code",
+                                "Id"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "High level textual error code, to help categorise the errors."
+                                },
+                                "Id": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                },
+                                "Message": {
+                                    "maxLength": 500,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                }
+                            },
+                            "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorised"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "x-codegen-request-body-name": "RefundPayload-Param"
+            }
+        },
+        "/merchant-refunds-confirm": {
+            "post": {
+                "tags": [
+                    "Refund confirmation"
+                ],
+                "summary": "Refund Confirmation Webhook",
+                "description": "Merchant Api where Payit provide refund status",
+                "operationId": "ConfirmRefundStatus",
+                "parameters": [
+                    {
+                        "name": "payit-signature",
+                        "in": "header",
+                        "description": "signature generated by Payit application to prevent replay attacks",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Data",
+                        "in": "body",
+                        "description": "Default",
+                        "schema": {
+                            "required": [
+                                "Data"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "required": [
+                                        "brandId",
+                                        "companyId"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "companyId": {
+                                            "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                            "type": "string",
+                                            "description": "The unique identifier used when onboarding - Parent Company id",
+                                            "example": "BigCo-2134"
+                                        },
+                                        "brandId": {
+                                            "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                                            "type": "string",
+                                            "description": "The unique identifier used when onboarding - Brand id",
+                                            "example": "Brand-1"
+                                        },
+                                        "refundAckTransaction": {
+                                            "type": "array",
+                                            "description": "contains one or more refund status",
+                                            "items": {
+                                                "required": [
+                                                    "TPPReferenceID",
+                                                    "XtransactionID",
+                                                    "refundAmount"
+                                                ],
+                                                "type": "object",
+                                                "properties": {
+                                                    "XtransactionID": {
+                                                        "maxLength": 31,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the original payment end to end id generated by merchant for the transaction.",
+                                                        "example": "xxxccccdrhehdh12342shshw"
+                                                    },
+                                                    "TPPReferenceID": {
+                                                        "maxLength": 35,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the original payment transaction id / ttp id generated by payit application for the transaction.",
+                                                        "example": "111ascyyydrhehdh34432"
+                                                    },
+                                                    "fpReference": {
+                                                        "maxLength": 16,
+                                                        "minLength": 16,
+                                                        "type": "string",
+                                                        "description": "contains the payment unique fpReference generated by Payit",
+                                                        "example": "111aswedfgtyhj34"
+                                                    },
+                                                    "refundAmount": {
+                                                        "type": "number",
+                                                        "description": "contains the amount to be refunded to payment service user (PSU), Can contain full or the partial amount.  Goodwill refund will be checks for the threshold set.",
+                                                        "format": "string",
+                                                        "example": 33.3
+                                                    },
+                                                    "refundDescription": {
+                                                        "maxLength": 50,
+                                                        "type": "string",
+                                                        "description": "contains the reason of the refund sent by merchant",
+                                                        "example": "don't like the product"
+                                                    },
+                                                    "tppRefundACKId": {
+                                                        "maxLength": 35,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains the payit ack generated at merchant refund response.",
+                                                        "example": "tthfndjejdnsnai384"
+                                                    },
+                                                    "refundFPReference": {
+                                                        "maxLength": 18,
+                                                        "minLength": 1,
+                                                        "type": "string",
+                                                        "description": "contains a unique refund id generated for refund transactions.",
+                                                        "example": "tthfndjejdnsnai384"
+                                                    },
+                                                    "refundStatus": {
+                                                        "maxLength": 20,
+                                                        "type": "string",
+                                                        "description": "current status of the refund",
+                                                        "enum": [
+                                                            "RefundValidated",
+                                                            "RefundInitated",
+                                                            "RefundRejected",
+                                                            "RefundSuccessful",
+                                                            "RefundReScheduled"
+                                                        ]
+                                                    },
+                                                    "additionalInformation": {
+                                                        "maxLength": 100,
+                                                        "type": "string",
+                                                        "description": "additional information aiding status of the refund",
+                                                        "example": "Merchant brand is not in correct status"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Response Payload from Merchant Application",
+                        "schema": {
+                            "required": [
+                                "Data"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "required": [
+                                        "MerchantAcknowledgementId"
+                                    ],
+                                    "type": "object",
+                                    "properties": {
+                                        "MerchantAcknowledgementId": {
+                                            "maxLength": 35,
+                                            "minLength": 1,
+                                            "type": "string",
+                                            "description": "A unique identifier generated by the Merchant on receipt  of the payment status update."
+                                        },
+                                        "CreationDateTime": {
+                                            "type": "string",
+                                            "description": "Date and time at which the resource was created. All dates in the JSON payloads are represented in ISO 8601 date-time format.  All date-time fields in responses must include the timezone. An example is below: 2017-04-05T10:43:07+00:00",
+                                            "format": "date-time"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "required": [
+                                "Code",
+                                "Id"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "High level textual error code, to help categorise the errors."
+                                },
+                                "Id": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                },
+                                "Message": {
+                                    "maxLength": 500,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                }
+                            },
+                            "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorised"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "x-codegen-request-body-name": "RefundAckPayload-Param"
+            }
+        },
+        "/download/reconciliation/{filetype}/{date}/{run}": {
+            "get": {
+                "tags": [
+                    "Reconciliation files"
+                ],
+                "summary": "Payit reconciliation file download",
+                "description": "Reconciliation Files",
+                "operationId": "reconciliation",
+                "parameters": [
+                    {
+                        "name": "filetype",
+                        "in": "path",
+                        "description": "Type of reconciliation files available for merchant to download. The files are of below types :-  a) Failed - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is failed b) Successful - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is Successful  c) Inprogress - The transaction originated within the reconciliation file generation window and the terminal status of the transaction is Inprogress d) InprogCompleted - The transaction originated BEFORE the reconciliation file generation window and terminal status of the transaction is Successful/Rejected **** Sample file generation window - from 2018-06-05T00:00:00+00:00 till 2017-04-05T23:59:59+00:00***",
+                        "required": true,
+                        "maxLength": 15,
+                        "type": "string",
+                        "enum": [
+                            "Failed",
+                            "Successful",
+                            "Inprogress",
+                            "InprogCompleted",
+                            "Refund"
+                        ]
+                    },
+                    {
+                        "name": "date",
+                        "in": "path",
+                        "description": "date for which the file needs to be download for. Format is 2018-06-05",
+                        "required": true,
+                        "type": "string",
+                        "format": "date"
+                    },
+                    {
+                        "name": "run",
+                        "in": "path",
+                        "description": "Applicable for the intra date multiple reconciliation file. If the merchant has one file generated per reconciliation file generation window ie - from 2018-06-05T00:00:00+00:00 till 2018-06-05T23:59:59+00:00 , Then set the field as 0001",
+                        "required": true,
+                        "maxLength": 4,
+                        "pattern": "^(?!\\s)(.*)(\\S)$",
+                        "type": "string"
+                    },
+                    {
+                        "name": "companyIdentification",
+                        "in": "header",
+                        "description": "Unique identification assigned to the merchant company",
+                        "required": true,
+                        "maxLength": 15,
+                        "pattern": "^(?!\\s)(.*)(\\S)$",
+                        "type": "string"
+                    },
+                    {
+                        "name": "brandIdentification",
+                        "in": "header",
+                        "description": "Unique identification assigned to the merchant brand",
+                        "maxLength": 15,
+                        "pattern": "^(?!\\s)(.*)(\\S)$",
+                        "type": "string"
+                    },
+                    {
+                        "name": "x-FOV-indicator",
+                        "in": "header",
+                        "description": "For production environments do not send this field or send it as false. Fov indicator will be used by to test new features in production , yet these features are not open to public - First occurrence Validation.",
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent to Payit project. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Payit application will contain the Reconciliation File direct URL.",
+                        "headers": {
+                            "daterun": {
+                                "description": "date on which the file was generated.",
+                                "type": "string"
+                            }
+                        },
+                        "schema": {
+                            "type": "array",
+                            "description": "contains the direct URL for the Reconciliation file location",
+                            "example": [
+                                {
+                                    "Filename": "V3-MerchanM-13161.Successful.1.44dcd9a0-f838-4a80-b026-9e0ac5566234.2021-04-06.csv",
+                                    "ReconFileURL": "https://payitnonproduksdevnossb.blob.core.windows.net/merchants/MerchanM-13161.Successful.1.44dcd9a0-f838-4a80-b026-9e0ac5566234.2021-04-06.csv?ss=b&sig=GZ8SWlkLS3IeuK4o0%2Fpz%2Fc8VLJyKhWkpiPqsLddi2kk%3D&st=2021-04-07T10%3A20%3A30Z&se=2021-04-14T10%3A20%3A30Z&sv=2015-12-11&srt=o&spr=https&sp=r&sr=o"
+                                }
+                            ],
+                            "items": {
+                                "type": "object",
+                                "properties": {
+                                    "Filename": {
+                                        "type": "string"
+                                    },
+                                    "ReconFileURL": {
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "required": [
+                                "Code",
+                                "Id"
+                            ],
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "High level textual error code, to help categorise the errors."
+                                },
+                                "Id": {
+                                    "maxLength": 40,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                                },
+                                "Message": {
+                                    "maxLength": 500,
+                                    "minLength": 1,
+                                    "type": "string",
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'"
+                                }
+                            },
+                            "description": "An array of detail error codes, and messages, and URLs to documentation to help remediation."
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorised"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/reconciliation-version/{companyId}/{reconciliationVersion}": {
+            "post": {
+                "tags": [
+                    "Reconciliation Version"
+                ],
+                "summary": "Reconciliation Version",
+                "description": "to be used when the merchant wants to receive the latest version of reconciliation files",
+                "operationId": "updateReconciliationVersionUsingPOST",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "description": "Id of the company/merchant that saves version",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "reconciliationVersion",
+                        "in": "path",
+                        "description": "Version to be saved and used from now on, can only be one of the supported versions",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "Access token to be sent to Payit project. Merchant can acquire the access token by calling /token endpoint for Payit application. Verb 'Bearer' needs to be used before the access token ",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/ReconciliationVersionResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Version not supported or merchant doesn't exist.",
+                        "schema": {
+                            "$ref": "#/definitions/CommonBadRequest"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorised"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "CommonBadRequest": {
+            "type": "object",
+            "required": [
+                "Code",
+                "Id"
+            ],
+            "properties": {
+                "Code": {
+                    "maxLength": 40,
+                    "minLength": 1,
+                    "type": "string",
+                    "description": "High level textual error code, to help categorise the errors."
+                },
+                "Id": {
+                    "maxLength": 40,
+                    "minLength": 1,
+                    "type": "string",
+                    "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors. An RFC4122 UID used as a Error id"
+                },
+                "Message": {
+                    "maxLength": 500,
+                    "minLength": 1,
+                    "type": "string",
+                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'    "
+                }
+            },
+            "title": "CommonBadRequest"
+        },
+        "ReconciliationVersionResponse": {
+            "type": "object",
+            "required": [
+                "ReconciliationVersion",
+                "CreationDateTime"
+            ],
+            "properties": {
+                "ReconciliationVersion": {
+                    "type": "string",
+                    "description": "Version to be saved and used from now on, can only be one of the supported versions."
+                },
+                "CreationDateTime": {
+                    "type": "string",
+                    "description": "Creation Date and time"
+                }
+            },
+            "title": "ReconciliationVersionResponse"
+        },
+        "LinkDefinitionRequest": {
+            "title": "LinkDefinitionRequest",
+            "type": "object",
+            "x-tags": [
+                "Create Payment Request"
+            ],
+            "description": "Container for payment link definition, including account and payee details information",
+            "properties": {
+                "payeeAccount": {
+                    "$ref": "#/definitions/Account"
+                },
+                "payerName": {
+                    "type": "string",
+                    "description": "Payee Account details",
+                    "minLength": 1,
+                    "maxLength": 100
+                },
+                "externalReference": {
+                    "type": "string",
+                    "description": "external Reference ID to link to request or Payee\nexternal reference is required when daily cap is enable",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "linkExpiry": {
+                    "type": "string",
+                    "description": "link expiry duration (ISO-8601 duration format)",
+                    "pattern": "^P(?!$)(?:(?:\\d+Y)?(?:\\d+M)?(?:\\d+D)?)(?:T(?!$)(?:\\d+H)?(?:\\d+M)?(?:\\d+S)?)?$",
+                    "format": "duration"
+                },
+                "amount": {
+                    "type": "number",
+                    "format": "double",
+                    "exclusiveMinimum": false,
+                    "minimum": 0,
+                    "description": "Payment request amount",
+                    "example": 0.1,
+                    "multipleOf": 0.01,
+                    "default": 0
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "ISO 4217 currency codes, default to GBP",
+                    "default": "GBP",
+                    "maxLength": 3,
+                    "minLength": 3
+                },
+                "retryFailedAttempts": {
+                    "type": "integer",
+                    "default": 1,
+                    "exclusiveMinimum": false,
+                    "minimum": -1,
+                    "format": "int32",
+                    "description": "PLG clients option to provide for failed payments retry. A zero value will indicate no retry available. A \"-1\" value indicates indefinite retries."
+                },
+                "companyId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "description": "The unique identifier used when onboarding with PayIt - Parent Company id",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "brandId": {
+                    "type": "string",
+                    "description": "The unique identifier used when onboarding with PayIt- Brand id",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "fpReference": {
+                    "type": "string",
+                    "description": "Faster Payment reference",
+                    "maxLength": 18,
+                    "minLength": 1,
+                    "pattern": "^(?!\\s*$)[a-zA-Z0-9\\.\\-\\s]{1,18}$"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Transaction description. Will be displayed in the landing page",
+                    "maxLength": 120,
+                    "minLength": 1,
+                    "pattern": "[a-zA-Z0-9 ]*"
+                },
+                "autoInitiate": {
+                    "type": "boolean",
+                    "description": "Indicates consumers will not be shown the landing page with initiation option, rather be displayed directly the bank selection.",
+                    "default": true
+                },
+                "redirectUrl": {
+                    "type": "string",
+                    "description": "The URL of the payment initiating party. This will be used to transfer the payment confirmation back to initiating party from Payit. Default will use the PLG iterface",
+                    "format": "uri",
+                    "maxLength": 2000,
+                    "minLength": 1
+                },
+                "paymentContext": {
+                    "$ref": "#/definitions/PaymentContext"
+                },
+                "additionalData": {
+                    "type": "array",
+                    "description": "Payment Context Code information",
+                    "items": {
+                        "$ref": "#/definitions/additionalDataEntry"
+                    }
+                },
+                "notification": {
+                    "type": "object",
+                    "properties": {
+                        "notificationUrl": {
+                            "type": "string",
+                            "maxLength": 2000,
+                            "format": "uri",
+                            "minLength": 1
+                        },
+                        "notificationStyle": {
+                            "type": "string",
+                            "enum": [
+                                "PLG",
+                                "Payit"
+                            ]
+                        },
+                        "events": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "description": "\"If notificationStyle is 'Payit', this event subscription is not available;\nIf notificationStyle is 'PLG', have option of choosing one or more PLG state notification [ Successful, Abandoned, InProgress, Failed, Cancelled, Started, Expired ]\"",
+                            "items": {
+                                "$ref": "#/definitions/PLGState"
+                            }
+                        }
+                    },
+                    "required": [
+                        "notificationUrl",
+                        "notificationStyle"
+                    ]
+                },
+                "minAmount": {
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "minimum": 0,
+                    "exclusiveMinimum": true,
+                    "description": "mandatory if maxAmount is provided"
+                },
+                "maxAmount": {
+                    "type": "number",
+                    "multipleOf": 0.01,
+                    "description": "mandatory if minAmount is provided. Must be greater than minAmount"
+                }
+            },
+            "required": [
+                "linkExpiry",
+                "companyId",
+                "brandId",
+                "redirectUrl",
+                "paymentContext"
+            ]
+        },
+        "LinkDefinitionResponse": {
+            "title": "LinkDefinitionResponse",
+            "type": "object",
+            "properties": {
+                "plgReference": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "paymentLink": {
+                    "type": "string",
+                    "format": "uri"
+                }
+            },
+            "required": [
+                "plgReference",
+                "paymentLink"
+            ],
+            "x-examples": {},
+            "x-tags": [
+                "Create Payment Request"
+            ],
+            "description": "Container for requested link and reference."
+        },
+        "ErrorMessage": {
+            "title": "ErrorMessage",
+            "type": "object",
+            "description": "Error context container",
+            "x-tags": [
+                "Create Payment Request"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "code",
+                "message"
+            ]
+        },
+        "Account": {
+            "title": "Account",
+            "type": "object",
+            "description": "Container for payee account information",
+            "properties": {
+                "number": {
+                    "type": "string",
+                    "pattern": "^(\\d){8}$",
+                    "minLength": 8,
+                    "maxLength": 8
+                },
+                "sortCode": {
+                    "type": "string",
+                    "pattern": "^(\\d){6}$",
+                    "minLength": 6,
+                    "maxLength": 6
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 35,
+                    "pattern": "^[^\\(\\)\\{\\}\\[\\]]*$"
+                }
+            },
+            "required": [
+                "number",
+                "sortCode",
+                "name"
+            ]
+        },
+        "PaymentContext": {
+            "title": "PaymentContext",
+            "type": "object",
+            "properties": {
+                "paymentContextCode": {
+                    "type": "string",
+                    "enum": [
+                        "BillPayment",
+                        "EcommerceGoods",
+                        "EcommerceServices",
+                        "Other",
+                        "PartyToParty"
+                    ]
+                },
+                "merchantCategoryCode": {
+                    "type": "string",
+                    "minLength": 3,
+                    "description": "Payments for EcommerceGoods and EcommerceServices will be expected to have a MerchantCategoryCode and MerchantCustomerIdentification populated.",
+                    "maxLength": 4
+                },
+                "merchantCustomerIdentification": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 70,
+                    "description": "Payments for EcommerceGoods and EcommerceServices will be expected to have a MerchantCategoryCode and MerchantCustomerIdentification populated."
+                },
+                "deliveryAddress": {
+                    "type": "object",
+                    "description": "Payments for EcommerceGoods will have the DeliveryAddress populated.",
+                    "properties": {
+                        "countryCode": {
+                            "type": "string",
+                            "minLength": 2,
+                            "description": "ISO 3166 ALPHA-2",
+                            "pattern": "^[A-Z]{2}$",
+                            "maxLength": 2
+                        },
+                        "townName": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 35
+                        }
+                    },
+                    "required": [
+                        "countryCode",
+                        "townName"
+                    ]
+                }
+            },
+            "required": [
+                "paymentContextCode"
+            ]
+        },
+        "PLGState": {
+            "type": "string",
+            "title": "PLGStatus",
+            "description": "PLG state machine model",
+            "x-tags": [
+                "Link_Retrieve",
+                "Link_Creation"
+            ],
+            "enum": [
+                "Successful",
+                "Abandoned",
+                "Pending",
+                "InProgress",
+                "Failed",
+                "Cancelled",
+                "Started",
+                "Expired",
+                "Defined"
+            ]
+        },
+        "PLGReusableLinkState": {
+            "type": "string",
+            "title": "PLGStatus",
+            "description": "PLG state machine model",
+            "x-tags": [
+                "Link_Retrieve",
+                "Link_Creation"
+            ],
+            "enum": [
+                "Abandoned",
+                "Defined"
+            ]
+        },
+        "LinkDetailsCriterion": {
+            "title": "LinkDetailsCriterion",
+            "type": "object",
+            "description": "Container for link details searchable fields",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "enum": [
+                        "ClientReference",
+                        "ExternalReference",
+                        "PLGReference"
+                    ]
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 50,
+                    "description": "Max length is max(plgReference max length, clientReference max length & externalReference length)",
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "name",
+                "value"
+            ]
+        },
+        "LinkDetailsRequest": {
+            "title": "LinkDetailsRequest",
+            "type": "object",
+            "description": "Filtered and paginated link details list request \nNote: startDate and endDate refer to the link's registrationDate, that is, when the link was generated/created",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "x-examples": {},
+            "properties": {
+                "criteria": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LinkDetailsCriterion"
+                    }
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                },
+                "companyId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "brandId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-07-08T12:38:05Z",
+                    "description": "UTC datetime in ISO-8601 instant format. If endDate is also specified then startDate must be before endDate\nMust be in the past/present"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-07-18T12:38:05Z",
+                    "description": "UTC datetime in ISO-8601 instant format. If startDate is also specified, then endDate must be after startDate\nMust be in the past/present"
+                },
+                "plgStates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PLGState"
+                    }
+                }
+            },
+            "required": [
+                "paginationDetails",
+                "companyId",
+                "brandId"
+            ]
+        },
+        "PaginationDetails": {
+            "title": "PaginationDetails",
+            "type": "object",
+            "description": "Container for pagination support with continuation token",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "properties": {
+                "continuationToken": {
+                    "type": "string"
+                },
+                "pageSize": {
+                    "type": "integer",
+                    "exclusiveMinimum": false,
+                    "minimum": 1,
+                    "maximum": 100,
+                    "default": 20
+                }
+            }
+        },
+        "LinkDetailsResponse": {
+            "title": "LinkDetailsResponse",
+            "type": "object",
+            "description": "Filtered and paginated list of link details",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "properties": {
+                "linkDetailsList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LinkDetails"
+                    }
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                }
+            },
+            "required": [
+                "paginationDetails",
+                "linkDetailsList"
+            ]
+        },
+        "LinkDetails": {
+            "title": "LinkDetails",
+            "type": "object",
+            "description": "Retrievable link details",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "x-examples": {},
+            "properties": {
+                "plgReference": {
+                    "type": "string",
+                    "description": "The PLG reference / Link ID"
+                },
+                "clientReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 31
+                },
+                "externalReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "plgStatus": {
+                    "$ref": "#/definitions/PLGState"
+                },
+                "amount": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 0.1,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "additionalData": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/additionalDataEntry"
+                    }
+                },
+                "payeeAccount": {
+                    "$ref": "#/definitions/Account"
+                },
+                "payerName": {
+                    "type": "string"
+                },
+                "linkExpiry": {
+                    "type": "string"
+                },
+                "companyId": {
+                    "type": "string"
+                },
+                "brandId": {
+                    "type": "string"
+                },
+                "createdDate": {
+                    "type": "string"
+                },
+                "fpReference": {
+                    "type": "string",
+                    "minLength": 18,
+                    "maxLength": 18
+                }
+            },
+            "required": [
+                "plgReference",
+                "clientReference",
+                "externalReference",
+                "plgStatus",
+                "amount",
+                "currency",
+                "linkExpiry",
+                "companyId",
+                "brandId"
+            ]
+        },
+        "HealthStatus": {
+            "type": "string",
+            "title": "HealthStatus",
+            "enum": [
+                "UP",
+                "DOWN",
+                "UNKNOWN",
+                "OUT_OF_SERVICE"
+            ]
+        },
+        "additionalDataEntry": {
+            "title": "additionalDataEntry",
+            "type": "object",
+            "properties": {
+                "key": {
+                    "type": "string",
+                    "maxLength": 70,
+                    "minLength": 1
+                },
+                "value": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 1
+                }
+            },
+            "required": [
+                "key",
+                "value"
+            ]
+        },
+        "ReusableLinkDetailsRequest": {
+            "title": "ReusableLinkDetailsRequest",
+            "type": "object",
+            "description": "Filtered and paginated reusable link details list request \nNote: startDate and endDate refer to the link's registrationDate, that is, when the link was generated/created",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "x-examples": {},
+            "properties": {
+                "criteria": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/LinkDetailsCriterion"
+                    }
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                },
+                "companyId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "brandId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-07-08T12:38:05Z",
+                    "description": "UTC datetime in ISO-8601 instant format. If endDate is also specified then startDate must be before endDate\nMust be in the past/present"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time",
+                    "example": "2021-07-18T12:38:05Z",
+                    "description": "UTC datetime in ISO-8601 instant format. If startDate is also specified, then endDate must be after startDate\nMust be in the past/present"
+                },
+                "plgStates": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PLGReusableLinkState"
+                    }
+                }
+            },
+            "required": [
+                "paginationDetails",
+                "companyId",
+                "brandId"
+            ]
+        },
+        "ReusableLinkDetailsResponse": {
+            "title": "ReusableLinkDetailsResponse",
+            "type": "object",
+            "description": "Filtered and paginated list of reusable link details",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "properties": {
+                "linkDetailsList": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ReusableLinkDetails"
+                    }
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                }
+            },
+            "required": [
+                "linkDetailsList",
+                "paginationDetails"
+            ]
+        },
+        "ReusableLinkDetails": {
+            "title": "ReusableLinkDetails",
+            "type": "object",
+            "description": "Retrievable link details",
+            "x-tags": [
+                "Link_Retrieve"
+            ],
+            "x-examples": {},
+            "properties": {
+                "reusableLinkReference": {
+                    "type": "string",
+                    "description": "The PLG reference / Link ID"
+                },
+                "clientReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 31
+                },
+                "externalReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "plgStatus": {
+                    "$ref": "#/definitions/PLGReusableLinkState"
+                },
+                "defaultAmount": {
+                    "type": "number",
+                    "format": "double",
+                    "example": 0.1,
+                    "minimum": 0,
+                    "exclusiveMinimum": true
+                },
+                "currency": {
+                    "type": "string"
+                },
+                "payeeAccount": {
+                    "$ref": "#/definitions/Account"
+                },
+                "companyId": {
+                    "type": "string"
+                },
+                "brandId": {
+                    "type": "string"
+                },
+                "createdDate": {
+                    "type": "string"
+                },
+                "fpReference": {
+                    "type": "string",
+                    "minLength": 18,
+                    "maxLength": 18
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "minAmount": {
+                    "type": "number"
+                },
+                "maxAmount": {
+                    "type": "number"
+                },
+                "amountOverridable": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "reusableLinkReference",
+                "clientReference",
+                "externalReference",
+                "plgStatus",
+                "defaultAmount",
+                "currency",
+                "companyId",
+                "brandId"
+            ]
+        },
+        "ReusableLinkDefinitionRequest": {
+            "title": "ReusableLinkDefinitionRequest",
+            "type": "object",
+            "x-tags": [
+                "Create Payment Request"
+            ],
+            "description": "Container for reusable payment link definition, including account and payee details information",
+            "properties": {
+                "payeeAccount": {
+                    "$ref": "#/definitions/Account"
+                },
+                "externalReference": {
+                    "type": "string",
+                    "description": "external Reference ID to link to request or Payee",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "defaultAmount": {
+                    "type": "number",
+                    "format": "double",
+                    "exclusiveMinimum": false,
+                    "minimum": 0,
+                    "description": "Payment request amount",
+                    "example": 0.1,
+                    "multipleOf": 0.01,
+                    "default": 0
+                },
+                "currency": {
+                    "type": "string",
+                    "description": "ISO 4217 currency codes, default to GBP",
+                    "default": "GBP",
+                    "maxLength": 3,
+                    "minLength": 3
+                },
+                "companyId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "description": "The unique identifier used when onboarding with PayIt - Parent Company id",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "brandId": {
+                    "type": "string",
+                    "description": "The unique identifier used when onboarding with PayIt- Brand id",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$",
+                    "minLength": 1,
+                    "maxLength": 15
+                },
+                "fpReference": {
+                    "type": "string",
+                    "description": "Faster Payment reference",
+                    "maxLength": 18,
+                    "minLength": 1,
+                    "pattern": "^(?!\\s*$)[a-zA-Z0-9\\.\\-\\s]{1,18}$"
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Transaction description. Will be displayed in the landing page",
+                    "maxLength": 120,
+                    "minLength": 1,
+                    "pattern": "[a-zA-Z0-9 ]*"
+                },
+                "autoInitiate": {
+                    "type": "boolean",
+                    "description": "Indicates consumers will not be shown the landing page with initiation option, rather be displayed directly the bank selection.",
+                    "default": false
+                },
+                "redirectUrl": {
+                    "type": "string",
+                    "description": "The URL of the payment initiating party. This will be used to transfer the payment confirmation back to initiating party from Payit. Default will use the PLG iterface",
+                    "format": "uri",
+                    "maxLength": 2000,
+                    "minLength": 1
+                },
+                "paymentContext": {
+                    "$ref": "#/definitions/PaymentContext"
+                },
+                "notification": {
+                    "type": "object",
+                    "properties": {
+                        "notificationUrl": {
+                            "type": "string",
+                            "maxLength": 2000,
+                            "format": "uri",
+                            "minLength": 1
+                        },
+                        "notificationStyle": {
+                            "type": "string",
+                            "enum": [
+                                "PLG",
+                                "Payit"
+                            ]
+                        },
+                        "events": {
+                            "type": "array",
+                            "uniqueItems": true,
+                            "description": "\"If notificationStyle is 'Payit', this event subscription is not available;\nIf notificationStyle is 'PLG', have option of choosing one or more PLG state notification [ Successful, Abandoned, InProgress, Failed, Cancelled, Started, Expired ]\"",
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "Defined",
+                                    "Abandoned",
+                                    "Started",
+                                    "Pending",
+                                    "Error",
+                                    "Successful",
+                                    "Failed",
+                                    "InProgress",
+                                    "Cancelled"
+                                ]
+                            }
+                        }
+                    },
+                    "required": [
+                        "notificationUrl",
+                        "notificationStyle"
+                    ]
+                },
+                "enforceFpReference": {
+                    "type": "string",
+                    "example": "payer"
+                },
+                "editFpReference": {
+                    "type": "boolean",
+                    "format": "binary"
+                }
+            },
+            "required": [
+                "companyId",
+                "brandId",
+                "redirectUrl",
+                "paymentContext",
+                "enforceFpReference",
+                "editFpReference"
+            ]
+        },
+        "ReusableLinkPaymentSessionsRequest": {
+            "title": "ReusableLinkPaymentSessionsRequest",
+            "type": "object",
+            "description": "",
+            "properties": {
+                "reusableLinkReference": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "companyId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$"
+                },
+                "brandId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,15}$"
+                },
+                "startDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "endDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                },
+                "paymentSessionReference": {
+                    "type": "string",
+                    "pattern": "^[0-9a-fA-F\\-]{36}$"
+                },
+                "pispPaymentStatuses": {
+                    "type": "array",
+                    "description": "Mutual exclusive with plgPaymentStatuses.",
+                    "items": {
+                        "$ref": "#/definitions/PispState"
+                    }
+                },
+                "plgPaymentStatuses": {
+                    "type": "array",
+                    "description": "Mutual exclusive with pispPaymentStatuses.",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "Started",
+                            "Pending",
+                            "Error",
+                            "InProgress",
+                            "Successful",
+                            "Failed",
+                            "Cancelled"
+                        ]
+                    }
+                }
+            },
+            "required": [
+                "reusableLinkReference",
+                "companyId",
+                "brandId",
+                "paginationDetails"
+            ]
+        },
+        "ReusableLinkPaymentSessionsResponse": {
+            "title": "ReusableLinkPaymentSessionsResponse",
+            "type": "object",
+            "properties": {
+                "paymentSessions": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/PaymentSession"
+                    }
+                },
+                "paginationDetails": {
+                    "$ref": "#/definitions/PaginationDetails"
+                }
+            }
+        },
+        "PaymentSession": {
+            "title": "PaymentSession",
+            "type": "object",
+            "properties": {
+                "tppReferenceId": {
+                    "type": "string",
+                    "pattern": "[0-9a-fA-F]{1,35}$"
+                },
+                "paymentReferenceId": {
+                    "type": "string",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,40}$"
+                },
+                "creationDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "lastUpdatedDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "pispStatus": {
+                    "$ref": "#/definitions/PispState"
+                },
+                "amount": {
+                    "type": "number"
+                },
+                "payerName": {
+                    "type": "string"
+                },
+                "fpReference": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "reusableLinkId": {
+                    "type": "string"
+                },
+                "reusableLinkSessionId": {
+                    "type": "string"
+                },
+                "plgStatus": {
+                    "type": "string",
+                    "enum": [
+                        "Started",
+                        "Pending",
+                        "Error",
+                        "InProgress",
+                        "Successful",
+                        "Failed",
+                        "Cancelled"
+                    ]
+                }
+            },
+            "required": [
+                "tppReferenceId",
+                "creationDate",
+                "lastUpdatedDate",
+                "pispStatus"
+            ]
+        },
+        "PispState": {
+            "type": "string",
+            "title": "PispState",
+            "enum": [
+                "PaymentApproved",
+                "PaymentRejected",
+                "PaymentAwaitingApproval",
+                "CustomerAbortedJourney",
+                "TechnicalError",
+                "PaymentInProgress",
+                "OtherError",
+                "PaymentStatusUnknown"
+            ],
+            "description": "The PISP specific status"
+        },
+        "StatusUpdate": {
+            "title": "StatusUpdate",
+            "type": "object",
+            "description": "Container binding initiator link reference, PLG reference, PISP and bank transaction identifiers, PLG link state ",
+            "x-examples": {},
+            "properties": {
+                "clientReference": {
+                    "type": "string",
+                    "maxLength": 31,
+                    "minLength": 1,
+                    "description": "Reference generated by link requestor"
+                },
+                "plgReference": {
+                    "type": "string",
+                    "format": "uuid"
+                },
+                "tppReferenceId": {
+                    "type": "string",
+                    "pattern": "(\\{)?[0-9a-fA-F]{35}(})?$",
+                    "description": "The unique identifier generated by the TPP(Third Party Provider, i.e. PISP) for the payment"
+                },
+                "paymentReferenceId": {
+                    "type": "string",
+                    "description": "The unique identifier generated by the bank for the payment.",
+                    "pattern": "^[a-zA-Z0-9\\.\\-\\+_]{1,40}$"
+                },
+                "fpReference": {
+                    "type": "string",
+                    "maxLength": 18,
+                    "minLength": 1
+                },
+                "plgStatus": {
+                    "type": "string",
+                    "enum": [
+                        "PaymentApproved",
+                        "PaymentRejected",
+                        "PaymentInProgress",
+                        "PaymentStatusUnknown",
+                        "PaymentAwaitingApproval",
+                        "CustomerAbortedJourney",
+                        "TechnicalError",
+                        "OtherError",
+                        "Defined",
+                        "Abandoned",
+                        "Expired",
+                        "Failed",
+                        "Cancelled",
+                        "Started",
+                        "Pending",
+                        "Successful",
+                        "InProgress",
+                        "Error"
+                    ]
+                },
+                "retriesLeft": {
+                    "type": "integer",
+                    "description": "Only on Failed state",
+                    "minimum": -1
+                },
+                "eventDateTime": {
+                    "type": "string",
+                    "description": "PLG event recorded date-time.",
+                    "format": "date-time"
+                },
+                "description": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 120
+                },
+                "externalReference": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 50
+                },
+                "paymentAmount": {
+                    "type": "number",
+                    "format": "double",
+                    "multipleOf": 0.01
+                },
+                "requestedAmount": {
+                    "type": "number",
+                    "example": 0.1,
+                    "format": "double",
+                    "multipleOf": 0.01,
+                    "exclusiveMinimum": true,
+                    "minimum": 0
+                }
+            },
+            "required": [
+                "clientReference",
+                "plgReference",
+                "retriesLeft",
+                "eventDateTime"
+            ]
+        }
+    },
+    "securityDefinitions": {
+        "clientId": {
+            "name": "X-API-KEY",
+            "type": "apiKey",
+            "in": "header",
+            "description": "API key to provide for client segmentation"
+        },
+        "accessToken": {
+            "type": "oauth2",
+            "flow": "application",
+            "scopes": {},
+            "description": "",
+            "tokenUrl": "https://example.com"
+        }
+    },
+    "responses": {
+        "LinkDetailsResponse": {
+            "description": "Example response",
+            "schema": {
+                "$ref": "#/definitions/LinkDetailsResponse"
+            }
+        },
+        "ErrorResponse": {
+            "description": "Example response",
+            "schema": {
+                "$ref": "#/definitions/ErrorMessage"
+            }
+        }
+    },
+    "host": "apipaymentrequest.natwestpayit.com"
+}

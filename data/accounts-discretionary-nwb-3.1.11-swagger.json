@@ -1,0 +1,2154 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Account and Transaction API Specification",
+        "description": "Swagger for Account and Transaction API Specification",
+        "termsOfService": "https://www.openbanking.org.uk/terms",
+        "contact": {
+            "name": "Service Desk",
+            "url": "/sso-login?redirectUrl=https%3A%2F%2Fnatwest-bankofapi-servicemanagement.atlassian.net%2Fservicedesk%2Fcustomer%2Fportals"
+        },
+        "license": {
+            "name": "open-licence",
+            "url": "https://www.openbanking.org.uk/open-licence"
+        },
+        "version": "v3.1.11"
+    },
+    "basePath": "/open-banking/v3.1/aisp",
+    "host": "api.natwest.com",
+    "schemes": [
+        "https"
+    ],
+    "consumes": [
+        "application/json; charset=utf-8",
+        "application/jose+jwe"
+    ],
+    "produces": [
+        "application/json; charset=utf-8",
+        "application/jose+jwe"
+    ],
+    "paths": {
+        "/account-access-consents": {
+            "post": {
+                "tags": [
+                    "Account Access"
+                ],
+                "summary": "Create an account access consent",
+                "description": "Create an account access consent",
+                "operationId": "CreateAccountAccessConsent",
+                "parameters": [
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Create an Account Access Consent",
+                        "required": true,
+                        "schema": {
+                            "title": "Account Access Consent POST request",
+                            "description": "Allows setup of an account access consent",
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "title": "Data",
+                                    "description": "Allows setup of an account access consent",
+                                    "type": "object",
+                                    "properties": {
+                                        "Permissions": {
+                                            "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                                "type": "string",
+                                                "enum": [
+                                                    "ReadAccountsBasic",
+                                                    "ReadAccountsDetail",
+                                                    "ReadBalances",
+                                                    "ReadBeneficiariesBasic",
+                                                    "ReadBeneficiariesDetail",
+                                                    "ReadDirectDebits",
+                                                    "ReadProducts",
+                                                    "ReadStandingOrdersBasic",
+                                                    "ReadStandingOrdersDetail",
+                                                    "ReadTransactionsBasic",
+                                                    "ReadTransactionsCredits",
+                                                    "ReadTransactionsDebits",
+                                                    "ReadTransactionsDetail",
+                                                    "ReadScheduledPaymentsBasic",
+                                                    "ReadScheduledPaymentsDetail"
+                                                ]
+                                            },
+                                            "minProperties": 1,
+                                            "additionalProperties": false
+                                        },
+                                        "ExpirationDateTime": {
+                                            "description": "Specified date and time the permissions will expire. If this is not populated, the permissions will be open ended. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionFromDateTime": {
+                                            "description": "Specified start date and time for the transaction query period. If this is not populated, the start date will be open ended, and data will be returned from the earliest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionToDateTime": {
+                                            "description": "Specified end date and time for the transaction query period. If this is not populated, the end date will be open ended, and data will be returned to the latest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "Permissions"
+                                    ]
+                                },
+                                "Risk": {
+                                    "title": "Risk",
+                                    "type": "object",
+                                    "description": "The Risk payload is sent by the initiating party to the ASPSP. It is used to specify additional details for risk scoring for Account Info.",
+                                    "properties": {},
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "Data",
+                                "Risk"
+                            ]
+                        }
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-financial-id",
+                        "type": "string",
+                        "required": true,
+                        "description": "The unique id of the ASPSP to which the request is issued. The unique id will be issued by OB. The value for NatWest is 0015800000jfwxXAAQ."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-auth-date",
+                        "type": "string",
+                        "required": false,
+                        "description": "The time when the PSU last logged in with the TPP. \nAll dates in the HTTP headers are represented as RFC 7231 Full Dates. An example is below: \nSun, 10 Sep 2017 19:43:31 UTC",
+                        "pattern": "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \\d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \\d{4} \\d{2}:\\d{2}:\\d{2} (GMT|UTC)$"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-customer-ip-address",
+                        "type": "string",
+                        "required": false,
+                        "description": "The PSU's IP address if the PSU is currently logged in with the TPP."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string",
+                        "required": false,
+                        "description": "An RFC4122 UID used as a correlation id."
+                    },
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "type": "string",
+                        "required": true,
+                        "description": "An Authorisation Token as per https://tools.ietf.org/html/rfc6750"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Account Access Consent resource successfully created",
+                        "schema": {
+                            "title": "Account Access Consent POST response",
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "title": "Data",
+                                    "description": "Account Access Consent Response",
+                                    "type": "object",
+                                    "properties": {
+                                        "ConsentId": {
+                                            "description": "Unique identification as assigned to identify the account access consent resource.",
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 128
+                                        },
+                                        "Status": {
+                                            "description": "Specifies the status of the account access consent resource.",
+                                            "type": "string",
+                                            "enum": [
+                                                "Authorised",
+                                                "AwaitingAuthorisation",
+                                                "Rejected",
+                                                "Revoked"
+                                            ]
+                                        },
+                                        "CreationDateTime": {
+                                            "description": "Date and time at which the resource was created. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "StatusUpdateDateTime": {
+                                            "description": "Date and time at which the resource status was updated.\nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "Permissions": {
+                                            "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                                "type": "string",
+                                                "enum": [
+                                                    "ReadAccountsBasic",
+                                                    "ReadAccountsDetail",
+                                                    "ReadBalances",
+                                                    "ReadBeneficiariesBasic",
+                                                    "ReadBeneficiariesDetail",
+                                                    "ReadDirectDebits",
+                                                    "ReadProducts",
+                                                    "ReadStandingOrdersBasic",
+                                                    "ReadStandingOrdersDetail",
+                                                    "ReadTransactionsBasic",
+                                                    "ReadTransactionsCredits",
+                                                    "ReadTransactionsDebits",
+                                                    "ReadTransactionsDetail",
+                                                    "ReadScheduledPaymentsBasic",
+                                                    "ReadScheduledPaymentsDetail"
+                                                ]
+                                            },
+                                            "minProperties": 1,
+                                            "additionalProperties": false
+                                        },
+                                        "ExpirationDateTime": {
+                                            "description": "Specified date and time the permissions will expire. If this is not populated, the permissions will be open ended. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionFromDateTime": {
+                                            "description": "Specified start date and time for the transaction query period. If this is not populated, the start date will be open ended, and data will be returned from the earliest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionToDateTime": {
+                                            "description": "Specified end date and time for the transaction query period. If this is not populated, the end date will be open ended, and data will be returned to the latest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "ConsentId",
+                                        "CreationDateTime",
+                                        "Permissions"
+                                    ]
+                                },
+                                "Risk": {
+                                    "title": "Risk",
+                                    "type": "object",
+                                    "description": "The Risk payload is sent by the initiating party to the ASPSP. It is used to specify additional details for risk scoring for Account Info.",
+                                    "properties": {},
+                                    "additionalProperties": false
+                                },
+                                "Links": {
+                                    "title": "Links",
+                                    "type": "object",
+                                    "description": "Links relevant to the payload",
+                                    "properties": {
+                                        "Self": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Prev": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Next": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "Self"
+                                    ]
+                                },
+                                "Meta": {
+                                    "title": "MetaData",
+                                    "type": "object",
+                                    "description": "Meta Data relevant to the payload",
+                                    "properties": {
+                                        "TotalPages": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "Data",
+                                "Risk",
+                                "Links",
+                                "Meta"
+                            ]
+                        },
+                        "headers": {
+                            "x-fapi-interaction-id": {
+                                "type": "string",
+                                "description": "An RFC4122 UID used as a correlation id.",
+                                "required": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "title": "Bad Request",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "title": "Internal Server Error",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TPPOAuth2Security": [
+                            "tpp_client_credential"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/account-access-consents/{ConsentId}": {
+            "get": {
+                "tags": [
+                    "Account Access"
+                ],
+                "summary": "Get an account access consent",
+                "description": "Get an account access consent",
+                "operationId": "GetAccountAccessConsent",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "name": "ConsentId",
+                        "in": "path",
+                        "description": "Unique identification as assigned by the ASPSP to uniquely identify the account access consent resource.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-financial-id",
+                        "type": "string",
+                        "required": true,
+                        "description": "The unique id of the ASPSP to which the request is issued. The unique id will be issued by OB. The value for NatWest is 0015800000jfwxXAAQ."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-auth-date",
+                        "type": "string",
+                        "required": false,
+                        "description": "The time when the PSU last logged in with the TPP. \nAll dates in the HTTP headers are represented as RFC 7231 Full Dates. An example is below: \nSun, 10 Sep 2017 19:43:31 UTC",
+                        "pattern": "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \\d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \\d{4} \\d{2}:\\d{2}:\\d{2} (GMT|UTC)$"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-customer-ip-address",
+                        "type": "string",
+                        "required": false,
+                        "description": "The PSU's IP address if the PSU is currently logged in with the TPP."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string",
+                        "required": false,
+                        "description": "An RFC4122 UID used as a correlation id."
+                    },
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "type": "string",
+                        "required": true,
+                        "description": "An Authorisation Token as per https://tools.ietf.org/html/rfc6750"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account Access Consent resource successfully retrieved",
+                        "schema": {
+                            "title": "Account Access Consent GET response",
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "title": "Data",
+                                    "description": "Account Access Consent Response",
+                                    "type": "object",
+                                    "properties": {
+                                        "ConsentId": {
+                                            "description": "Unique identification as assigned to identify the account access consent resource.",
+                                            "type": "string",
+                                            "minLength": 1,
+                                            "maxLength": 128
+                                        },
+                                        "Status": {
+                                            "description": "Specifies the status of the account access consent resource.",
+                                            "type": "string",
+                                            "enum": [
+                                                "Authorised",
+                                                "AwaitingAuthorisation",
+                                                "Rejected",
+                                                "Revoked"
+                                            ]
+                                        },
+                                        "CreationDateTime": {
+                                            "description": "Date and time at which the resource was created. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "StatusUpdateDateTime": {
+                                            "description": "Date and time at which the resource status was updated.\nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "Permissions": {
+                                            "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                            "type": "array",
+                                            "items": {
+                                                "description": "Specifies the Open Banking account access consent types. This is a list of the data clusters being consented by the PSU, and requested for authorisation with the ASPSP.",
+                                                "type": "string",
+                                                "enum": [
+                                                    "ReadAccountsBasic",
+                                                    "ReadAccountsDetail",
+                                                    "ReadBalances",
+                                                    "ReadBeneficiariesBasic",
+                                                    "ReadBeneficiariesDetail",
+                                                    "ReadDirectDebits",
+                                                    "ReadProducts",
+                                                    "ReadStandingOrdersBasic",
+                                                    "ReadStandingOrdersDetail",
+                                                    "ReadTransactionsBasic",
+                                                    "ReadTransactionsCredits",
+                                                    "ReadTransactionsDebits",
+                                                    "ReadTransactionsDetail",
+                                                    "ReadScheduledPaymentsBasic",
+                                                    "ReadScheduledPaymentsDetail"
+                                                ]
+                                            },
+                                            "minProperties": 1,
+                                            "additionalProperties": false
+                                        },
+                                        "ExpirationDateTime": {
+                                            "description": "Specified date and time the permissions will expire. If this is not populated, the permissions will be open ended. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionFromDateTime": {
+                                            "description": "Specified start date and time for the transaction query period. If this is not populated, the start date will be open ended, and data will be returned from the earliest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "TransactionToDateTime": {
+                                            "description": "Specified end date and time for the transaction query period. If this is not populated, the end date will be open ended, and data will be returned to the latest available transaction. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "ConsentId",
+                                        "CreationDateTime",
+                                        "Permissions"
+                                    ]
+                                },
+                                "Risk": {
+                                    "title": "Risk",
+                                    "type": "object",
+                                    "description": "The Risk payload is sent by the initiating party to the ASPSP. It is used to specify additional details for risk scoring for Account Info.",
+                                    "properties": {},
+                                    "additionalProperties": false
+                                },
+                                "Links": {
+                                    "title": "Links",
+                                    "type": "object",
+                                    "description": "Links relevant to the payload",
+                                    "properties": {
+                                        "Self": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Prev": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Next": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "Self"
+                                    ]
+                                },
+                                "Meta": {
+                                    "title": "MetaData",
+                                    "type": "object",
+                                    "description": "Meta Data relevant to the payload",
+                                    "properties": {
+                                        "TotalPages": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "Data",
+                                "Risk",
+                                "Links",
+                                "Meta"
+                            ]
+                        },
+                        "headers": {
+                            "x-fapi-interaction-id": {
+                                "type": "string",
+                                "description": "An RFC4122 UID used as a correlation id.",
+                                "required": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "title": "Bad Request",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "title": "Internal Server Error",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TPPOAuth2Security": [
+                            "tpp_client_credential"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Account Access"
+                ],
+                "summary": "Delete an account access consent",
+                "description": "Delete an account access consent",
+                "operationId": "DeleteAccountAccessConsent",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "name": "ConsentId",
+                        "in": "path",
+                        "description": "Unique identification as assigned by the ASPSP to uniquely identify the account access consent resource.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "type": "string",
+                        "required": true,
+                        "description": "An Authorisation Token as per https://tools.ietf.org/html/rfc6750"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-financial-id",
+                        "type": "string",
+                        "required": true,
+                        "description": "The unique id of the ASPSP to which the request is issued. The unique id will be issued by OB. The value for NatWest is 0015800000jfwxXAAQ."
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Account Access Consent resource successfully deleted",
+                        "headers": {
+                            "x-fapi-interaction-id": {
+                                "type": "string",
+                                "description": "An RFC4122 UID used as a correlation id.",
+                                "required": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "title": "Bad Request",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "title": "Internal Server Error",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "TPPOAuth2Security": [
+                            "tpp_client_credential"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/accounts": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get Accounts",
+                "description": "Get a list of accounts",
+                "operationId": "GetAccounts",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "in": "header",
+                        "name": "x-fapi-financial-id",
+                        "type": "string",
+                        "required": true,
+                        "description": "The unique id of the ASPSP to which the request is issued. The unique id will be issued by OB. The value for NatWest is 0015800000jfwxXAAQ."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-auth-date",
+                        "type": "string",
+                        "required": false,
+                        "description": "The time when the PSU last logged in with the TPP. \nAll dates in the HTTP headers are represented as RFC 7231 Full Dates. An example is below: \nSun, 10 Sep 2017 19:43:31 UTC",
+                        "pattern": "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \\d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \\d{4} \\d{2}:\\d{2}:\\d{2} (GMT|UTC)$"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-customer-ip-address",
+                        "type": "string",
+                        "required": false,
+                        "description": "The PSU's IP address if the PSU is currently logged in with the TPP."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string",
+                        "required": false,
+                        "description": "An RFC4122 UID used as a correlation id."
+                    },
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "type": "string",
+                        "required": true,
+                        "description": "An Authorisation Token as per https://tools.ietf.org/html/rfc6750"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Accounts successfully retrieved",
+                        "schema": {
+                            "title": "Account GET response",
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "title": "Data",
+                                    "type": "object",
+                                    "description": "Data",
+                                    "properties": {
+                                        "Account": {
+                                            "title": "Account",
+                                            "description": "Unambiguous identification of the account to which credit and debit entries are made.",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "title": "Account",
+                                                "description": "Account",
+                                                "properties": {
+                                                    "AccountId": {
+                                                        "description": "A unique and immutable identifier used to identify the account resource. This identifier has no meaning to the account owner.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 40
+                                                    },
+                                                    "Currency": {
+                                                        "description": "Identification of the currency in which the account is held.  Usage: Currency should only be used in case one and the same account number covers several currencies and the initiating party needs to identify which currency needs to be used for settlement on the account.",
+                                                        "type": "string",
+                                                        "pattern": "^[A-Z]{3,3}$"
+                                                    },
+                                                    "AccountType": {
+                                                        "description": "Specifies the type of account (personal or business).",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Business",
+                                                            "Personal"
+                                                        ]
+                                                    },
+                                                    "AccountSubType": {
+                                                        "description": "Specifies the sub type of account (product family group).",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "ChargeCard",
+                                                            "CreditCard",
+                                                            "CurrentAccount",
+                                                            "EMoney",
+                                                            "Loan",
+                                                            "Mortgage",
+                                                            "PrePaidCard",
+                                                            "Savings"
+                                                        ]
+                                                    },
+                                                    "Description": {
+                                                        "description": "Specifies the description of the account type.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 35
+                                                    },
+                                                    "Nickname": {
+                                                        "description": "The nickname of the account, assigned by the account owner in order to provide an additional means of identification of the account.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 70
+                                                    },
+                                                    "Account": {
+                                                        "description": "Provides the details to identify an account.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "SchemeName": {
+                                                                "description": "Name of the identification scheme, in a coded form as published in an external list.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 40,
+                                                                "enum": [
+                                                                    "UK.OBIE.IBAN",
+                                                                    "UK.OBIE.SortCodeAccountNumber",
+                                                                    "UK.NWB.CurrencyAccount"
+                                                                ]
+                                                            },
+                                                            "Identification": {
+                                                                "description": "Identification assigned by an institution to identify an account. This identification is known by the account owner.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 256
+                                                            },
+                                                            "SecondaryIdentification": {
+                                                                "description": "This is secondary identification of the account, as assigned by the account servicing institution. This can be used by building societies to additionally identify accounts with a roll number (in addition to a sort code and account number combination).",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 34
+                                                            },
+                                                            "Name": {
+                                                                "description": "Name of the account, as assigned by the account servicing institution, in agreement with the account owner in order to provide an additional means of identification of the account. Usage: The account name is different from the account owner name. The account name is used in certain user communities to provide a means of identifying the account, in addition to the account owner's identity and the account number.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 350
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "SchemeName",
+                                                            "Identification"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
+                                                    "Servicer": {
+                                                        "description": "Party that manages the account on behalf of the account owner, that is manages the registration and booking of entries on the account, calculates balances on the account and provides information about the account.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "SchemeName": {
+                                                                "description": "Name of the identification scheme, in a coded form as published in an external list.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 40,
+                                                                "enum": [
+                                                                    "UK.OBIE.BICFI"
+                                                                ]
+                                                            },
+                                                            "Identification": {
+                                                                "description": "Unique and unambiguous identification of the servicing institution.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 35
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "SchemeName",
+                                                            "Identification"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
+                                                    "SwitchStatus": {
+                                                        "description": "Specifies the switch status for the account, in a coded form.",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "UK.CASS.NotSwitched",
+                                                            "UK.CASS.SwitchCompleted"
+                                                        ]
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "required": [
+                                                    "AccountId",
+                                                    "Currency",
+                                                    "AccountType",
+                                                    "AccountSubType"
+                                                ]
+                                            },
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                },
+                                "Links": {
+                                    "title": "Links",
+                                    "type": "object",
+                                    "description": "Links relevant to the payload",
+                                    "properties": {
+                                        "Self": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Prev": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Next": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "Self"
+                                    ]
+                                },
+                                "Meta": {
+                                    "title": "MetaData",
+                                    "type": "object",
+                                    "description": "Meta Data relevant to the payload",
+                                    "properties": {
+                                        "TotalPages": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "Data",
+                                "Links",
+                                "Meta"
+                            ]
+                        },
+                        "headers": {
+                            "x-fapi-interaction-id": {
+                                "type": "string",
+                                "description": "An RFC4122 UID used as a correlation id.",
+                                "required": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "title": "Bad Request",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "title": "Internal Server Error",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "PSUOAuth2Security": [
+                            "accounts"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/accounts/{AccountId}/transactions": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get Account Transactions",
+                "description": "Get transactions related to an account. See the [Transactions Endpoint section](https://www.bankofapis.com/products/natwest-group-open-banking/accounts/documentation/nwb/3.1.11#transactions-endpoint) for more detail on how fields in the request affect the transaction data in the response.",
+                "operationId": "GetAccountTransactions",
+                "produces": [
+                    "application/json; charset=utf-8"
+                ],
+                "parameters": [
+                    {
+                        "name": "AccountId",
+                        "in": "path",
+                        "description": "A unique identifier used to identify the account resource.",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "in": "query",
+                        "name": "fromBookingDateTime",
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The UTC ISO 8601 Date Time to filter transactions FROM \nNB Time component is optional - set to 00:00:00 for just Date.  \nIf the Date Time contains a timezone, the ASPSP must ignore the timezone component."
+                    },
+                    {
+                        "in": "query",
+                        "name": "toBookingDateTime",
+                        "type": "string",
+                        "format": "date-time",
+                        "description": "The UTC ISO 8601 Date Time to filter transactions TO \nNB Time component is optional - set to 00:00:00 for just Date.  \nIf the Date Time contains a timezone, the ASPSP must ignore the timezone component."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-financial-id",
+                        "type": "string",
+                        "required": true,
+                        "description": "The unique id of the ASPSP to which the request is issued. The unique id will be issued by OB. The value for NatWest is 0015800000jfwxXAAQ."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-auth-date",
+                        "type": "string",
+                        "required": false,
+                        "description": "The time when the PSU last logged in with the TPP. \nAll dates in the HTTP headers are represented as RFC 7231 Full Dates. An example is below: \nSun, 10 Sep 2017 19:43:31 UTC",
+                        "pattern": "^(Mon|Tue|Wed|Thu|Fri|Sat|Sun), \\d{2} (Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \\d{4} \\d{2}:\\d{2}:\\d{2} (GMT|UTC)$"
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-customer-ip-address",
+                        "type": "string",
+                        "required": false,
+                        "description": "The PSU's IP address if the PSU is currently logged in with the TPP."
+                    },
+                    {
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string",
+                        "required": false,
+                        "description": "An RFC4122 UID used as a correlation id."
+                    },
+                    {
+                        "in": "header",
+                        "name": "Authorization",
+                        "type": "string",
+                        "required": true,
+                        "description": "An Authorisation Token as per https://tools.ietf.org/html/rfc6750"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account Transactions successfully retrieved",
+                        "schema": {
+                            "title": "Account Transactions GET response",
+                            "type": "object",
+                            "properties": {
+                                "Data": {
+                                    "title": "Data",
+                                    "description": "Data",
+                                    "type": "object",
+                                    "properties": {
+                                        "Transaction": {
+                                            "title": "Transaction",
+                                            "description": "Provides further details on an entry in the report.",
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "AccountId": {
+                                                        "description": "A unique and immutable identifier used to identify the account resource. This identifier has no meaning to the account owner.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 40
+                                                    },
+                                                    "TransactionId": {
+                                                        "description": "A unique and immutable identifier used to identify the transaction. This identifier has no meaning to the account owner.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 210
+                                                    },
+                                                    "Amount": {
+                                                        "description": "Amount of money in the cash entry.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "Amount": {
+                                                                "description": "A number of monetary units specified in an active currency where the unit of currency is explicit and compliant with ISO 4217.",
+                                                                "type": "string",
+                                                                "pattern": "^\\d{1,13}$|^\\d{1,13}\\.\\d{1,5}$"
+                                                            },
+                                                            "Currency": {
+                                                                "description": "A code allocated to a currency by a Maintenance Agency under an international identification scheme, as described in the latest edition of the international standard ISO 4217 'Codes for the representation of currencies and funds'",
+                                                                "type": "string",
+                                                                "pattern": "^[A-Z]{3,3}$"
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "Amount",
+                                                            "Currency"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
+                                                    "CreditDebitIndicator": {
+                                                        "description": "Indicates whether the transaction is a credit or a debit entry.",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Credit",
+                                                            "Debit"
+                                                        ]
+                                                    },
+                                                    "Status": {
+                                                        "description": "Status of a transaction entry on the books of the account servicer.",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Booked",
+                                                            "Pending"
+                                                        ]
+                                                    },
+                                                    "TransactionMutability": {
+                                                        "description": "Specifies the Mutability of the Transaction record.",
+                                                        "type": "string",
+                                                        "enum": [
+                                                            "Mutable",
+                                                            "Immutable"
+                                                        ]
+                                                    },
+                                                    "BookingDateTime": {
+                                                        "description": "Date and time when a transaction entry is posted to an account on the account servicer's books. Usage: Booking date is the expected booking date, unless the status is booked, in which case it is the actual booking date. \nAll dates in the JSON payloads are represented in ISO 8601 date-time format. \nAll date-time fields in responses must include the timezone. An example is below:\n2017-04-05T10:43:07+00:00",
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "ValueDateTime": {
+                                                        "description": "Date and time at which assets become available to the account owner in case of a credit entry, or cease to be available to the account owner in case of a debit transaction entry. Usage: If transaction entry status is pending and value date is present, then the value date refers to an expected/requested value date. For transaction entries subject to availability/float and for which availability information is provided, the value date must not be used. In this case the availability component identifies the number of availability days.",
+                                                        "type": "string",
+                                                        "format": "date-time"
+                                                    },
+                                                    "TransactionInformation": {
+                                                        "description": "Further details of the transaction. This is the transaction narrative, which is unstructured text.",
+                                                        "type": "string",
+                                                        "minLength": 1,
+                                                        "maxLength": 500
+                                                    },
+                                                    "AddressLine": {
+                                                        "description": "Information that locates and identifies a specific address for a transaction entry, that is presented in free format text.",
+                                                        "type": "string",
+                                                        "minLength": 0,
+                                                        "maxLength": 70
+                                                    },
+                                                    "BankTransactionCode": {
+                                                        "description": "Set of elements used to fully identify the type of underlying transaction resulting in an entry.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "Code": {
+                                                                "description": "Specifies the family within a domain.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 35
+                                                            },
+                                                            "SubCode": {
+                                                                "description": "Specifies the sub-product family within a specific family.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 35
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "Code",
+                                                            "SubCode"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
+                                                    "ProprietaryBankTransactionCode": {
+                                                        "description": "Set of elements to fully identify a proprietary bank transaction code.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "Code": {
+                                                                "description": "Proprietary bank transaction code to identify the underlying transaction.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 35
+                                                            },
+                                                            "Issuer": {
+                                                                "description": "Identification of the issuer of the proprietary bank transaction code.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 35
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "Code"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    },
+                                                    "Balance": {
+                                                        "description": "Set of elements used to define the balance as a numerical representation of the net increases and decreases in an account after a transaction entry is applied to the account.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "Amount": {
+                                                                "description": "Amount of money of the cash balance after a transaction entry is applied to the account..",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "Amount": {
+                                                                        "description": "A number of monetary units specified in an active currency where the unit of currency is explicit and compliant with ISO 4217.",
+                                                                        "type": "string",
+                                                                        "pattern": "^\\d{1,13}$|^\\d{1,13}\\.\\d{1,5}$"
+                                                                    },
+                                                                    "Currency": {
+                                                                        "description": "A code allocated to a currency by a Maintenance Agency under an international identification scheme, as described in the latest edition of the international standard ISO 4217 'Codes for the representation of currencies and funds'",
+                                                                        "type": "string",
+                                                                        "pattern": "^[A-Z]{3,3}$"
+                                                                    }
+                                                                },
+                                                                "required": [
+                                                                    "Amount",
+                                                                    "Currency"
+                                                                ],
+                                                                "additionalProperties": false
+                                                            },
+                                                            "CreditDebitIndicator": {
+                                                                "description": "Indicates whether the balance is a credit or a debit balance. Usage: A zero balance is considered to be a credit balance.",
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "Credit",
+                                                                    "Debit"
+                                                                ]
+                                                            },
+                                                            "Type": {
+                                                                "description": "Balance type, in a coded form.",
+                                                                "type": "string",
+                                                                "enum": [
+                                                                    "ClosingAvailable",
+                                                                    "ClosingBooked",
+                                                                    "ClosingCleared",
+                                                                    "Expected",
+                                                                    "ForwardAvailable",
+                                                                    "Information",
+                                                                    "InterimAvailable",
+                                                                    "InterimBooked",
+                                                                    "InterimCleared",
+                                                                    "OpeningAvailable",
+                                                                    "OpeningBooked",
+                                                                    "OpeningCleared",
+                                                                    "PreviouslyClosedBooked"
+                                                                ]
+                                                            }
+                                                        },
+                                                        "additionalProperties": false,
+                                                        "required": [
+                                                            "Amount",
+                                                            "CreditDebitIndicator",
+                                                            "Type"
+                                                        ]
+                                                    },
+                                                    "MerchantDetails": {
+                                                        "description": "Details of the merchant involved in the transaction.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "MerchantName": {
+                                                                "description": "Name by which the merchant is known.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 340
+                                                            },
+                                                            "MerchantCategoryCode": {
+                                                                "description": "Category code conform to ISO 18245, related to the type of services or goods the merchant provides for the transaction.",
+                                                                "type": "string",
+                                                                "minLength": 3,
+                                                                "maxLength": 4
+                                                            },
+                                                            "MerchantCategory1Name": {
+                                                                "description": "Tier 1 Merchant Category Name",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255
+                                                            },
+                                                            "MerchantCategory2Name": {
+                                                                "description": "Tier 2 Merchant Category Name",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255
+                                                            },
+                                                            "MerchantCategory3Name": {
+                                                                "description": "Tier 3 Merchant Category Name",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255
+                                                            },
+                                                            "FcaCode": {
+                                                                "description": "Financial Conduct Authority Code",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255
+                                                            },
+                                                            "FcaCategory": {
+                                                                "description": "Financial Conduct Authority Category",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 255
+                                                            },
+                                                            "CarbonScore": {
+                                                                "description": "Carbon emission scoring details",
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "totalKgCo2e": {
+                                                                        "description": "Total Kg of CO2 emitted",
+                                                                        "type": "number",
+                                                                        "minLength": 1,
+                                                                        "maxLength": 350
+                                                                    },
+                                                                    "carbonModelVersion": {
+                                                                        "description": "Carbon Model Version",
+                                                                        "type": "string",
+                                                                        "minLength": 1,
+                                                                        "maxLength": 350
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    },
+                                                    "CardInstrument": {
+                                                        "description": "Set of elements to describe the card instrument used in the transaction.",
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "Identification": {
+                                                                "description": "Identification assigned by an institution to identify the card instrument used in the transaction. This identification is known by the account owner, and may be masked.",
+                                                                "type": "string",
+                                                                "minLength": 1,
+                                                                "maxLength": 16
+                                                            }
+                                                        },
+                                                        "required": [
+                                                            "Identification"
+                                                        ],
+                                                        "additionalProperties": false
+                                                    }
+                                                },
+                                                "additionalProperties": false,
+                                                "required": [
+                                                    "AccountId",
+                                                    "Amount",
+                                                    "CreditDebitIndicator",
+                                                    "Status",
+                                                    "BookingDateTime"
+                                                ]
+                                            },
+                                            "minItems": 1,
+                                            "additionalProperties": false
+                                        }
+                                    }
+                                },
+                                "Links": {
+                                    "title": "Links",
+                                    "type": "object",
+                                    "description": "Links relevant to the payload",
+                                    "properties": {
+                                        "Self": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Prev": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        },
+                                        "Next": {
+                                            "type": "string",
+                                            "format": "uri"
+                                        }
+                                    },
+                                    "additionalProperties": false,
+                                    "required": [
+                                        "Self"
+                                    ]
+                                },
+                                "Meta": {
+                                    "title": "MetaData",
+                                    "type": "object",
+                                    "description": "Meta Data relevant to the payload",
+                                    "properties": {
+                                        "TotalPages": {
+                                            "type": "integer",
+                                            "format": "int32"
+                                        }
+                                    },
+                                    "additionalProperties": false
+                                }
+                            },
+                            "additionalProperties": false,
+                            "required": [
+                                "Data",
+                                "Links",
+                                "Meta"
+                            ]
+                        },
+                        "headers": {
+                            "x-fapi-interaction-id": {
+                                "type": "string",
+                                "description": "An RFC4122 UID used as a correlation id.",
+                                "required": true
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "title": "Bad Request",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "405": {
+                        "description": "Method Not Allowed"
+                    },
+                    "406": {
+                        "description": "Not Acceptable"
+                    },
+                    "429": {
+                        "description": "Too Many Requests",
+                        "headers": {
+                            "Retry-After": {
+                                "description": "Number in seconds to wait",
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "title": "Internal Server Error",
+                            "description": "An array of detail error codes and messages.",
+                            "type": "object",
+                            "properties": {
+                                "Code": {
+                                    "description": "High level textual error code, to help categorize the errors.",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 40
+                                },
+                                "Message": {
+                                    "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Errors": {
+                                    "title": "Errors",
+                                    "description": "Errors",
+                                    "type": "array",
+                                    "items": {
+                                        "title": "Error",
+                                        "description": "Error",
+                                        "type": "object",
+                                        "properties": {
+                                            "ErrorCode": {
+                                                "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 128
+                                            },
+                                            "Message": {
+                                                "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                                "type": "string",
+                                                "minLength": 1,
+                                                "maxLength": 500
+                                            }
+                                        },
+                                        "required": [
+                                            "ErrorCode",
+                                            "Message"
+                                        ],
+                                        "additionalProperties": false,
+                                        "minProperties": 1
+                                    },
+                                    "minItems": 1
+                                }
+                            },
+                            "required": [
+                                "Code",
+                                "Message",
+                                "Errors"
+                            ]
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "PSUOAuth2Security": [
+                            "accounts"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "securityDefinitions": {
+        "PSUOAuth2Security": {
+            "type": "oauth2",
+            "flow": "accessCode",
+            "tokenUrl": "https://secure1t.natwest.com/as/token.oauth2",
+            "authorizationUrl": "https://secure1.natwest.com/as/authorization.oauth2",
+            "scopes": {
+                "accounts": "Ability to read Accounts information"
+            },
+            "description": "OAuth flow, it is required when the PSU needs to perform SCA with the ASPSP when a TPP wants to access an ASPSP resource owned by the PSU"
+        },
+        "TPPOAuth2Security": {
+            "type": "oauth2",
+            "flow": "application",
+            "tokenUrl": "https://secure1t.natwest.com/as/token.oauth2",
+            "scopes": {
+                "tpp_client_credential": "TPP Client Credential Scope"
+            },
+            "description": "TPP client credential authorisation flow with the ASPSP"
+        }
+    },
+    "responses": {
+        "400ErrorResponse": {
+            "description": "Bad Request",
+            "schema": {
+                "title": "Bad Request",
+                "description": "An array of detail error codes and messages.",
+                "type": "object",
+                "properties": {
+                    "Code": {
+                        "description": "High level textual error code, to help categorize the errors.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 40
+                    },
+                    "Id": {
+                        "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 40
+                    },
+                    "Message": {
+                        "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "Errors": {
+                        "title": "Errors",
+                        "description": "Errors",
+                        "type": "array",
+                        "items": {
+                            "title": "Error",
+                            "description": "Error",
+                            "type": "object",
+                            "properties": {
+                                "ErrorCode": {
+                                    "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 128
+                                },
+                                "Message": {
+                                    "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Path": {
+                                    "description": "Recommended but optional reference to the JSON Path of the field with error, e.g., Data.Initiation.InstructedAmount.Currency",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Url": {
+                                    "description": "URL to help remediate the problem, or provide more information, or to API Reference, or help etc",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "ErrorCode",
+                                "Message"
+                            ],
+                            "additionalProperties": false,
+                            "minProperties": 1
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "Code",
+                    "Message",
+                    "Errors"
+                ]
+            }
+        },
+        "401ErrorResponse": {
+            "description": "Unauthorized"
+        },
+        "403ErrorResponse": {
+            "description": "Forbidden"
+        },
+        "404ErrorResponse": {
+            "description": "Not found"
+        },
+        "405ErrorResponse": {
+            "description": "Method Not Allowed"
+        },
+        "406ErrorResponse": {
+            "description": "Not Acceptable"
+        },
+        "429ErrorResponse": {
+            "description": "Too Many Requests",
+            "headers": {
+                "Retry-After": {
+                    "description": "Number in seconds to wait",
+                    "type": "integer"
+                }
+            }
+        },
+        "500ErrorResponse": {
+            "description": "Internal Server Error",
+            "schema": {
+                "title": "Internal Server Error",
+                "description": "An array of detail error codes and messages.",
+                "type": "object",
+                "properties": {
+                    "Code": {
+                        "description": "High level textual error code, to help categorize the errors.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 40
+                    },
+                    "Id": {
+                        "description": "A unique reference for the error instance, for audit purposes, in case of unknown/unclassified errors.",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 40
+                    },
+                    "Message": {
+                        "description": "Brief Error message, e.g., 'There is something wrong with the request parameters provided'",
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 500
+                    },
+                    "Errors": {
+                        "title": "Errors",
+                        "description": "Errors",
+                        "type": "array",
+                        "items": {
+                            "title": "Error",
+                            "description": "Error",
+                            "type": "object",
+                            "properties": {
+                                "ErrorCode": {
+                                    "description": "Low level textual error code, e.g., UK.OBIE.Field.Missing",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 128
+                                },
+                                "Message": {
+                                    "description": "A description of the error that occurred. e.g., 'A mandatory field isn't supplied'",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Path": {
+                                    "description": "Recommended but optional reference to the JSON Path of the field with error, e.g., Data.Initiation.InstructedAmount.Currency",
+                                    "type": "string",
+                                    "minLength": 1,
+                                    "maxLength": 500
+                                },
+                                "Url": {
+                                    "description": "URL to help remediate the problem, or provide more information, or to API Reference, or help etc",
+                                    "type": "string"
+                                }
+                            },
+                            "required": [
+                                "ErrorCode",
+                                "Message"
+                            ],
+                            "additionalProperties": false,
+                            "minProperties": 1
+                        },
+                        "minItems": 1
+                    }
+                },
+                "required": [
+                    "Code",
+                    "Message",
+                    "Errors"
+                ]
+            }
+        }
+    },
+    "definitions": {}
+}

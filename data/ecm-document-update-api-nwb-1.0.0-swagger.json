@@ -1,0 +1,108 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0",
+        "title": "Document Update API",
+        "description": "The Document Update API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost."
+    },
+    "basePath": "/documents/v1.0",
+    "paths": {
+        "/update": {
+            "put": {
+                "tags": [
+                    "Document Management"
+                ],
+                "summary": "Change an existing document",
+                "description": "Change the metadata associated with a document that is already stored in a document repository",
+                "operationId": "updateUsingPUT",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "JWT Bearer Token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "body",
+                        "in": "body",
+                        "description": "Body description",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/UpdateRequestObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/UpdateResponseObject"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "definitions": {
+        "UpdateRequestObject": {
+            "type": "object",
+            "properties": {
+                "objectId": {
+                    "type": "string",
+                    "example": "e86411ad-579d-48b8-b4b8-9f14b1e8bcdd",
+                    "description": "the ID of the document within the repository"
+                },
+                "DocumentSource": {
+                    "type": "string",
+                    "example": "my-programme",
+                    "description": "your document source"
+                },
+                "updateAttribute": {
+                    "type": "object",
+                    "description": "a JSON map of the metadata fields to be changed and their new value",
+                    "example": {
+                        "DocumentTitle": "a different title"
+                    }
+                }
+            }
+        },
+        "UpdateResponseObject": {
+            "type": "object",
+            "properties": {
+                "objectId": {
+                    "type": "string",
+                    "example": "e86411ad-579d-48b8-b4b8-9f14b1e8bcdd",
+                    "description": "the ID of the object that was updated in the repository"
+                },
+                "status": {
+                    "type": "string",
+                    "example": "OK",
+                    "description": "HTTP style response message"
+                },
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 200,
+                    "description": "HTTP style response code"
+                }
+            }
+        }
+    }
+}

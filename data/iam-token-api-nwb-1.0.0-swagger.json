@@ -1,0 +1,810 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Web API Session Management library API",
+        "version": "1.1.0",
+        "description": "To access this API users/FP/TPP applications should be authenticated\n"
+    },
+    "servers": [
+        {
+            "url": "https://openapi.natwest.com/token",
+            "description": "PROD Apigee endpoint for Staff to access the session management API"
+        }
+    ],
+    "paths": {
+        "/issue": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/X-Correlation-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Request-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Env"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Issuer"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Domain-Name"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Path-Name"
+                }
+            ],
+            "post": {
+                "tags": [
+                    "Session Manager"
+                ],
+                "operationId": "getToken",
+                "summary": "Generates an Access Token can be Opaque/JWE/JWS token",
+                "description": "This API endpoint can be used to generate an access token on behalf of consumer from pingfederate. \n\nNote:\n\nFor authorization grant flow the token request should contain an authorization code (ref api /authCode endpoint for information on generation of an authorization code)\n\nBased on the cookie configurations a secure cookie (also known as bind cookie) will be set in the http response headers.\nNote that the access token contains claims that matches scn cookie name and value.\n\nFor a successful access to a protected API the PEP performs the following validations\n 1. Verify the validity of Access Token.\n 2. Verify if the cookie name and value from the http request header matches with the scn and scv claims of Access token.\n",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/AccessTokenRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/AccessTokenResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/InSufficientPermission"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FileNotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/renew": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/X-Correlation-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Request-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Env"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Issuer"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Domain-Name"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Path-Name"
+                },
+                {
+                    "$ref": "#/components/parameters/scn"
+                },
+                {
+                    "$ref": "#/components/parameters/srcn"
+                }
+            ],
+            "patch": {
+                "tags": [
+                    "Session Manager"
+                ],
+                "operationId": "renewToken",
+                "summary": "Generates a new access token based on a refresh token.",
+                "description": "This API endpoint can be used to renew an access token based on a refresh token. \nThis API endpoint expects scn and srtcn cookie in the HTTP Request headers.\nFor successful token renewal the cookie value present in srtcn has to be decrypted.\nOnce srtcn is decrypted successfully the refresh token can be retrieved and exchanged with PingFederate for a new access token.\n",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/RenewTokenRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RenewTokenResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/InSufficientPermission"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FileNotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/revoke": {
+            "parameters": [
+                {
+                    "$ref": "#/components/parameters/X-Correlation-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Request-ID"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Env"
+                },
+                {
+                    "$ref": "#/components/parameters/X-IAM-Issuer"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Domain-Name"
+                },
+                {
+                    "$ref": "#/components/parameters/X-Path-Name"
+                },
+                {
+                    "$ref": "#/components/parameters/scn"
+                },
+                {
+                    "$ref": "#/components/parameters/srcn"
+                }
+            ],
+            "delete": {
+                "tags": [
+                    "Session Manager"
+                ],
+                "operationId": "revokeToken",
+                "summary": "Revokes access token and refresh token",
+                "description": "This API endpoint can be used to revoke access token and refresh token by invalidating scn and srtcn cookies.\n",
+                "requestBody": {
+                    "$ref": "#/components/requestBodies/RevokeTokenRequest"
+                },
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/RevokeTokenResponse"
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/InvalidRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/UnauthorizedError"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/InSufficientPermission"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/FileNotFound"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        },
+        "/jwks": {
+            "get": {
+                "tags": [
+                    "Session Manager"
+                ],
+                "summary": "Return session manager public keys as jwks",
+                "operationId": "getJwks",
+                "x-vertx-event-bus": {
+                    "address": "jwks-service",
+                    "method": "getJwks"
+                },
+                "description": "Return session manager public keys as jwks\n",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                },
+                                "example": {
+                                    "keys": [
+                                        {
+                                            "kty": "RSA",
+                                            "kid": "ping",
+                                            "n": "hY98oWmejkA6vuJZEyrrGvSrWfRMbhVAElgvWceaflzc2X3pLmS7Y-7ghkmix8A_PJ6uDNXy2ZAFC92lUnaID9FtPimlkHuSvds3eJpJckq9KXr1IFsopmOqHJNQmabb7ekaLe6WLdeiVKZ_Ezx1ELs2femcnv-wR7YlQIDG0HdlDp-L5BNeEExVvSspcrsk9k_YCw3N74GIvU6RsHk9ymG_LkSw6CwAEVzhTqTBb29XTPRukDEE14jE4uAVKyvMJ5f0qHnKdI8oCKYPnaVN-OCrQydbeCL5l-uk6ydKFuLeOQY6W4J2M2BgZ6DC0NsNpGmp1sS5gl1NeqAm-Ishgw",
+                                            "e": "AQAB"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    },
+                    "default": {
+                        "$ref": "#/components/responses/UnexpectedError"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "parameters": {
+            "X-Correlation-ID": {
+                "name": "X-Correlation-ID",
+                "required": false,
+                "in": "header",
+                "description": "Provided by up-stream system and the same is passed to down-stream system, to track the E2E application flow.",
+                "example": "dc6c78e47-df03-4a88-b71c-5a73212a5953",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Request-ID": {
+                "in": "header",
+                "name": "X-Request-ID",
+                "required": false,
+                "description": "Provided by up-stream system and the same is passed to down-stream system, to track the request level E2E application flow.",
+                "example": "c6c78e47-df03-4a88-b71c-5a73212a5953",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-IAM-Issuer": {
+                "name": "X-IAM-Issuer",
+                "required": false,
+                "in": "header",
+                "description": "\nUsed to identify the PEP env\n\n| S.No. | value  | description |\n|-------|:---------:|:------------:|\n| 1 | pep-apigee-rbs |  |\n| 2 | pep-edi-nwb |  |\n| 3 | pep-edi-nwo |  |\n| 4 | pep-edi-iom | |\n| 5 | pep-edi-ubn | |\n| 6 | pep-edi-ubr | |\n| 7 | pep-edi-nwi | |\n| 8 | pep-edi-rbi | |\n| 9 | pep-edi-group |\n| 10 | pep-tyk-group | |\n\nNote: This header should be added by PEP. if not set iss attribute in jwt will be taken to identify the PEP\n",
+                "example": "pep-edi-rbs",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-IAM-Env": {
+                "name": "X-IAM-Env",
+                "required": false,
+                "in": "header",
+                "description": "\nUsed to identify the IAM PF env.\n\n| S.No. | value  | description |\n|-------|:---------:|:------------:|\n| 1 | edi-rbs | Points to Edinburgh LSP Zone 5 RBS Clustor |\n| 2 | edi-nwb | Points to Edinburgh LSP Zone 5 NWB Clustor |\n| 3 | edi-nwo | Points to Edinburgh LSP Zone 5 NWB Clustor |\n| 4 | edi-iom | Points to Edinburgh LSP Zone 5 NWB Clustor |\n| 5 | edi-ubn | Points to Edinburgh LSP Zone 5 UBN Clustor |\n| 6 | edi-ubr | Points to Edinburgh LSP Zone 5 UBR Clustor |\n| 7 | edi-nwi | Points to Edinburgh LSP Zone 5 NWI Clustor |\n| 8 | edi-rbi | Points to Edinburgh LSP Zone 5 RBI Clustor |\n| 9 | edi-group | Points to Edinburgh LSP Zone 7 Staff Clustor |\n\nNote: This header should be added by PEP.\n",
+                "example": "edi-rbs",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Domain-Name": {
+                "in": "header",
+                "name": "X-Domain-Name",
+                "required": false,
+                "description": "Session Cookie created in the provided domain name. Note: This header should be added by PEP.",
+                "example": "sao.natwest.com",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "X-Path-Name": {
+                "in": "header",
+                "name": "X-Path-Name",
+                "required": false,
+                "description": "Session Cookie created in the provided path. Note: This header should be added by PEP.",
+                "example": "/sao",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "scn": {
+                "name": "browser.bind.<UUID>",
+                "in": "cookie",
+                "example": "browser.bind.<UUID>=<UUID>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "srcn": {
+                "name": "browser.state.<clientId>",
+                "in": "cookie",
+                "example": "browser.state.scheduler=<JWE>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00",
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "schemas": {
+            "ErrorResponse": {
+                "type": "object",
+                "required": [
+                    "errorCode",
+                    "errorMessage"
+                ],
+                "properties": {
+                    "errorCode": {
+                        "type": "string",
+                        "description": "error code return from downstream system.",
+                        "example": "PF-92"
+                    },
+                    "errorMessage": {
+                        "type": "string",
+                        "description": "error details",
+                        "example": "Cannot create/update resource because it is not active"
+                    }
+                },
+                "xml": {
+                    "name": "ErrorResponse"
+                }
+            },
+            "AccessTokenRequest": {
+                "type": "object",
+                "required": [
+                    "tokenType",
+                    "token",
+                    "client_id"
+                ],
+                "properties": {
+                    "tokenType": {
+                        "type": "string",
+                        "enum": [
+                            "CODE",
+                            "JWT"
+                        ],
+                        "description": "Provide Token Type to get Access Token"
+                    },
+                    "token": {
+                        "type": "string",
+                        "description": "Value can be CODE, JWT"
+                    },
+                    "client_id": {
+                        "type": "string",
+                        "description": "Used to identify the application"
+                    },
+                    "code_verifier": {
+                        "type": "string",
+                        "description": "The code verifier for the PKCE request, that the app originally generated before the authorization request. This will be supported only for CODE type"
+                    },
+                    "redirect_uri": {
+                        "type": "string",
+                        "description": "The redirect uri for the PKCE request, that the app originally generated before the authorization request. This will be supported only for CODE type"
+                    },
+                    "response_type": {
+                        "type": "array",
+                        "description": "What type of token is required after successful validation. by default will return access token, if required return id_token",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "token",
+                                "id_token"
+                            ]
+                        }
+                    },
+                    "scope": {
+                        "type": "array",
+                        "description": "A random string generated by client application, which will be verified later by client. This will be supported only for JWS,JWE and REFID type",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "nonce": {
+                        "type": "string",
+                        "description": "Provide a random number"
+                    }
+                },
+                "xml": {
+                    "name": "AccessTokenRequest"
+                }
+            },
+            "AccessTokenResponse": {
+                "type": "object",
+                "properties": {
+                    "access_token": {
+                        "type": "string",
+                        "description": "JWT bearer access token generated by ping federate"
+                    },
+                    "expires_in": {
+                        "type": "integer",
+                        "description": "Token life time in seconds"
+                    },
+                    "scope": {
+                        "type": "string",
+                        "description": "A list of scopes applicable for the generated access token"
+                    },
+                    "token_type": {
+                        "type": "string",
+                        "description": "Type of the access token returned by ping federate"
+                    },
+                    "id_token": {
+                        "type": "string",
+                        "description": "id token contains the consumer details"
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "refresh token contains the consumer details"
+                    },
+                    "issued_token_type": {
+                        "type": "string",
+                        "description": "Token type from Ping Federate"
+                    },
+                    "code": {
+                        "type": "string",
+                        "description": "Token type from Ping Federate"
+                    }
+                },
+                "xml": {
+                    "name": "AccessTokenResponse"
+                }
+            },
+            "RenewTokenRequest": {
+                "type": "object",
+                "required": [
+                    "access_token",
+                    "client_id"
+                ],
+                "properties": {
+                    "client_id": {
+                        "type": "string",
+                        "description": "Used to identify the application"
+                    },
+                    "access_token": {
+                        "type": "string",
+                        "description": "Provide Access Token"
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "Provide Refresh Token"
+                    }
+                },
+                "xml": {
+                    "name": "RenewTokenRequest"
+                }
+            },
+            "RevokeTokenRequest": {
+                "type": "object",
+                "required": [
+                    "client_id"
+                ],
+                "properties": {
+                    "client_id": {
+                        "type": "string",
+                        "description": "Used to identify the application"
+                    },
+                    "access_token": {
+                        "type": "string",
+                        "description": "Provide Access Token"
+                    },
+                    "refresh_token": {
+                        "type": "string",
+                        "description": "Provide Refresh Token"
+                    }
+                },
+                "xml": {
+                    "name": "RevokeTokenRequest"
+                }
+            },
+            "RevokeTokenResponse": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string",
+                        "description": "access token revoke status"
+                    }
+                },
+                "xml": {
+                    "name": "RevokeTokenResponse"
+                }
+            }
+        },
+        "responses": {
+            "InvalidRequest": {
+                "description": "The request was invalid, often missing a required parameter. More details in the response body",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "ServerError": {
+                "description": "There was an error within the Server. More details in the response body",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "UnauthorizedError": {
+                "description": "Access token is missing or invalid",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "InSufficientPermission": {
+                "description": "The caller doesn’t have sufficient permission",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "FileNotFound": {
+                "description": "The requested item doesn’t exist, or the URI requested is invalid",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "ServiceUnavailable": {
+                "description": "Service Unavailable",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "UnexpectedError": {
+                "description": "Unexpected Error",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "AccessTokenResponse": {
+                "description": "OK",
+                "headers": {
+                    "Set-Cookie": {
+                        "schema": {
+                            "type": "string",
+                            "example": "browser.bind.<UUID>=<UUID>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00"
+                        },
+                        "description": "Set's access token to browser bind cookie. A configurable secure cookie. This cookie value is a randomly generated string linked to the scn and scv claims in access token"
+                    },
+                    "\u0000Set-Cookie": {
+                        "schema": {
+                            "type": "string",
+                            "example": "browser.state.<clientId>=<JWE>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00"
+                        },
+                        "description": "Set's renewal status. A configurable secure cookie. This cookie hold an encrypted json string {'at':'access token','rt':'refresh token','exp':'expires in'}"
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AccessTokenResponse"
+                        },
+                        "examples": {
+                            "DefaultAccessToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2"
+                                }
+                            },
+                            "DefaultAccessTokenWithRefreshToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2",
+                                    "refresh_token": "1535530695_91b3b125b6c044c8b7a24137401e0324"
+                                }
+                            },
+                            "AccessTokenWithIdToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2",
+                                    "id_token": "eyJraWQiOiJEYXRhUG93ZXJDZXJ0X0FXU19KV1RfQ1JLIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJEYXRhcG93ZXIyIiwic3ViIjoibXBkYXRhcG93ZXJ2YWxpZGF0aW9uY2xpZW50dGVzdCIsImF1ZCI6Imh0dHBzOi8vaWFtLWF1dGhuLXNpdC11YnIubWFuYWdlZHRlc3QuY29tL2FzL3Rva2VuLm9hdXRoMiIsImV4cCI6MTU1NDk4NjI5MywiY2luIjoiMDIxOTA5MzkxMiIsImp0aSI6ImVlZmFkZDc4LTRmYTYtNDhmOS1hODg5LTJjOTc1ZjFkYWFkOSJ9.bp0X6Mo_sdnN7UxFjNxDDmBrga5317bSZL4H4vVUwIEs_LtLj2Wq1-4cdfwy5f7_Zn2wcOpz7hAfGvx1QI-I903gukkaFDKspKcoXViaFXQziKZkBGBIgDg7bgMQ4dX5RmyPm36CEOeQsh0XmDHRnzAzBaqEyh9nt_hbWXhYzH-ChAixijYHx-Xxl9FEMkAdp2JZX9pIPABkwj5L8qWIC6tFoRgeqXAbX4V41NX92yxWKyk4AIsuxJxlYtP0Tr9-JE4RGCJ-zI63P2xvnRigCKwy1FT2h8XesVCjB1EqechZDkgP5rB15frDUcxG98NcosIA1HpDPGpU3B_TksOaNw&grant_type=urn:pingidentity.com:oauth2:grant_type:validate_bearer&token=dxU68bFOJ5co0EDadcb9tDLkFZ9y"
+                                }
+                            },
+                            "AccessTokenWithIdTokenAndRefreshToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2",
+                                    "id_token": "eyJraWQiOiJEYXRhUG93ZXJDZXJ0X0FXU19KV1RfQ1JLIiwiYWxnIjoiUlMyNTYifQ.eyJpc3MiOiJEYXRhcG93ZXIyIiwic3ViIjoibXBkYXRhcG93ZXJ2YWxpZGF0aW9uY2xpZW50dGVzdCIsImF1ZCI6Imh0dHBzOi8vaWFtLWF1dGhuLXNpdC11YnIubWFuYWdlZHRlc3QuY29tL2FzL3Rva2VuLm9hdXRoMiIsImV4cCI6MTU1NDk4NjI5MywiY2luIjoiMDIxOTA5MzkxMiIsImp0aSI6ImVlZmFkZDc4LTRmYTYtNDhmOS1hODg5LTJjOTc1ZjFkYWFkOSJ9.bp0X6Mo_sdnN7UxFjNxDDmBrga5317bSZL4H4vVUwIEs_LtLj2Wq1-4cdfwy5f7_Zn2wcOpz7hAfGvx1QI-I903gukkaFDKspKcoXViaFXQziKZkBGBIgDg7bgMQ4dX5RmyPm36CEOeQsh0XmDHRnzAzBaqEyh9nt_hbWXhYzH-ChAixijYHx-Xxl9FEMkAdp2JZX9pIPABkwj5L8qWIC6tFoRgeqXAbX4V41NX92yxWKyk4AIsuxJxlYtP0Tr9-JE4RGCJ-zI63P2xvnRigCKwy1FT2h8XesVCjB1EqechZDkgP5rB15frDUcxG98NcosIA1HpDPGpU3B_TksOaNw&grant_type=urn:pingidentity.com:oauth2:grant_type:validate_bearer&token=dxU68bFOJ5co0EDadcb9tDLkFZ9y"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RenewTokenResponse": {
+                "description": "OK",
+                "headers": {
+                    "Set-Cookie": {
+                        "schema": {
+                            "type": "string",
+                            "example": "browser.state.<clientId>=<JWE>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00"
+                        },
+                        "description": "Set's renewal status. A configurable secure cookie. This cookie hold an encrypted json string {'at':'access token','rt':'refresh token','exp':'expires in'}"
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AccessTokenResponse"
+                        },
+                        "examples": {
+                            "DefaultRenewAccessToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2"
+                                }
+                            },
+                            "DefaultAccessTokenWithRefreshToken": {
+                                "value": {
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "token_type": "Bearer",
+                                    "expires_in": "2343",
+                                    "scope": "test-scope1 test-scope2",
+                                    "refresh_token": "1535530695_91b3b125b6c044c8b7a24137401e0324"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RevokeTokenResponse": {
+                "description": "OK",
+                "headers": {
+                    "Set-Cookie": {
+                        "schema": {
+                            "type": "string",
+                            "example": "browser.bind.<UUID>=<UUID>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00"
+                        },
+                        "description": "clear access token to browser bind cookie."
+                    },
+                    "\u0000Set-Cookie": {
+                        "schema": {
+                            "type": "string",
+                            "example": "browser.state.<clientId>=<JWE>; Path=/; HttpOnly; Secure; Domain=natwest.com; Max-Age=2022-03-21T14:06:14.375+00:00"
+                        },
+                        "description": "clear renewal status cookie."
+                    }
+                },
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RevokeTokenResponse"
+                        },
+                        "examples": {
+                            "RevokeTokenResponse": {
+                                "value": {
+                                    "status": "200 OK"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "requestBodies": {
+            "AccessTokenRequest": {
+                "description": "Request for generating an access token",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/AccessTokenRequest"
+                        },
+                        "examples": {
+                            "DefaultCodeRequest": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<AuthPolicyID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "tokenType": "CODE",
+                                    "token": "8Z5GKupU9bRQI8G12FRFSib7w9CYUce4vIAAAAAE",
+                                    "nonce": "c6c78e47-df03-4a88-b71c-5a73212a5953",
+                                    "code_verifier": "1535530695_91b3b125b6c044c8b7a24137401e0324",
+                                    "redirect_uri": "https://localhost:8080",
+                                    "response_type": [
+                                        "token",
+                                        "id_token"
+                                    ],
+                                    "scope": [
+                                        "scope"
+                                    ]
+                                }
+                            },
+                            "DefaultJWTRequest": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<AuthPolicyID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "tokenType": "JWT",
+                                    "token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "scope": [
+                                        "test-scope1",
+                                        "test-scope2"
+                                    ],
+                                    "nonce": "c6c78e47-df03-4a88-b71c-5a73212a5953",
+                                    "response_type": "token"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RenewTokenRequest": {
+                "description": "Request for renewing an access token",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RenewTokenRequest"
+                        },
+                        "examples": {
+                            "DefaultRenewToken": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A"
+                                }
+                            },
+                            "RenewTokenWithRefreshToken": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "refresh_token": "c6c78e47df034a88b71c5a73212a5953"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "RevokeTokenRequest": {
+                "description": "Request for revoking an access token",
+                "required": true,
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/RevokeTokenRequest"
+                        },
+                        "examples": {
+                            "RevokeToken": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A"
+                                }
+                            },
+                            "RevokeTokenWithRefreshToken": {
+                                "value": {
+                                    "client_id": "<AdoptionID>_<Brand>_<SessionPolicyId>_<ProjectCode>_client",
+                                    "access_token": "eyJhbGciOiJSU0EtT0FFUCIsImVuYyI6IkExMjhHQ00iLCJjdHkiOiJKV1QiLCJraWQiOiIzaXljVFc4WlZBT01sOVEtUjNxRm9nSFBJZ0UifQ.JERnYlPAZVr1g1rPnFLCF-kWsZUTUTjhSMB3nzt0iz0mIoW0Wh6uxPS-6N0UMZjCOaI1uvSsh_Ir5QbrnkX_5PmrIPgd6Y9f5d0B2VbIIRpwZNQVPtG_OVEtUjNxRm9nSFBJZ0UifQGmkgOrGu_JDILHui5XKSFewQ_PQmzQZYzrFNOszeqdrpgp0wmpUgjEW_r_bSfs6QQav8rNiRXeAJ25UlTpjRjTK2YeuFmXmOPFJj8B7Ae0T9gvQNuA-jQN6wMIvc2oI2rrKxjQL71KRjpHQ7GkxJojVz99RqJZCUFvfLc-Y65HbVyn0H5V19w_xakT7QmbMvmZ2R9ADJE-y1N_JIBH6q83cpDhhwNRX7IlnuYK8a5MypCZppAEe5P4mbFh5pt4ngC27miAcCaZ2WWlE2m4BOIVPHqOZNMtZAhbKWLWzg6hZtcrmUfkf5B1rQFB9zK_sBHa3z-3AjjvWjl0dIiD5r4J-Ammj85HgAmot50frh93SAXmzIw0ojSD7WwxWNH2lybzro5L7mCGr21ZP6cnMnlQ1lfEWh5fOZ5yYYGKlSlrTmLyN93xsHH0L9PqqIDGGlIl0pP2U4Xx3wtlNgOe-OKgDk_6uwpGne4zJ1lCGh-WiyYpXavmfkGkDyEugWhKaaWKTd1E73iVeuamD7EGpO6UVRI6hUntsrh56UzGS8iOw15YL-c1vIZlDoaqeKDUfmCsLFNyclVBx5iR-BERIkZtN0Jflx47FnjLpdAt7qOkE26FDMMcl-_WU71z_EGwztmhjb_vr7HZMouaYyWDMtBMz0bw_gFJQoHQgrzivSL1hibx5Oh-DEJc7nEyilC-4eoib_5KhpiyJZw8yoteGnvPPKIOwmsP5S6bU.-M6FmCsK0g9SP-ta._2jTO60167xVg0rXOm0ZZrafxMRF1iow9EnBi3rtFFiQyN7LRkc47nBXIUT5W_n9nXZSnMGP0bVY43w241whJ-cpkaIu38YQ8qJirK-RlYaDSWv7j3VRLhGuqt1MdvBGloBvA14MwpQBLYO70tyyVrBrUPSghs9hLVNRBji_rtctOZXS6yi38MGKO7CyNOr3v55QrPImcNn27Cn_nyF54ORmyBqeG1trvSL2-tbhyHggS4ILvIpMLGpnzGSJk2rVrmvTmiOrXdoC__nefoljWW7UXut1bViijnGGgs7E35rKEI2azSBSk2zEw-EVhTL1KJlaZbZ2c3RsfIbVU-rXB3TeMW_6TNdvWp-UgHBt0n3IBEzZRM5iiTE7m71lGHPLrLDpIve2d7MCuiaTZ2Tbz5Ype90VOUOoE73nDPnSWi1gbcTaqOsoNba-iX39bKP2KlYqcG6DenjsfzmBquWvFAnLVOHJFK8jqpIH3CZsVJrNH4HV5qbagVCzZG38JPvvDvpnOWtruPRVub2YkwUTdWugHAqocGWfZZh-zkK_qD2-cdlSd6ZQGLZXbG8-ivItQcnUY-eBGJkRYIn2eRlkyQGAJawTgyAbW3IPoqbw3oCj4TA32vgTW-J0LRz63fpATk_V9FM5tyzAb7pWKqbTFuo-GsYOX9QaJt6jlgg0diOiPMvpBpiAvwZgYHCxm4oBMhfveKMMH_hg7UOscBnzTTmMLFWfLfj9PNpx9OmzYen1.f6t1SHUeyOXg4aQ-43O77A",
+                                    "refresh_token": "c6c78e47df034a88b71c5a73212a5953"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,366 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "View Controls API",
+        "description": "Our view control service offers the ability to view controls from customer controls collection in Permissions Preferences Data Store",
+        "termsOfService": "http://localhost:8083",
+        "version": "V1"
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "View-Controls",
+            "description": "Operations pertaining to retrieve controls from collection"
+        }
+    ],
+    "paths": {
+        "/permissions-preferences/v1.0/controls": {
+            "post": {
+                "tags": [
+                    "View-Controls"
+                ],
+                "description": "View a list of available controls for a particular customer using POST operation",
+                "operationId": "getPaymentControls",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaymentControlRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved list",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PaymentControlResponseItem"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "string",
+                        "description": "timestamp",
+                        "example": "2024-05-06T08:40:15.792"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "Http status",
+                        "format": "int32",
+                        "example": 400
+                    },
+                    "coreErrorMessage": {
+                        "type": "string",
+                        "description": "Abstarct error message",
+                        "example": "validationError.invalidValues"
+                    },
+                    "detailedErrorMessage": {
+                        "type": "string",
+                        "description": "detailed error message",
+                        "example": "Request malformed.requestTimestamp is not valid"
+                    },
+                    "api": {
+                        "type": "string",
+                        "enum": [
+                            "RDS_API",
+                            "PAYMENT_CONTROL_VIEW_API"
+                        ]
+                    },
+                    "path": {
+                        "type": "string"
+                    }
+                }
+            },
+            "IdentifiersItem": {
+                "required": [
+                    "identifierType",
+                    "identifierValue"
+                ],
+                "type": "object",
+                "properties": {
+                    "identifierValue": {
+                        "type": "object",
+                        "description": "List of identifier value to be passed as search criteria(it can be string or array of string)",
+                        "example": 1234567890
+                    },
+                    "identifierType": {
+                        "type": "string",
+                        "description": "List of identifier type to be passed as search criteria",
+                        "example": "customerId"
+                    }
+                },
+                "description": "List of identifiers to passed as search criteria",
+                "example": {
+                    "identifiers": [
+                        {
+                            "identifierType": "customerId",
+                            "identifierValue": "1151837885"
+                        },
+                        {
+                            "identifierType": "customerContactType",
+                            "identifierValue": "CDB-ID"
+                        },
+                        {
+                            "identifierType": "paymentControlType",
+                            "identifierValue": [
+                                "INTERNATIONAL_PAYMENTS"
+                            ]
+                        }
+                    ],
+                    "info": "CustomerPaymentControl"
+                }
+            },
+            "PaymentControlRequest": {
+                "required": [
+                    "requestPayload",
+                    "serviceHeaders"
+                ],
+                "type": "object",
+                "properties": {
+                    "requestPayload": {
+                        "$ref": "#/components/schemas/RequestPayload"
+                    },
+                    "serviceHeaders": {
+                        "$ref": "#/components/schemas/ServiceHeaders"
+                    }
+                },
+                "description": "Search Criteria to view consents. Cannot null or empty."
+            },
+            "RequestPayload": {
+                "required": [
+                    "identifiers",
+                    "info"
+                ],
+                "type": "object",
+                "properties": {
+                    "identifiers": {
+                        "type": "array",
+                        "description": "List of identifiers to passed as search criteria",
+                        "example": {
+                            "identifiers": [
+                                {
+                                    "identifierType": "customerId",
+                                    "identifierValue": "1151837885"
+                                },
+                                {
+                                    "identifierType": "customerContactType",
+                                    "identifierValue": "CDB-ID"
+                                },
+                                {
+                                    "identifierType": "paymentControlType",
+                                    "identifierValue": [
+                                        "INTERNATIONAL_PAYMENTS"
+                                    ]
+                                }
+                            ],
+                            "info": "CustomerPaymentControl"
+                        },
+                        "items": {
+                            "$ref": "#/components/schemas/IdentifiersItem"
+                        }
+                    },
+                    "info": {
+                        "type": "string",
+                        "description": "ChannelPaymentControl"
+                    }
+                },
+                "description": "Request payload will have list of identifiers and info for search",
+                "example": {
+                    "identifiers": [
+                        {
+                            "identifierType": "customerId",
+                            "identifierValue": "1151837885"
+                        },
+                        {
+                            "identifierType": "customerContactType",
+                            "identifierValue": "CDB-ID"
+                        },
+                        {
+                            "identifierType": "paymentControlType",
+                            "identifierValue": [
+                                "INTERNATIONAL_PAYMENTS"
+                            ]
+                        }
+                    ],
+                    "info": "CustomerPaymentControl"
+                }
+            },
+            "ServiceHeaders": {
+                "required": [
+                    "customerJourney",
+                    "requestTimestamp",
+                    "sourceId",
+                    "transactionId"
+                ],
+                "type": "object",
+                "properties": {
+                    "sourceId": {
+                        "type": "string",
+                        "description": "Source Id",
+                        "example": "MOB"
+                    },
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transactions Id to uniquely define transaction. {sourceId-PMT-epochtime-uniqueId}",
+                        "example": "MOB-PMT-123456778-sample1"
+                    },
+                    "customerJourney": {
+                        "type": "string",
+                        "description": "Customer Journey responsible for transaction"
+                    },
+                    "requestTimestamp": {
+                        "type": "string",
+                        "description": "timestamp of a request. It should not be older than the yesterday date and later than current time. It should be in GMT timezone",
+                        "example": "2022-03-25 14:23:34.1234560"
+                    }
+                },
+                "description": "Class representing Service Header",
+                "example": {
+                    "sourceId": "MOB",
+                    "transactionId": "MOB-PMT-123456778-pcdemo14",
+                    "customerJourney": "ORGANIC",
+                    "requestTimestamp": "2024-02-12 01:47:12.123456"
+                }
+            },
+            "PaymentControlResponseItem": {
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "type": "string",
+                        "description": "CustDB always 10 byte (never leading 0s) but we may require to onboard alphanumeric ids in the future",
+                        "example": "1234567890"
+                    },
+                    "mdmPartyId": {
+                        "type": "string",
+                        "description": "MDM party ID is held as a string. Numeric with leading 0s",
+                        "example": "001005789"
+                    },
+                    "customerType": {
+                        "type": "string",
+                        "description": "Currently these are either Individual or Organisation",
+                        "example": "Individual",
+                        "enum": [
+                            "Individual",
+                            "Organisation",
+                            "Business Individual"
+                        ]
+                    },
+                    "sourceSystemName": {
+                        "type": "string",
+                        "description": "EDI standards are 3 char source system names",
+                        "example": "CDB"
+                    },
+                    "sourceSystemInstance": {
+                        "type": "string",
+                        "description": "EDI standards are 3 char instance names",
+                        "example": "NWB"
+                    },
+                    "brand": {
+                        "type": "string",
+                        "description": "Brand returned from ref data. Ref data has input/output field limit of 250 bytes",
+                        "example": "NWO"
+                    },
+                    "bankId": {
+                        "type": "string",
+                        "description": "BankId",
+                        "example": "123"
+                    },
+                    "customerContactType": {
+                        "type": "string",
+                        "description": "Set to CIN for CustDB",
+                        "example": "CIN"
+                    },
+                    "paymentControls": {
+                        "type": "array",
+                        "description": "Payment Control Array for Customer",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentControlsItem"
+                        }
+                    }
+                }
+            },
+            "PaymentControlsItem": {
+                "type": "object",
+                "properties": {
+                    "lastUpdatedTimestamp": {
+                        "type": "string",
+                        "description": "updated timestamp of the control, when updated in PPDS.",
+                        "example": "2024-02-12 01:47:12.123456"
+                    },
+                    "controlType": {
+                        "type": "string",
+                        "description": "descriptive value of control type",
+                        "example": "INTERNATIONAL_PAYMENTS"
+                    },
+                    "cooloffExpiryTimestamp": {
+                        "type": "string",
+                        "description": "Expiry timestamp for cool off window",
+                        "example": "2024-02-12 01:47:12.123456"
+                    },
+                    "cooloffDuration": {
+                        "type": "string",
+                        "description": "cool off duration, during which a customer can swap their values",
+                        "example": "48"
+                    },
+                    "channel": {
+                        "type": "string",
+                        "description": "Channel for which controls are applicable",
+                        "example": "MOBILE"
+                    },
+                    "controlValue": {
+                        "type": "string",
+                        "description": "descriptive value for control value",
+                        "example": "UNFREEZE"
+                    },
+                    "controlInfoSource": {
+                        "type": "string",
+                        "description": "Source on Information for the Payment controls ",
+                        "example": "PPDS"
+                    }
+                },
+                "description": "Payment Control Array for Customer"
+            }
+        }
+    }
+}

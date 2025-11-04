@@ -1,0 +1,852 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cross Reference",
+        "version": "V2",
+        "termsOfService": "https://openbanking.org.uk/terms",
+        "contact": {
+            "name": "Service Desk",
+            "url": "https://www.bankofapis.com/support"
+        },
+        "license": {
+            "url": "https://www.bankofapis.com/commercial-licence",
+            "name": "Commercial Licence"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com/customer/v2",
+            "description": "Production"
+        },
+        {
+            "url": "https://ob.sandbox.natwest.com/zerocode/bankofapis.com/customer/v2",
+            "description": "Sandbox"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Cross Reference"
+        }
+    ],
+    "paths": {
+        "/cross-reference": {
+            "description": "This Cross Reference API allows the Bank to maintain a mapping of its customers and their registrations at third-party applications.\n\n## Terminology ##\n* Bank Customer ID (customerId): The customer's unique ID at the Bank's side.\n  * Third Party Customer ID (thirdPartyCustomerId): The customer's unique ID at the API consumer's side. It is a unique ID that an API consumer can uniquely identify the customer within the consumer's orgniasation.\n* Third Party Identifier (thirdPartyId): An identifier for the API consumer uniquely in the bank's database. Where the default value the API consumer is configured for is to be used, this value can be omitted from requests.",
+            "get": {
+                "summary": "Retrieve an existing cross-reference mapping",
+                "tags": [
+                    "Cross Reference"
+                ],
+                "operationId": "get-cross-reference",
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "customerId",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "secondaryCustomerId",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "thirdPartyId",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "thirdPartyIdScheme",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "externalId",
+                                "internalId"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Request",
+                        "headers": {
+                            "x-rbs-interaction-id": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "x-fapi-interaction-id": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RetrieveCrossReference"
+                                },
+                                "examples": {
+                                    "onlyPrimary": {
+                                        "value": {
+                                            "links": {
+                                                "self": "https://api.natwest.com/customer/v2/cross-reference?customerId=1234567890&thirdPartyId=TPP&thirdPartyIdScheme=externalId"
+                                            },
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                },
+                                                "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA",
+                                                "dateTimeOfCreation": "2021-01-26T00:00:00Z"
+                                            }
+                                        }
+                                    },
+                                    "primaryAndSecondary": {
+                                        "value": {
+                                            "links": {
+                                                "self": "https://api.natwest.com/customer/v2/cross-reference?customerId=1234567890&secondaryCustomerId=1122334455&thirdPartyId=TPP&thirdPartyIdScheme=externalId"
+                                            },
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                },
+                                                "secondaryCustomerId": {
+                                                    "id": "1122334455"
+                                                },
+                                                "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA",
+                                                "dateTimeOfCreation": "2021-01-26T00:00:00Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "415": {
+                        "$ref": "#/components/responses/UnsupportedMediaType"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "customerCCG": [
+                            "crossreference:read"
+                        ]
+                    }
+                ]
+            },
+            "post": {
+                "summary": "Create a cross-reference mapping for CIN and/or BIN",
+                "operationId": "create-cross-reference",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "thirdPartyId": {
+                                        "$ref": "#/components/schemas/ThirdPartyId"
+                                    },
+                                    "customerId": {
+                                        "$ref": "#/components/schemas/CustomerId"
+                                    },
+                                    "secondaryCustomerId": {
+                                        "$ref": "#/components/schemas/CustomerId"
+                                    },
+                                    "thirdPartyCustomerId": {
+                                        "type": "string",
+                                        "pattern": "^[^a-z*£()\"\\]*$"
+                                    }
+                                },
+                                "required": [
+                                    "customerId",
+                                    "thirdPartyCustomerId"
+                                ]
+                            },
+                            "examples": {
+                                "onlyPrimary": {
+                                    "value": {
+                                        "thirdPartyId": {
+                                            "id": "TPP",
+                                            "scheme": "externalId"
+                                        },
+                                        "customerId": {
+                                            "id": "1234567890"
+                                        },
+                                        "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA"
+                                    }
+                                },
+                                "primaryAndSecondary": {
+                                    "value": {
+                                        "thirdPartyId": {
+                                            "id": "TPP",
+                                            "scheme": "externalId"
+                                        },
+                                        "customerId": {
+                                            "id": "1234567890"
+                                        },
+                                        "secondaryCustomerId": {
+                                            "id": "1122334455"
+                                        },
+                                        "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Request",
+                        "headers": {
+                            "x-rbs-interaction-id": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "x-fapi-interaction-id": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/CreateCrossReference"
+                                },
+                                "examples": {
+                                    "onlyPrimary": {
+                                        "value": {
+                                            "links": {
+                                                "self": "https://api.natwest.com/customer/v2/cross-reference?customerId=1234567890&thirdPartyId=TPP&thirdPartyIdScheme=externalId"
+                                            },
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                },
+                                                "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA"
+                                            }
+                                        }
+                                    },
+                                    "primaryAndSecondary": {
+                                        "value": {
+                                            "links": {
+                                                "self": "https://api.natwest.com/customer/v2/cross-reference?customerId=1234567890&secondaryCustomerId=1122334455&thirdPartyId=TPP&thirdPartyIdScheme=externalId"
+                                            },
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                },
+                                                "secondaryCustomerId": {
+                                                    "id": "1122334455"
+                                                },
+                                                "thirdPartyCustomerId": "1CC08919-B214-4331-B7EE-3EC32D7DABAA"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "415": {
+                        "$ref": "#/components/responses/UnsupportedMediaType"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                },
+                "tags": [
+                    "Cross Reference"
+                ],
+                "security": [
+                    {
+                        "customerCCG": [
+                            "crossreference:create"
+                        ]
+                    }
+                ]
+            },
+            "delete": {
+                "summary": "Delete a cross reference pair by CIN or BIN",
+                "operationId": "delete-cross-reference",
+                "description": "Delete a cross reference",
+                "tags": [
+                    "Cross Reference"
+                ],
+                "parameters": [
+                    {
+                        "in": "query",
+                        "name": "customerId",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "secondaryCustomerId",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 10
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "thirdPartyId",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "in": "query",
+                        "name": "thirdPartyIdScheme",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "externalId",
+                                "internalId"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Request",
+                        "headers": {
+                            "x-rbs-interaction-id": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            },
+                            "x-fapi-interaction-id": {
+                                "schema": {
+                                    "type": "string",
+                                    "format": "uuid"
+                                }
+                            }
+                        },
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DeleteCrossReference"
+                                },
+                                "examples": {
+                                    "onlyPrimary": {
+                                        "value": {
+                                            "links": {},
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                }
+                                            }
+                                        }
+                                    },
+                                    "primaryAndSecondary": {
+                                        "value": {
+                                            "links": {},
+                                            "meta": {},
+                                            "data": {
+                                                "thirdPartyId": {
+                                                    "id": "TPP",
+                                                    "scheme": "externalId"
+                                                },
+                                                "customerId": {
+                                                    "id": "1234567890"
+                                                },
+                                                "secondaryCustomerId": {
+                                                    "id": "1122334455"
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/NotFound"
+                    },
+                    "405": {
+                        "$ref": "#/components/responses/MethodNotAllowed"
+                    },
+                    "415": {
+                        "$ref": "#/components/responses/UnsupportedMediaType"
+                    },
+                    "422": {
+                        "$ref": "#/components/responses/UnprocessableEntity"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/ServerError"
+                    }
+                },
+                "security": [
+                    {
+                        "customerCCG": [
+                            "crossreference:delete"
+                        ]
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "customerCCG": {
+                "type": "oauth2",
+                "flows": {
+                    "clientCredentials": {
+                        "tokenUrl": "https://secure1t.natwest.com",
+                        "scopes": {
+                            "crossreference:read": "Retrieve existing cross-reference mapping",
+                            "crossreference:create": "Create a new cross-reference mapping",
+                            "crossreference:delete": "Delete an existing cross-reference mapping"
+                        }
+                    }
+                }
+            },
+            "customerACG": {
+                "type": "oauth2",
+                "flows": {
+                    "authorizationCode": {
+                        "tokenUrl": "https://secure1t.natwest.com",
+                        "authorizationUrl": "https://secure1.natwest.com",
+                        "scopes": {
+                            "accounts": "Access the endpoints used to create consent (account-access-consents)"
+                        }
+                    }
+                }
+            }
+        },
+        "schemas": {
+            "RetrieveCrossReference": {
+                "title": "RetrieveCrossReference",
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "$ref": "#/components/schemas/links"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/meta"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "dateTimeOfCreation": {
+                                "type": "string",
+                                "format": "date-time"
+                            },
+                            "thirdPartyId": {
+                                "$ref": "#/components/schemas/ThirdPartyId"
+                            },
+                            "customerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            },
+                            "secondaryCustomerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            },
+                            "thirdPartyCustomerId": {
+                                "type": "string",
+                                "pattern": "^[^a-z*£()\"\\]*$"
+                            }
+                        },
+                        "required": [
+                            "thirdPartyId",
+                            "customerId",
+                            "thirdPartyCustomerId"
+                        ]
+                    }
+                },
+                "required": [
+                    "links",
+                    "meta",
+                    "data"
+                ]
+            },
+            "CreateCrossReference": {
+                "title": "CreateCrossReference",
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "$ref": "#/components/schemas/links"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/meta"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "thirdPartyId": {
+                                "$ref": "#/components/schemas/ThirdPartyId"
+                            },
+                            "customerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            },
+                            "secondaryCustomerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            },
+                            "thirdPartyCustomerId": {
+                                "type": "string",
+                                "pattern": "^[^a-z*£()\"\\]*$"
+                            }
+                        },
+                        "required": [
+                            "thirdPartyId",
+                            "customerId",
+                            "thirdPartyCustomerId"
+                        ]
+                    }
+                },
+                "required": [
+                    "links",
+                    "meta",
+                    "data"
+                ]
+            },
+            "DeleteCrossReference": {
+                "title": "DeleteCrossReference",
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "$ref": "#/components/schemas/links"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/meta"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "thirdPartyId": {
+                                "$ref": "#/components/schemas/ThirdPartyId"
+                            },
+                            "customerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            },
+                            "secondaryCustomerId": {
+                                "$ref": "#/components/schemas/CustomerId"
+                            }
+                        },
+                        "required": [
+                            "thirdPartyId",
+                            "customerId"
+                        ]
+                    }
+                },
+                "required": [
+                    "links",
+                    "meta",
+                    "data"
+                ]
+            },
+            "CustomerId": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string",
+                        "maxLength": 10
+                    }
+                },
+                "required": [
+                    "id"
+                ]
+            },
+            "ThirdPartyId": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "scheme": {
+                        "type": "string",
+                        "enum": [
+                            "externalId",
+                            "internalId"
+                        ]
+                    }
+                },
+                "required": [
+                    "id",
+                    "scheme"
+                ]
+            },
+            "links": {
+                "title": "links",
+                "type": "object",
+                "description": "Links relevant to the payload",
+                "properties": {
+                    "self": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "first": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "next": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "last": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "Self"
+                ]
+            },
+            "meta": {
+                "title": "meta",
+                "type": "object",
+                "description": "Meta Data relevant to the payload",
+                "properties": {
+                    "total-pages": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "responses": {
+            "BadRequest": {
+                "description": "Bad Request",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "Unauthorized": {
+                "description": "Unauthorized",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "Forbidden": {
+                "description": "Forbidden",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "NotFound": {
+                "description": "Not Found",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "NoContent": {
+                "description": "No Content",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "MethodNotAllowed": {
+                "description": "Method Not Allowed",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "UnsupportedMediaType": {
+                "description": "Unsupported Media Type",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "UnprocessableEntity": {
+                "description": "Unprocessable Entity",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            },
+            "ServerError": {
+                "description": "Internal Server Error",
+                "headers": {
+                    "x-rbs-interaction-id": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "x-fapi-interaction-id": {
+                        "schema": {
+                            "type": "string",
+                            "format": "uuid"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

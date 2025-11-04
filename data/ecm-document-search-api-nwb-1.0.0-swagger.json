@@ -1,0 +1,203 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0",
+        "title": "Document Search API",
+        "description": "The Document Search API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost."
+    },
+    "basePath": "/documents/v1.0",
+    "paths": {
+        "/search": {
+            "post": {
+                "tags": [
+                    "Document Management"
+                ],
+                "summary": "Search in the repository using metadata",
+                "description": "Find documents in a document repository by searching using metadata.",
+                "operationId": "searchUsingPOST",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "JWT Bearer Token",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "contentType",
+                        "in": "header",
+                        "required": true,
+                        "type": "string",
+                        "description": "The type of the content being stored."
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SearchRequestObject"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SearchResponseObject"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "403": {
+                        "description": "Forbidden"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "deprecated": false
+            }
+        }
+    },
+    "definitions": {
+        "SearchRequestObject": {
+            "type": "object",
+            "properties": {
+                "maxItems": {
+                    "type": "string",
+                    "example": 10,
+                    "description": "the maximum number of query results to be returned"
+                },
+                "skipCount": {
+                    "type": "string",
+                    "example": 5,
+                    "description": "used in conjunction with maxItems to allow pagination of query results"
+                },
+                "orderBy": {
+                    "type": "string",
+                    "example": "rmCreationDate",
+                    "description": "name of the field used to order results"
+                },
+                "arrangementOrder": {
+                    "type": "string",
+                    "enum": [
+                        "ASC",
+                        "DESC"
+                    ],
+                    "example": "ASC",
+                    "default": "DESC",
+                    "description": "the direction (ascending or descending) to order query results"
+                },
+                "searchAttribute": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchAttribute"
+                    },
+                    "description": "the query used to search for documents within the repository"
+                },
+                "DocumentSource": {
+                    "type": "string",
+                    "example": "my-programme",
+                    "description": "your document source"
+                }
+            }
+        },
+        "SearchAttribute": {
+            "type": "object",
+            "properties": {
+                "name": {
+                    "type": "string",
+                    "example": "Language",
+                    "description": "the name of the metadata field to search"
+                },
+                "value": {
+                    "type": "string",
+                    "example": "ENG",
+                    "description": "the value to look for in the field"
+                },
+                "operator": {
+                    "type": "string",
+                    "example": "=",
+                    "description": "the comparison operator to be used",
+                    "enum": [
+                        "=",
+                        "<>",
+                        "LIKE"
+                    ]
+                }
+            }
+        },
+        "SearchResponseObject": {
+            "type": "object",
+            "properties": {
+                "status": {
+                    "type": "string",
+                    "example": "OK",
+                    "description": "HTTP style response message"
+                },
+                "code": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 200,
+                    "description": "HTTP style response code"
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Status message from the API",
+                    "example": "2 items"
+                },
+                "numOfItems": {
+                    "type": "integer",
+                    "example": 2,
+                    "format": "int32",
+                    "description": "The number of query result items fetched."
+                },
+                "searchResults": {
+                    "type": "array",
+                    "description": "An array of objects, each representing an individual query result. Each entry will include further metadata associated with the document.",
+                    "items": {
+                        "$ref": "#/definitions/SearchResult"
+                    }
+                },
+                "hasMoreItems": {
+                    "type": "boolean",
+                    "example": false,
+                    "description": "Indicates whether there are further query results"
+                }
+            }
+        },
+        "SearchResult": {
+            "type": "object",
+            "description": "An individual search result item, containing a map of metadata items associated with the document.",
+            "properties": {
+                "repositoryId": {
+                    "description": "The ID of the repository containing the document.",
+                    "type": "string",
+                    "example": "my-repository"
+                },
+                "objectId": {
+                    "description": "The ID of the document within the repository.",
+                    "type": "string",
+                    "example": "e86411ad-579d-48b8-b4b8-9f14b1e8bcdd"
+                }
+            },
+            "example": [
+                {
+                    "repositoryId": "my-repository",
+                    "objectId": "e86411ad-579d-48b8-b4b8-9f14b1e8bcdd"
+                },
+                {
+                    "repositoryId": "my-repository",
+                    "objectId": "b3230bcd-dcde-4976-bf97-ea876d3b50eb"
+                }
+            ]
+        }
+    }
+}

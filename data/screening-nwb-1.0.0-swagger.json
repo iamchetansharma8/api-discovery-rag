@@ -1,0 +1,945 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "contact": {
+            "name": "Service Desk",
+            "url": "https://www.bankofapis.com/support"
+        },
+        "description": "An API allowing consumers to query the screening and political exposure of natural persons or entities",
+        "license": {
+            "name": "Commercial Licence",
+            "url": "https://www.bankofapis.com/commercial-licence"
+        },
+        "title": "Screening Query API",
+        "version": "1.0.0"
+    },
+    "host": "api.natwest.com",
+    "basePath": "/screening/v1",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/financial-crimes/entities/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "correlation Id to be returned for all responses",
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Entity attributes to match on.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ScreeningEntityStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SuccessfulScreeningStatusResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "screening"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "Screening"
+                ],
+                "description": "Providing a number of mandatory search parameters, create a financial crime screening lookup and return the screening data for any matched entity",
+                "operationId": "financialCrimesEntitiesStatus",
+                "summary": "Query financial crime screening for an entity"
+            }
+        },
+        "/financial-crimes/persons/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "correlation Id to be returned for all responses",
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Natural person attributes to match on.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ScreeningPersonStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SuccessfulScreeningStatusResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "screening"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "Screening"
+                ],
+                "description": "Providing a number of mandatory search parameters, create a financial crime screening lookup and return the screening data for any matched individual",
+                "operationId": "financialCrimesPersonsStatus",
+                "summary": "Query financial crime screening for a natural person"
+            }
+        },
+        "/politically-exposed-persons/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "correlation Id to be returned for all responses",
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Natural person attributes to match on.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/ScreeningPersonStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SuccessfulScreeningStatusResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "screening"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "Screening"
+                ],
+                "description": "Providing a number of mandatory search parameters, create a politically exposed persons screening lookup and return the screening data for any matched individual",
+                "operationId": "politicallyExposedPersonsStatus",
+                "summary": "Query political exposure screening for a natural person"
+            }
+        },
+        "/sanctions/entities/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "correlation Id to be returned for all responses",
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Entity attributes to match on.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SanctionsScreeningEntityStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SuccessfulScreeningStatusResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "screening"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "Screening"
+                ],
+                "description": "Providing a number of mandatory search parameters, create a sanctions screening lookup and return the screening data for any matched entity",
+                "operationId": "sanctionsEntitiesStatus",
+                "summary": "Query sanction screening for an entity"
+            }
+        },
+        "/sanctions/persons/status": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "description": "correlation Id to be returned for all responses",
+                        "in": "header",
+                        "name": "x-fapi-interaction-id",
+                        "type": "string"
+                    },
+                    {
+                        "description": "Natural person attributes to match on.",
+                        "in": "body",
+                        "name": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/SanctionsScreeningPersonStatusRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/responses/SuccessfulScreeningStatusResponse"
+                    },
+                    "400": {
+                        "$ref": "#/responses/BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/responses/Unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/responses/Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/responses/NotFound"
+                    },
+                    "422": {
+                        "$ref": "#/responses/ValidationFailure"
+                    },
+                    "429": {
+                        "$ref": "#/responses/TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/responses/InternalServerError"
+                    },
+                    "503": {
+                        "$ref": "#/responses/ServiceUnavailable"
+                    }
+                },
+                "security": [
+                    {
+                        "clientCreds": [
+                            "screening"
+                        ]
+                    }
+                ],
+                "tags": [
+                    "Screening"
+                ],
+                "description": "Providing a number of mandatory search parameters, create a sanctions screening lookup and return the screening data for any matched individual",
+                "operationId": "sanctionsPersonsStatus",
+                "summary": "Query sanction screening for a natural person"
+            }
+        }
+    },
+    "definitions": {
+        "ErrorResponse": {
+            "properties": {
+                "status": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "errors": {
+                    "items": {
+                        "properties": {
+                            "description": {
+                                "type": "string"
+                            },
+                            "title": {
+                                "type": "string"
+                            }
+                        },
+                        "required": [
+                            "title",
+                            "description"
+                        ],
+                        "type": "object"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "status",
+                "title",
+                "description"
+            ],
+            "type": "object"
+        },
+        "PersonName": {
+            "description": "The combined name must not exceed 100 characters.",
+            "example": {
+                "firstName": "Eric",
+                "middleNames": "James",
+                "surname": "Wimp"
+            },
+            "properties": {
+                "firstName": {
+                    "example": "Eric",
+                    "maxLength": 100,
+                    "type": "string"
+                },
+                "middleNames": {
+                    "example": "James",
+                    "maxLength": 100,
+                    "type": "string"
+                },
+                "surname": {
+                    "example": "Wimp",
+                    "maxLength": 100,
+                    "type": "string"
+                }
+            },
+            "required": [
+                "firstName",
+                "surname"
+            ],
+            "type": "object"
+        },
+        "SanctionsScreeningEntityStatusRequest": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ScreeningEntityStatusRequest"
+                },
+                {
+                    "properties": {
+                        "sanctionListCountryCode": {
+                            "example": "GB",
+                            "format": "[A-Z]{2}",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "sanctionListCountryCode"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "SanctionsScreeningPersonStatusRequest": {
+            "allOf": [
+                {
+                    "$ref": "#/definitions/ScreeningPersonStatusRequest"
+                },
+                {
+                    "properties": {
+                        "sanctionListCountryCode": {
+                            "example": "GB",
+                            "format": "[A-Z]{2}",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "sanctionListCountryCode"
+                    ],
+                    "type": "object"
+                }
+            ]
+        },
+        "ScreeningEntityStatusRequest": {
+            "properties": {
+                "name": {
+                    "example": "Beano Ltd",
+                    "maxLength": 100,
+                    "type": "string"
+                },
+                "address": {
+                    "example": "29 Acacia Road",
+                    "maxLength": 250,
+                    "type": "string"
+                },
+                "city": {
+                    "example": "Nuttytown",
+                    "maxLength": 100,
+                    "type": "string"
+                },
+                "state": {
+                    "example": "Beanoshire",
+                    "maxLength": 40,
+                    "type": "string"
+                },
+                "postcode": {
+                    "example": "NU7 7YT",
+                    "maxLength": 10,
+                    "type": "string"
+                },
+                "countryOfRegistrationCode": {
+                    "example": "GB",
+                    "format": "[A-Z]{2}",
+                    "type": "string"
+                },
+                "bankIdentifierCode": {
+                    "example": "RBOSGB2102N",
+                    "format": "[a-zA-Z0-9 ]*$",
+                    "maxLength": 35,
+                    "type": "string"
+                },
+                "comment": {
+                    "example": "screening search for Beano Ltd",
+                    "maxLength": 900,
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "countryOfRegistrationCode"
+            ],
+            "type": "object"
+        },
+        "ScreeningMatch": {
+            "properties": {
+                "recordId": {
+                    "maxLength": 30,
+                    "type": "string",
+                    "example": "WCOCC00001"
+                },
+                "origin": {
+                    "maxLength": 20,
+                    "type": "string",
+                    "example": "WORLDCHECK"
+                },
+                "matchType": {
+                    "maxLength": 1000,
+                    "type": "string",
+                    "example": "NAM"
+                },
+                "matchValues": {
+                    "maxLength": 1000,
+                    "type": "string",
+                    "example": "Eric"
+                },
+                "name": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "Eric Wimp"
+                },
+                "address": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "29 Acacia Road"
+                },
+                "city": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "Nuttytown"
+                },
+                "country": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "United Kingdom"
+                },
+                "nationalIdentityCode": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "BE014812T"
+                },
+                "passportNumber": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "01929292"
+                },
+                "placeOfBirth": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "Nuttytown"
+                },
+                "dateOfBirth": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "1970-01-01"
+                },
+                "bankIdentifierCode": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "RBOSGB2102N"
+                },
+                "searchedCode": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "HERO"
+                },
+                "designation": {
+                    "maxLength": 500,
+                    "type": "string",
+                    "example": "PROSCRIBED"
+                },
+                "alternativeNames": {
+                    "type": "string",
+                    "example": "E Wimp, Bananaman"
+                },
+                "additionalInformation": {
+                    "type": "string",
+                    "example": "Suspected Superhero"
+                }
+            },
+            "required": [
+                "recordId"
+            ],
+            "type": "object"
+        },
+        "ScreeningPersonStatusRequest": {
+            "properties": {
+                "name": {
+                    "$ref": "#/definitions/PersonName"
+                },
+                "address": {
+                    "example": "29 Acacia Road",
+                    "maxLength": 250,
+                    "type": "string"
+                },
+                "city": {
+                    "example": "Nuttytown",
+                    "maxLength": 100,
+                    "type": "string"
+                },
+                "state": {
+                    "example": "Beanoshire",
+                    "maxLength": 40,
+                    "type": "string"
+                },
+                "postcode": {
+                    "example": "NU7 7YT",
+                    "maxLength": 10,
+                    "type": "string"
+                },
+                "countryOfResidenceCode": {
+                    "example": "GB",
+                    "format": "[A-Z]{2}",
+                    "type": "string"
+                },
+                "nationalIdentityCode": {
+                    "example": "BE014812T",
+                    "format": "[a-zA-Z0-9 ]*$",
+                    "maxLength": 35,
+                    "type": "string"
+                },
+                "passportNumber": {
+                    "example": "01929292",
+                    "format": "[a-zA-Z0-9 ]*$",
+                    "maxLength": 35,
+                    "type": "string"
+                },
+                "dateOfBirth": {
+                    "example": "1970-01-01",
+                    "format": "date",
+                    "type": "string"
+                },
+                "comment": {
+                    "example": "screening search for Eric",
+                    "maxLength": 900,
+                    "type": "string"
+                }
+            },
+            "required": [
+                "name",
+                "countryOfResidenceCode"
+            ],
+            "type": "object"
+        },
+        "ScreeningStatus": {
+            "properties": {
+                "id": {
+                    "example": "SAN-20200508-072458-00000",
+                    "maxLength": 64,
+                    "type": "string"
+                },
+                "timestamp": {
+                    "example": "2020-05-26T06:54:31+01:00",
+                    "format": "date-time",
+                    "type": "string"
+                },
+                "result": {
+                    "enum": [
+                        "hits",
+                        "noHits"
+                    ],
+                    "example": "hits",
+                    "type": "string"
+                },
+                "hitsCount": {
+                    "example": 1,
+                    "type": "number"
+                },
+                "hits": {
+                    "items": {
+                        "$ref": "#/definitions/ScreeningMatch"
+                    },
+                    "type": "array"
+                }
+            },
+            "required": [
+                "id",
+                "timestamp",
+                "result"
+            ],
+            "type": "object"
+        }
+    },
+    "securityDefinitions": {
+        "clientCreds": {
+            "flow": "application",
+            "scopes": {
+                "screening": "Grants access to Screening Query API"
+            },
+            "tokenUrl": "https://secure1t.natwest.com/as/token.oauth2",
+            "type": "oauth2"
+        }
+    },
+    "tags": [
+        {
+            "description": "Endpoints for screening queries",
+            "name": "Screening"
+        }
+    ],
+    "responses": {
+        "BadRequest": {
+            "description": "Bad Request",
+            "examples": {
+                "application/json": {
+                    "status": 400,
+                    "title": "Bad Request",
+                    "description": "You sent a request we did not understand."
+                }
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            }
+        },
+        "Forbidden": {
+            "description": "Forbidden",
+            "examples": {
+                "application/json": {
+                    "status": 403,
+                    "title": "Forbidden",
+                    "description": "Access Denied"
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "InternalServerError": {
+            "description": "Internal Server Error",
+            "examples": {
+                "application/json": {
+                    "status": 500,
+                    "title": "Internal Server Error",
+                    "description": "Our backend is non-functional, please try again later."
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "NotFound": {
+            "description": "Resource Not Found",
+            "examples": {
+                "application/json": {
+                    "status": 404,
+                    "title": "Not Found",
+                    "description": "You sent a request for a resource that does not exist"
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "ServiceUnavailable": {
+            "description": "Service Unavailable",
+            "examples": {
+                "application/json": {
+                    "status": 503,
+                    "title": "Service Unavailable",
+                    "description": "An error occurred, please try again later."
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "SuccessfulScreeningStatusResponse": {
+            "description": "Returns the screening status result for the referenced resource",
+            "examples": {
+                "application/json": {
+                    "id": "SAN-20200508-072458-00000",
+                    "timestamp": "2020-05-26T06:54:31+01:00",
+                    "result": "hits",
+                    "hitsCount": 1,
+                    "hits": [
+                        {
+                            "recordId": "WCOCC00001",
+                            "origin": "WORLDCHECK",
+                            "matchType": "NAM",
+                            "matchValues": "Eric",
+                            "name": "Eric Wimp",
+                            "address": "29 Acacia Road",
+                            "city": "Nuttytown",
+                            "country": "United Kingdom",
+                            "nationalIdentityCode": "BE014812T",
+                            "passportNumber": "01929292",
+                            "placeOfBirth": "Nuttytown",
+                            "dateOfBirth": "1970-01-01",
+                            "bankIdentifierCode": "RBOSGB2102N",
+                            "searchedCode": "HERO",
+                            "designation": "PROSCRIBED",
+                            "alternativeNames": "E Wimp, Bananaman",
+                            "additionalInformation": "Suspected Superhero"
+                        }
+                    ]
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ScreeningStatus"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "TooManyRequests": {
+            "description": "Too Many Requests",
+            "examples": {
+                "application/json": {
+                    "status": 429,
+                    "title": "Too Many Requests",
+                    "description": "Requests are being rate limited, please slow down."
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "Unauthorised": {
+            "description": "Unauthorised",
+            "examples": {
+                "application/json": {
+                    "status": 401,
+                    "title": "Unauthorised",
+                    "description": "Access credentials not present or invalid"
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        },
+        "ValidationFailure": {
+            "description": "Validation Failure",
+            "examples": {
+                "application/json": {
+                    "status": 422,
+                    "title": "Validation Failure",
+                    "description": "The following validation failures occurred",
+                    "errors": [
+                        {
+                            "description": "countryCode must contain 2 characters",
+                            "title": "Validation.countryCode"
+                        },
+                        {
+                            "description": "dateOfBirth must conform to ISO8601 format (YYYY-MM-DD)",
+                            "title": "Validation.dateOfBirth"
+                        }
+                    ]
+                }
+            },
+            "schema": {
+                "$ref": "#/definitions/ErrorResponse"
+            },
+            "headers": {
+                "x-fapi-interaction-id": {
+                    "type": "string",
+                    "description": "correlation id",
+                    "default": "ab12a123-abc1-1234-1a2b-a11b22c333d4"
+                }
+            }
+        }
+    }
+}
