@@ -81,3 +81,22 @@ def rag_answer(query):
     apis = retrieve_apis(query)
     prompt = build_prompt(query, apis)
     return query_groq(prompt)
+
+def get_top_apis(query, top_k=5):
+    """
+    Returns top_k most similar APIs (without LLM reasoning).
+    """
+    model, index, metadata = load_resources()
+    query_embedding = model.encode([query])
+    distances, indices = index.search(np.array(query_embedding).astype('float32'), top_k)
+    
+    top_results = []
+    for idx, dist in zip(indices[0], distances[0]):
+        if idx < len(metadata):
+            api = metadata[idx]
+            top_results.append({
+                "title": api.get("title", "Untitled API"),
+                "description": api.get("description", "No description"),
+                "score": float(1 - dist)  # normalize similarity
+            })
+    return top_results
