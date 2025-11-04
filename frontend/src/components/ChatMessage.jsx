@@ -1,6 +1,10 @@
-// src/components/ChatMessage.jsx
+import React from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+
 export default function ChatMessage({ sender, text }) {
   const isUser = sender === "user";
+
   return (
     <div className={`flex ${isUser ? "justify-end" : "justify-start"} mb-3`}>
       <div
@@ -10,7 +14,26 @@ export default function ChatMessage({ sender, text }) {
             : "bg-gray-200 text-gray-800 rounded-bl-none"
         }`}
       >
-        {text}
+        <ReactMarkdown
+          remarkPlugins={[remarkGfm]}
+          components={{
+            h2: ({ node, ...props }) => (
+              <h2 className="text-lg font-semibold mt-2" {...props} />
+            ),
+            ul: ({ node, ...props }) => (
+              <ul className="list-disc ml-5 space-y-1" {...props} />
+            ),
+            li: ({ node, ...props }) => <li {...props} />,
+            strong: ({ node, ...props }) => (
+              <strong className="font-semibold" {...props} />
+            ),
+            p: ({ node, ...props }) => (
+              <p className="mb-2 leading-relaxed" {...props} />
+            ),
+          }}
+        >
+          {text}
+        </ReactMarkdown>
       </div>
     </div>
   );
