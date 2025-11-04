@@ -1,6 +1,8 @@
+from dotenv import load_dotenv
 import os, json, requests, faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
+load_dotenv()  # loads .env file
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 INDEX_DIR = os.path.join(BASE_DIR, "../data/faiss_index")
@@ -99,4 +101,6 @@ def get_top_apis(query, top_k=5):
                 "description": api.get("description", "No description"),
                 "score": float(1 - dist)  # normalize similarity
             })
+    print(f"Top {len(top_results)} APIs for query: \"{query}\"")
+    print(top_results)
     return top_results
