@@ -8,3 +8,6 @@ __pycache__/
 .DS_Store
 **/.env
 frontend/node_modules/
+.nvm/
+~/.nvm/
+Users/chetansharma/.nvm/
