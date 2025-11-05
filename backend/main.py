@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-from rag_core import rag_answer, get_top_apis
+from rag_core import rag_answer, get_top_apis_with_full_context
 
 # Initialize FastAPI app
 app = FastAPI(
@@ -39,5 +39,5 @@ async def query_api(request: QueryRequest):
 @app.post("/top_apis")
 async def top_apis(request: QueryRequest):
     query = request.query
-    matches = get_top_apis(query)
+    matches = get_top_apis_with_full_context(query)
     return {"query": query, "top_matches": matches}

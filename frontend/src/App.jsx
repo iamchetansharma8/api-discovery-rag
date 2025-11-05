@@ -40,7 +40,7 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       <header className="bg-white shadow p-4 text-center font-semibold text-xl">
-        API Discovery Assistant
+        Semantic API Discovery Assistant
       </header>
 
       <main className="flex-1 overflow-y-auto p-4">

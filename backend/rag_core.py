@@ -1,415 +1,11 @@
-# from dotenv import load_dotenv
-# import os, json, requests, faiss
-# import numpy as np
-# from sentence_transformers import SentenceTransformer
-# load_dotenv()  # loads .env file
-
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# INDEX_DIR = os.path.join(BASE_DIR, "../data/faiss_index")
-# MODEL_NAME = "all-MiniLM-L6-v2"
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# GROQ_MODEL = "llama-3.3-70b-versatile"
-
-# _model = None
-# _index = None
-# _metadata = None
-
-# def load_resources():
-#     global _model, _index, _metadata
-#     if _model is None:
-#         _model = SentenceTransformer(MODEL_NAME)
-#     if _index is None:
-#         _index = faiss.read_index(f"{INDEX_DIR}/api_faiss.index")
-#     if _metadata is None:
-#         with open(f"{INDEX_DIR}/metadata.json") as f:
-#             _metadata = json.load(f)
-#     return _model, _index, _metadata
-
-
-# def retrieve_apis(query, k=5):
-#     model, index, metadata = load_resources()
-#     q_emb = model.encode([query], convert_to_numpy=True)
-#     faiss.normalize_L2(q_emb)
-#     scores, ids = index.search(q_emb, k)
-#     results = [metadata[i] for i in ids[0] if i != -1]
-#     return results
-
-# def build_prompt(query, apis):
-#     """
-#     Builds a structured, markdown-friendly prompt for the LLM.
-#     Expects `apis` to contain keys: title, description, and score (0–1 float).
-#     """
-
-#     # Format the context block
-#     context_blocks = []
-#     for a in apis:
-#         score_percent = round(a.get("score", 0) * 100, 1)
-#         formatted_text = (
-#             f"### {a['title']} — {score_percent}% match\n"
-#             f"**Description:** {a['description']}"
-#         )
-#         context_blocks.append(formatted_text)
-
-#     context = "\n\n".join(context_blocks)
-
-#     # Prompt body
-#     return f"""
-# You are an assistant that helps developers discover whether an API already exists for their use case.
-
-# User query:
-# > {query}
-
-# Existing APIs (with similarity scores between 0–100%):
-# {context}
-
-# ---
-
-# Please respond in **Markdown format** with clear sections using headings and bullet points.
-# Your response should include:
-
-# 1. **API Existence** — Whether a similar API already exists based on the similarity percentages.
-# 2. **Relevant APIs** — List APIs sorted by similarity (highest first), showing percentage match and explaining why they are relevant.
-# 3. **Closest Match and Differences** — If no exact match, describe the closest API and how it differs.
-# 4. **Conclusion** — Give a short, actionable summary.
-
-# Format your answer cleanly for readability — use headings (##), bold for key points, and bullet lists.
-# Be sure to **accurately reference the similarity percentages** provided above.
-# """
-
-
-# def query_groq(prompt):
-#     headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
-#     payload = {
-#         "model": GROQ_MODEL,
-#         "messages": [{"role": "user", "content": prompt}],
-#     }
-#     r = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=payload)
-#     data = r.json()
-#     if "choices" in data:
-#         return data["choices"][0]["message"]["content"]
-#     else:
-#         return f"Error: {data.get('error', 'Unknown error')}"
-
-
-# def rag_answer(query):
-#     apis = retrieve_apis(query)
-#     prompt = build_prompt(query, apis)
-#     return query_groq(prompt)
-
-# def get_top_apis(query, top_k=5):
-#     """
-#     Returns top_k most similar APIs (without LLM reasoning).
-#     """
-#     model, index, metadata = load_resources()
-#     query_embedding = model.encode([query])
-#     distances, indices = index.search(np.array(query_embedding).astype('float32'), top_k)
-    
-#     top_results = []
-#     for idx, dist in zip(indices[0], distances[0]):
-#         if idx < len(metadata):
-#             api = metadata[idx]
-#             top_results.append({
-#                 "title": api.get("title", "Untitled API"),
-#                 "description": api.get("description", "No description"),
-#                 "score": float(1 - dist)  # normalize similarity
-#             })
-#     print(f"Top {len(top_results)} APIs for query: \"{query}\"")
-#     print(top_results)
-#     return top_results
-
-
-
-
-# def build_prompt(query, apis):
-#     context_blocks = []
-#     for a in apis:
-#         endpoints_preview = [f"{e.get('method')} {e.get('path')}" for e in a['endpoints'][:3]]
-#         formatted_text = (
-#             f"API: {a['title']}\n"
-#             f"Description: {a['description']}\n"
-#             f"Endpoints: {endpoints_preview}"
-#         )
-#         context_blocks.append(formatted_text)
-
-#     context = "\n\n".join(context_blocks)
-
-#     return f"""
-# You are an assistant that helps developers find if an API already exists.
-
-# User query:
-# \"{query}\"
-
-# Existing APIs:
-# {context}
-
-# Answer concisely:
-# 1. Does a similar API already exist?
-# 2. Which ones match best and why?
-# 3. If not exact, which APIs come closest?
-# """
-
-# def build_prompt(query, apis):
-#     context_blocks = []
-#     for a in apis:
-#         endpoints_preview = "\n".join(
-#             [f"- {e.get('method', '').upper()} {e.get('path', '')}" for e in a.get('endpoints', [])[:3]]
-#         )
-#         formatted_text = (
-#             f"API Name: {a.get('title', 'N/A')}\n"
-#             f"Description: {a.get('description', 'No description provided.')}\n"
-#             f"Endpoints:\n{endpoints_preview}\n"
-#         )
-#         context_blocks.append(formatted_text.strip())
-
-#     context = "\n\n---\n\n".join(context_blocks)
-
-#     return f"""
-# You are an expert API discovery assistant that helps developers determine whether an API already exists.
-
-# ### Developer Query
-# "{query}"
-
-# ### Retrieved APIs (context)
-# {context}
-
-# ### Your Task
-# Based only on the above information:
-# 1. State whether a similar API already exists.
-# 2. List the most relevant APIs, explaining *why* they are similar.
-# 3. If no exact match exists, suggest which APIs come closest and what differences they have.
-# 4. Be concise, structured, and avoid restating context unnecessarily.
-# """
-
-# def build_prompt(query, apis):
-#     context_blocks = []
-#     for a in apis:
-#         endpoints_preview = [f"{e.get('method')} {e.get('path')}" for e in a['endpoints'][:3]]
-#         formatted_text = (
-#             f"### API: {a['title']}\n"
-#             f"**Description:** {a['description']}\n"
-#             f"**Endpoints (sample):** {', '.join(endpoints_preview)}"
-#         )
-#         context_blocks.append(formatted_text)
-
-#     context = "\n\n".join(context_blocks)
-
-#     return f"""
-# You are an assistant that helps developers discover if an API already exists for their use case.
-
-# User query:
-# > {query}
-
-# Existing APIs:
-# {context}
-
-# Please respond in **Markdown format** using clear headings and bullet points.
-# Your response **must** include:
-# 1. **API Existence** — whether a similar API already exists.
-# 2. **Relevant APIs** — list the most relevant APIs and explain why.
-# 3. **Closest Match and Differences** — if no exact match, describe the closest one and how it differs.
-# 4. **Conclusion** — short summary or suggestion.
-
-# Format your response using Markdown, with headings (##, ###), bullet points (-), and bold text for clarity.
-# """
-
-
-# from dotenv import load_dotenv
-# import os, json, requests, faiss
-# import numpy as np
-# from sentence_transformers import SentenceTransformer
-
-# load_dotenv()  # loads .env file
-
-# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-# INDEX_DIR = os.path.join(BASE_DIR, "../data/faiss_index")
-# MODEL_NAME = "all-MiniLM-L6-v2"
-# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-# GROQ_MODEL = "llama-3.3-70b-versatile"
-
-# _model = None
-# _index = None
-# _metadata = None
-
-
-# def load_resources():
-#     global _model, _index, _metadata
-#     if _model is None:
-#         _model = SentenceTransformer(MODEL_NAME)
-#     if _index is None:
-#         _index = faiss.read_index(f"{INDEX_DIR}/api_faiss.index")
-#     if _metadata is None:
-#         with open(f"{INDEX_DIR}/metadata.json") as f:
-#             _metadata = json.load(f)
-#     return _model, _index, _metadata
-
-
-# def retrieve_apis(query, k=5):
-#     model, index, metadata = load_resources()
-#     q_emb = model.encode([query], convert_to_numpy=True)
-#     faiss.normalize_L2(q_emb)
-#     scores, ids = index.search(q_emb, k)
-#     results = [metadata[i] for i in ids[0] if i != -1]
-#     return results
-
-
-# def build_prompt(query, apis):
-#     """
-#     Builds a structured, markdown-friendly prompt for the LLM.
-#     Expects `apis` to contain keys: title, description, and normalized score (0–100 float).
-#     """
-#     context_blocks = []
-#     for a in apis:
-#         score_percent = round(a.get("score", 0), 1)
-#         formatted_text = (
-#             f"### {a['title']} — {score_percent}% match\n"
-#             f"**Description:** {a['description']}"
-#         )
-#         context_blocks.append(formatted_text)
-
-#     context = "\n\n".join(context_blocks)
-
-#     return f"""
-# You are an assistant that helps developers determine whether an API already exists for their use case.
-
-# User query:
-# > {query}
-
-# Existing APIs (with similarity scores between 0–100%):
-# {context}
-
-# ---
-
-# Respond in **Markdown** with these sections:
-# 1. **API Existence** — Whether a similar API exists based on the scores.
-# 2. **Relevant APIs** — Rank by percentage and explain why each is relevant.
-# 3. **Closest Match and Differences** — If none are exact, discuss the closest and what differs.
-# 4. **Conclusion** — A short summary with an actionable recommendation.
-
-# Use headings (##), bold text for key points, and bullet lists.
-# """
-
-
-# def query_groq(prompt):
-#     headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
-#     payload = {
-#         "model": GROQ_MODEL,
-#         "messages": [{"role": "user", "content": prompt}],
-#     }
-#     r = requests.post(
-#         "https://api.groq.com/openai/v1/chat/completions",
-#         headers=headers,
-#         json=payload,
-#     )
-#     data = r.json()
-#     if "choices" in data:
-#         return data["choices"][0]["message"]["content"]
-#     else:
-#         return f"Error: {data.get('error', 'Unknown error')}"
-
-
-# def rag_answer(query):
-#     apis = get_top_apis(query, top_k=5)  # use normalized top APIs
-#     prompt = build_prompt(query, apis)
-#     return query_groq(prompt)
-
-# def get_top_apis(query, top_k=5):
-#     """
-#     Returns top_k most similar APIs using actual cosine similarity (0–1 scaled to %).
-#     """
-#     model, index, metadata = load_resources()
-#     q_emb = model.encode([query], convert_to_numpy=True)
-#     faiss.normalize_L2(q_emb)
-#     scores, ids = index.search(q_emb, top_k * 3)
-
-#     # Aggregate duplicates by title and keep highest similarity
-#     results_by_title = {}
-#     for idx, score in zip(ids[0], scores[0]):
-#         if idx < len(metadata):
-#             api = metadata[idx]
-#             title = api.get("title", "Untitled API")
-#             sim = round(score * 100, 1)  # directly use cosine similarity (0–1 → %)
-#             if title not in results_by_title or sim > results_by_title[title]["score"]:
-#                 results_by_title[title] = {
-#                     "title": title,
-#                     "description": api.get("description", "No description"),
-#                     "score": sim
-#                 }
-
-#     # Sort and select top_k unique APIs
-#     top_results = sorted(results_by_title.values(), key=lambda x: x["score"], reverse=True)[:top_k]
-
-#     print(f"Top {len(top_results)} APIs for query: \"{query}\"")
-#     print(top_results)
-#     return top_results
-
-
-# def get_top_apis(query, top_k=5):
-#     """
-#     Returns top_k most similar APIs with normalized scores (0–100%).
-#     """
-#     model, index, metadata = load_resources()
-#     query_embedding = model.encode([query])
-#     distances, indices = index.search(np.array(query_embedding).astype("float32"), top_k)
-
-#     raw_scores = []
-#     top_results = []
-#     for idx, dist in zip(indices[0], distances[0]):
-#         if idx < len(metadata):
-#             api = metadata[idx]
-#             raw_score = float(1 - dist)  # similarity proxy
-#             raw_scores.append(raw_score)
-#             top_results.append({
-#                 "title": api.get("title", "Untitled API"),
-#                 "description": api.get("description", "No description"),
-#                 "raw_score": raw_score
-#             })
-
-#     # Normalize to 0–100%
-#     if raw_scores:
-#         min_score, max_score = min(raw_scores), max(raw_scores)
-#         for a in top_results:
-#             if max_score > min_score:
-#                 normalized = (a["raw_score"] - min_score) / (max_score - min_score)
-#             else:
-#                 normalized = 0.0
-#             a["score"] = round(normalized * 100, 1)
-#             del a["raw_score"]
-
-#     return top_results
-
-# def get_top_apis(query, top_k=5):
-#     """
-#     Returns top_k most similar APIs based on actual FAISS cosine similarity scores.
-#     """
-#     model, index, metadata = load_resources()
-#     query_embedding = model.encode([query])
-#     distances, indices = index.search(np.array(query_embedding).astype('float32'), top_k * 3)
-
-#     results_by_title = {}
-#     for idx, dist in zip(indices[0], distances[0]):
-#         if idx < len(metadata):
-#             api = metadata[idx]
-#             title = api.get("title", "Untitled API")
-#             score = float(1 - dist) * 100  # convert FAISS distance to percentage similarity
-#             if title not in results_by_title or score > results_by_title[title]["score"]:
-#                 results_by_title[title] = {
-#                     "title": title,
-#                     "description": api.get("description", "No description"),
-#                     "score": round(score, 1)
-#                 }
-
-#     # Sort and take top_k unique titles
-#     top_results = sorted(results_by_title.values(), key=lambda x: x["score"], reverse=True)[:top_k]
-
-#     print(f"Top {len(top_results)} APIs for query: \"{query}\"")
-#     print(top_results)
-#     return top_results
-
 from dotenv import load_dotenv
 import os, json, requests, faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
 
+# ---------------------------
+# Setup
+# ---------------------------
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -440,61 +36,96 @@ def load_resources():
 
 
 # ---------------------------
-# Retrieve Top APIs (Top 3)
+# Retrieve and merge Top 3 APIs
 # ---------------------------
-def get_top_apis(query, top_k=3):
+def get_top_apis_with_full_context(query, top_k=3):
     """
-    Returns top_k most similar APIs using cosine similarity (%), merging duplicates by title.
+    Retrieves top_k most similar APIs and merges all metadata entries by title.
     """
     model, index, metadata = load_resources()
+
     q_emb = model.encode([query], convert_to_numpy=True)
     faiss.normalize_L2(q_emb)
-    scores, ids = index.search(q_emb, top_k * 3)  # fetch a few extra for deduplication
+    scores, ids = index.search(q_emb, top_k * 4)  # fetch extra for duplicates
 
     results_by_title = {}
     for idx, score in zip(ids[0], scores[0]):
-        if idx < len(metadata):
-            api = metadata[idx]
-            title = api.get("title", "Untitled API")
-            sim = round(float(score) * 100, 1)
-            if title not in results_by_title or sim > results_by_title[title]["score"]:
-                results_by_title[title] = {
-                    "title": title,
-                    "description": api.get("description", "No description available."),
-                    "score": sim,
-                    "endpoints": api.get("endpoints", [])[:3],  # include only top 3 endpoints
-                }
+        if idx >= len(metadata):
+            continue
+        api = metadata[idx]
+        title = api.get("title", "Untitled API")
+        sim = round(float(score) * 100, 1)
 
-    top_results = sorted(results_by_title.values(), key=lambda x: x["score"], reverse=True)[:top_k]
+        # Merge endpoints and metadata for same API title
+        if title not in results_by_title:
+            results_by_title[title] = {
+                "title": title,
+                "description": api.get("description", ""),
+                "base_urls": set(api.get("base_urls", [])),
+                "endpoints": api.get("endpoints", []),
+                "score": sim,
+            }
+        else:
+            results_by_title[title]["base_urls"].update(api.get("base_urls", []))
+            results_by_title[title]["endpoints"].extend(api.get("endpoints", []))
+            results_by_title[title]["description"] += " " + api.get("description", "")
+            results_by_title[title]["score"] = max(results_by_title[title]["score"], sim)
 
-    print(f"\nTop {len(top_results)} APIs for query: \"{query}\"")
+    # Convert base_urls from set to list, sort by score
+    merged_results = [
+        {
+            "title": v["title"],
+            "description": v["description"].strip() or "No description available.",
+            "score": v["score"],
+            "base_urls": list(v["base_urls"]),
+            "endpoints": v["endpoints"][:10],
+            "total_endpoints": len(v["endpoints"]),
+        }
+        for v in results_by_title.values()
+    ]
+
+    top_results = sorted(merged_results, key=lambda x: x["score"], reverse=True)[:top_k]
+
+    print(f"\nTop {len(top_results)} APIs for '{query}':")
     print(json.dumps(top_results, indent=2))
     return top_results
 
 
 # ---------------------------
-# Build LLM Prompt
+# Build Prompt for LLM
 # ---------------------------
 def build_prompt(query, apis):
     """
-    Builds a rich, markdown-friendly prompt for the LLM with endpoint context.
+    Builds a structured, markdown-friendly prompt giving Groq full context for 3 APIs,
+    but instructs it to analyze only the one it deems most relevant.
     """
 
+    # Create a Markdown table summarizing all top APIs
+    summary_table = "| Rank | API Title | Match % | Description (short) |\n|------|------------|----------|----------------------|\n"
+    for i, a in enumerate(apis, start=1):
+        short_desc = a["description"][:80].replace("\n", " ") + ("..." if len(a["description"]) > 80 else "")
+        summary_table += f"| {i} | **{a['title']}** | {a['score']}% | {short_desc} |\n"
+
+    # Full context with endpoints
     context_blocks = []
-    for a in apis:
+    for i, a in enumerate(apis, start=1):
         endpoints = a.get("endpoints", [])
-        score_percent = a.get("score", 0)
-        if endpoints:
-            endpoint_list = "\n".join([
-                f"- `{e.get('method', 'GET')} {e.get('path', '')}` — {e.get('summary', '')}"
-                for e in endpoints
-            ])
-        else:
-            endpoint_list = "_No endpoint details available_"
+        endpoint_list = "\n".join([
+            f"- **`{e.get('method', 'GET')} {e.get('path', '')}`** — {e.get('summary', '').strip()}"
+            for e in endpoints
+        ]) or "_No endpoints available_"
 
         block = f"""
-### {a['title']} — {score_percent}% match  
+---
+
+### 🔹 API {i}: **{a['title']}**
+**Similarity:** {a['score']}%  
 **Description:** {a['description']}  
+
+**Base URLs:**  
+{', '.join(a.get('base_urls', [])) or 'N/A'}
+
+**Total Endpoints:** {a.get('total_endpoints', len(endpoints))}
 
 **Example Endpoints:**  
 {endpoint_list}
@@ -503,32 +134,70 @@ def build_prompt(query, apis):
 
     context = "\n\n".join(context_blocks)
 
+    # Final prompt
     return f"""
-You are an API discovery assistant helping developers determine if an API already exists for their use case.
+You are an **API Discovery Assistant** that helps developers determine whether an existing API already fulfills their use case.
 
-User Query:
+---
+
+## 🧠 User Query
 > {query}
 
-Existing APIs (Top 3 by similarity score):
+---
+
+## 📊 Summary of Top 3 APIs
+These were retrieved using **semantic vector similarity**, which reflects how closely each API’s documentation matches the query.  
+It is **not** a measure of exact functionality.
+
+{summary_table}
+
+---
+
+## 📘 API Details
+Below is detailed information for each of the top APIs:
+
 {context}
 
 ---
 
-Respond in **Markdown format** with clear structure and concise reasoning.
+## 🧭 Response Instructions
 
-Your answer must include:
+1. List the three APIs (already shown above) in your response summary.  
+2. Then, analyze **only the API you believe is most relevant**, based on description and endpoints (not match %).  
+3. If the query seems unrelated to APIs, respond naturally and state that it's outside the scope.
 
-1. **API Existence** — Whether a similar API exists based on similarity scores.
-2. **Relevant APIs** — Ranked list with percentage match and reasoning.
-3. **Closest Match and Differences** — If none exact, discuss the closest and what differs.
-4. **Conclusion** — A brief summary and actionable next step.
+---
 
-Focus especially on **endpoint names**, **methods**, and **summaries** to determine relevance.
+## 🧩 Response Format (for relevant queries)
+
+### 🏷️ API Analysis for "{query}"
+
+#### **1️⃣ API Existence**
+Say whether a similar API exists and which one you find most relevant.
+
+#### **2️⃣ Relevant Endpoints**
+List the key endpoints and briefly explain their purpose.
+
+#### **3️⃣ Differences / Gaps**
+Describe any missing features or mismatches.
+
+#### **4️⃣ Conclusion**
+Provide a short recommendation — reuse, extend, or create new API.
+
+#### **Data Used by LLM of Top 3 Matches**
+List all three APIs with their titles and match percentages, as a short Markdown table. Make this table beautifully formatted.
+---
+
+🟢 **Formatting Rules**
+- Use clear Markdown headings and bullet points.
+- Highlight API names and endpoints in **bold** and `code` formatting.
+- Be concise, factual, and developer-friendly.
+- Do not justify similarity percentages — they’re only context.
 """
 
 
 # ---------------------------
-# Query Groq LLM
+# Query Groq
 # ---------------------------
 def query_groq(prompt):
     headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
@@ -545,9 +214,203 @@ def query_groq(prompt):
 
 
 # ---------------------------
-# Main RAG Answer
+# Main RAG Function
 # ---------------------------
 def rag_answer(query):
-    apis = get_top_apis(query, top_k=3)
+    apis = get_top_apis_with_full_context(query, top_k=3)
     prompt = build_prompt(query, apis)
     return query_groq(prompt)
+
+
+# from dotenv import load_dotenv
+# import os, json, requests, faiss
+# import numpy as np
+# from sentence_transformers import SentenceTransformer
+
+# # ---------------------------
+# # Setup
+# # ---------------------------
+# load_dotenv()
+
+# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+# INDEX_DIR = os.path.join(BASE_DIR, "data/faiss_index")
+
+# MODEL_NAME = "all-MiniLM-L6-v2"
+# GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# GROQ_MODEL = "llama-3.3-70b-versatile"
+
+# _model = None
+# _index = None
+# _metadata = None
+
+
+# # ---------------------------
+# # Load model, FAISS, metadata
+# # ---------------------------
+# def load_resources():
+#     global _model, _index, _metadata
+#     if _model is None:
+#         _model = SentenceTransformer(MODEL_NAME)
+#     if _index is None:
+#         _index = faiss.read_index(f"{INDEX_DIR}/api_faiss.index")
+#     if _metadata is None:
+#         with open(f"{INDEX_DIR}/metadata.json") as f:
+#             _metadata = json.load(f)
+#     return _model, _index, _metadata
+
+
+# # ---------------------------
+# # Retrieve Top API (with full metadata merged)
+# # ---------------------------
+# def get_top_api_with_full_context(query):
+#     """
+#     Finds the top API match and merges all metadata entries for the same title.
+#     """
+#     model, index, metadata = load_resources()
+
+#     # Step 1: Encode and search
+#     q_emb = model.encode([query], convert_to_numpy=True)
+#     faiss.normalize_L2(q_emb)
+#     scores, ids = index.search(q_emb, 5)  # fetch a few to handle duplicates
+
+#     best_idx = int(ids[0][0])
+#     best_score = float(scores[0][0])
+#     best_api = metadata[best_idx]
+#     best_title = best_api.get("title", "Untitled API")
+
+#     # Step 2: Merge all chunks for the same API title
+#     merged_endpoints = []
+#     merged_descriptions = set()
+#     base_urls = set()
+
+#     for item in metadata:
+#         if item.get("title") == best_title:
+#             merged_endpoints.extend(item.get("endpoints", []))
+#             desc = item.get("description")
+#             if desc:
+#                 merged_descriptions.add(desc)
+#             for url in item.get("base_urls", []):
+#                 base_urls.add(url)
+
+#     # Step 3: Build the unified API object
+#     merged_api = {
+#         "title": best_title,
+#         "description": " ".join(list(merged_descriptions)) or "No description available.",
+#         "score": round(best_score * 100, 1),
+#         "base_urls": list(base_urls),
+#         "total_endpoints": len(merged_endpoints),
+#         "endpoints": merged_endpoints[:10],  # limit to 10 for clarity
+#     }
+
+#     print(f"\nTop API for '{query}': {best_title} ({merged_api['score']}%) with {len(merged_endpoints)} endpoints")
+#     return merged_api
+
+# def build_prompt(query, apis):
+#     """
+#     Builds a clearly formatted, Markdown-enforced prompt for LLM with top API details.
+#     """
+
+#     context_blocks = []
+#     for i, a in enumerate(apis, start=1):
+#         endpoints = a.get("endpoints", [])
+#         endpoint_list = "\n".join([
+#             f"- **`{e.get('method', 'GET')} {e.get('path', '')}`** — {e.get('summary', '').strip()}"
+#             for e in endpoints
+#         ]) or "_No endpoints available_"
+
+#         block = f"""
+# ---
+
+# ### 🔹 API {i}: **{a['title']}**
+# **Similarity:** {a['score']}%  
+# **Description:** {a['description']}  
+
+# **Endpoints:**  
+# {endpoint_list}
+# """
+#         context_blocks.append(block.strip())
+
+#     context = "\n\n".join(context_blocks)
+
+#     return f"""
+# You are an **API Discovery Assistant** that helps developers determine whether an existing API already fulfills their use case.
+
+# ---
+
+# ## 🧠 User Query
+# > {query}
+
+# ---
+
+# ## 📘 Top Relevant APIs (by vector similarity)
+# {context}
+
+# ---
+
+# ### 🔍 Note on Similarity Scores
+# Each percentage shown above represents **semantic similarity** between the query and the API documentation,  
+# as computed by vector embeddings — not an exact measure of functional overlap.  
+# Use this as a **contextual hint**, not as a strict determinant of relevance.
+
+# ---
+
+# ## 🧩 Response Instructions
+
+# You must decide how to respond **based on the nature of the query**:
+
+# 1. **If the query clearly relates to APIs, endpoints, data retrieval, or developer integration:**
+#    - Follow the structured Markdown format below.
+
+# 2. **If the query is unrelated to APIs (e.g., general questions, personal queries, etc.):**
+#    - **Do not follow the structured format.**
+#    - Instead, respond naturally with a short, polite message explaining that the query is outside the scope of API discovery.
+
+# ---
+
+# ## 📑 Structured Format (For Relevant Queries)
+
+# ### 🏷️ API Analysis for "{query}"
+
+# #### **1️⃣ API Existence**
+# State whether a similar API exists.  
+# You may reference the similarity percentage as context, but base your reasoning on endpoint details and descriptions.
+
+# #### **2️⃣ Relevant Endpoints**
+# List endpoints that align with the user’s intent:
+# - `GET /example` — what it does and why it’s relevant.
+
+# #### **3️⃣ Differences / Gaps**
+# Describe what is missing or differs from the expected functionality.
+
+# #### **4️⃣ Conclusion**
+# Provide a concise recommendation — reuse, extend, or create a new API.
+
+# ---
+
+# 🟢 **Formatting rules:**
+# - Use clear section headings (`##`, `###`), bullet points, and bold text.
+# - Be concise, accurate, and developer-focused.
+# - Avoid overexplaining similarity percentages.
+# """
+
+# def query_groq(prompt):
+#     headers = {"Authorization": f"Bearer {GROQ_API_KEY}"}
+#     payload = {
+#         "model": GROQ_MODEL,
+#         "messages": [{"role": "user", "content": prompt}],
+#     }
+#     r = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=payload)
+#     data = r.json()
+#     if "choices" in data:
+#         return data["choices"][0]["message"]["content"]
+#     else:
+#         return f"Error: {data.get('error', 'Unknown error')}"
+
+
+# # ---------------------------
+# # Main RAG Function
+# # ---------------------------
+# def rag_answer(query):
+#     api = get_top_api_with_full_context(query)
+#     prompt = build_prompt(query, [api])
+#     return query_groq(prompt)
