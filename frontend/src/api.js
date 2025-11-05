@@ -1,7 +1,7 @@
 // src/api.js
 const isProd = import.meta.env.MODE === "production";
 export const BASE_URL = isProd
-  ? "https://api-discovery-rag.onrender.com/" // Render backend URL
+  ? "https://api-discovery-rag.onrender.com" // Render backend URL
   : "http://127.0.0.1:8000"; // Local dev
 
 export async function queryBackend(message) {
