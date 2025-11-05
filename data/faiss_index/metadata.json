@@ -1,0 +1,8060 @@
+[
+  {
+    "id": 0,
+    "title": "Account and Transaction API Specification",
+    "description": "Swagger for Account and Transaction API Specification",
+    "endpoints": [
+      {
+        "path": "/account-access-consents",
+        "method": "POST",
+        "summary": "Create an account access consent",
+        "parameters": [
+          "body",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get an account access consent",
+        "parameters": [
+          "ConsentId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete an account access consent",
+        "parameters": [
+          "ConsentId",
+          "Authorization",
+          "x-fapi-financial-id"
+        ],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts",
+        "method": "GET",
+        "summary": "Get Accounts",
+        "parameters": [
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/transactions",
+        "method": "GET",
+        "summary": "Get Account Transactions",
+        "parameters": [
+          "AccountId",
+          "fromBookingDateTime",
+          "toBookingDateTime",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Account and Transaction API Specification",
+      "version": "v3.1.11",
+      "description": "Swagger for Account and Transaction API Specification",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/account-access-consents",
+          "method": "POST",
+          "summary": "Create an account access consent",
+          "parameters": [
+            "body",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get an account access consent",
+          "parameters": [
+            "ConsentId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete an account access consent",
+          "parameters": [
+            "ConsentId",
+            "Authorization",
+            "x-fapi-financial-id"
+          ],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts",
+          "method": "GET",
+          "summary": "Get Accounts",
+          "parameters": [
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/transactions",
+          "method": "GET",
+          "summary": "Get Account Transactions",
+          "parameters": [
+            "AccountId",
+            "fromBookingDateTime",
+            "toBookingDateTime",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 1,
+    "title": "Account and Transaction API Specification",
+    "description": "Swagger for Account and Transaction API Specification",
+    "endpoints": [
+      {
+        "path": "/account-access-consents",
+        "method": "POST",
+        "summary": "Create an account access consent",
+        "parameters": [
+          "body",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get an account access consent",
+        "parameters": [
+          "ConsentId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete an account access consent",
+        "parameters": [
+          "ConsentId",
+          "Authorization",
+          "x-fapi-financial-id"
+        ],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts",
+        "method": "GET",
+        "summary": "Get Accounts",
+        "parameters": [
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}",
+        "method": "GET",
+        "summary": "Get Account",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/transactions",
+        "method": "GET",
+        "summary": "Get Account Transactions",
+        "parameters": [
+          "AccountId",
+          "fromBookingDateTime",
+          "toBookingDateTime",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/statements",
+        "method": "GET",
+        "summary": "Get Account Statements",
+        "parameters": [
+          "AccountId",
+          "fromStatementDateTime",
+          "toStatementDateTime",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/beneficiaries",
+        "method": "GET",
+        "summary": "Get Account Beneficiaries",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/balances",
+        "method": "GET",
+        "summary": "Get Account Balances",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/direct-debits",
+        "method": "GET",
+        "summary": "Get Account Direct Debits",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/standing-orders",
+        "method": "GET",
+        "summary": "Get Account Standing Orders",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/product",
+        "method": "GET",
+        "summary": "Get Account Product",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/scheduled-payments",
+        "method": "GET",
+        "summary": "Get Account Scheduled Payments",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/offers",
+        "method": "GET",
+        "summary": "Get Account Offer",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Account and Transaction API Specification",
+      "version": "v3.1.11",
+      "description": "Swagger for Account and Transaction API Specification",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/account-access-consents",
+          "method": "POST",
+          "summary": "Create an account access consent",
+          "parameters": [
+            "body",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get an account access consent",
+          "parameters": [
+            "ConsentId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete an account access consent",
+          "parameters": [
+            "ConsentId",
+            "Authorization",
+            "x-fapi-financial-id"
+          ],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts",
+          "method": "GET",
+          "summary": "Get Accounts",
+          "parameters": [
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}",
+          "method": "GET",
+          "summary": "Get Account",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/transactions",
+          "method": "GET",
+          "summary": "Get Account Transactions",
+          "parameters": [
+            "AccountId",
+            "fromBookingDateTime",
+            "toBookingDateTime",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/statements",
+          "method": "GET",
+          "summary": "Get Account Statements",
+          "parameters": [
+            "AccountId",
+            "fromStatementDateTime",
+            "toStatementDateTime",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/beneficiaries",
+          "method": "GET",
+          "summary": "Get Account Beneficiaries",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/balances",
+          "method": "GET",
+          "summary": "Get Account Balances",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/direct-debits",
+          "method": "GET",
+          "summary": "Get Account Direct Debits",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/standing-orders",
+          "method": "GET",
+          "summary": "Get Account Standing Orders",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/product",
+          "method": "GET",
+          "summary": "Get Account Product",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/scheduled-payments",
+          "method": "GET",
+          "summary": "Get Account Scheduled Payments",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/offers",
+          "method": "GET",
+          "summary": "Get Account Offer",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 2,
+    "title": "View Controls API",
+    "description": "Our view control service offers the ability to view controls from customer controls collection in Permissions Preferences Data Store",
+    "endpoints": [
+      {
+        "path": "/permissions-preferences/v1.0/controls",
+        "method": "POST",
+        "summary": "",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "View Controls API",
+      "version": "V1",
+      "description": "Our view control service offers the ability to view controls from customer controls collection in Permissions Preferences Data Store",
+      "base_urls": [
+        "https://api.natwest.com"
+      ],
+      "endpoints": [
+        {
+          "path": "/permissions-preferences/v1.0/controls",
+          "method": "POST",
+          "summary": "",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 3,
+    "title": "FX Holiday Calendar API Specification",
+    "description": "OAS3 for FX Holiday Calendar API",
+    "endpoints": [
+      {
+        "path": "/holiday-calendar/fx",
+        "method": "POST",
+        "summary": "Get Holiday Calendar by currency",
+        "parameters": [
+          "authorisation",
+          "ccyList",
+          "startDate",
+          "endDate"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "415",
+          "422",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "FX Holiday Calendar API Specification",
+      "version": "v1",
+      "description": "OAS3 for FX Holiday Calendar API",
+      "base_urls": [
+        "https://api.natwest.com/trading-data/trading-dates/v1",
+        "https://ob.sandbox.natwest.com/zerocode/trading-dates.org/FXHolidayCalendar/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/holiday-calendar/fx",
+          "method": "POST",
+          "summary": "Get Holiday Calendar by currency",
+          "parameters": [
+            "authorisation",
+            "ccyList",
+            "startDate",
+            "endDate"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "415",
+            "422",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 4,
+    "title": "OBL VRP Profile",
+    "description": "VRP OpenAPI Specification",
+    "endpoints": [
+      {
+        "path": "/domestic-vrp-consents",
+        "method": "POST",
+        "summary": "Create a domestic VRP consent",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Retrieve a domestic VRP consent",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}/funds-confirmation",
+        "method": "POST",
+        "summary": "Confirm availability of funds for a VRP",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrps",
+        "method": "POST",
+        "summary": "Create a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrps/{DomesticVRPId}",
+        "method": "GET",
+        "summary": "Retrieve a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "OBL VRP Profile",
+      "version": "4.0.0",
+      "description": "VRP OpenAPI Specification",
+      "base_urls": [
+        "https://api.natwest.com/open-banking/v4.0/pisp"
+      ],
+      "endpoints": [
+        {
+          "path": "/domestic-vrp-consents",
+          "method": "POST",
+          "summary": "Create a domestic VRP consent",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Retrieve a domestic VRP consent",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}/funds-confirmation",
+          "method": "POST",
+          "summary": "Confirm availability of funds for a VRP",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrps",
+          "method": "POST",
+          "summary": "Create a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrps/{DomesticVRPId}",
+          "method": "GET",
+          "summary": "Retrieve a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 5,
+    "title": "Event Subscription API Specification - ASPSP Endpoints",
+    "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+    "endpoints": [
+      {
+        "path": "/event-subscriptions",
+        "method": "POST",
+        "summary": "Create Event Subscription",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/event-subscriptions",
+        "method": "GET",
+        "summary": "Get Event Subscriptions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/event-subscriptions/{EventSubscriptionId}",
+        "method": "GET",
+        "summary": "Get Event Subscription By ID",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/event-subscriptions/{EventSubscriptionId}",
+        "method": "PUT",
+        "summary": "Change Event Subscription",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/event-subscriptions/{EventSubscriptionId}",
+        "method": "DELETE",
+        "summary": "Delete Event Subscription",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events",
+        "method": "POST",
+        "summary": "Get Events which have yet to be successfully sent as a Real Time Notification",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Event Subscription API Specification - ASPSP Endpoints",
+      "version": "v4.0.0",
+      "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/event-subscriptions",
+          "method": "POST",
+          "summary": "Create Event Subscription",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/event-subscriptions",
+          "method": "GET",
+          "summary": "Get Event Subscriptions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/event-subscriptions/{EventSubscriptionId}",
+          "method": "GET",
+          "summary": "Get Event Subscription By ID",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/event-subscriptions/{EventSubscriptionId}",
+          "method": "PUT",
+          "summary": "Change Event Subscription",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/event-subscriptions/{EventSubscriptionId}",
+          "method": "DELETE",
+          "summary": "Delete Event Subscription",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events",
+          "method": "POST",
+          "summary": "Get Events which have yet to be successfully sent as a Real Time Notification",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "title": "Upload Document API",
+    "description": "The Document Management API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+    "endpoints": [
+      {
+        "path": "/upload",
+        "method": "POST",
+        "summary": "Store a new document",
+        "parameters": [
+          "Authorization",
+          "MetaData",
+          "file"
+        ],
+        "responses": [
+          "201",
+          "401",
+          "403",
+          "404"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Upload Document API",
+      "version": "1.0",
+      "description": "The Document Management API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/upload",
+          "method": "POST",
+          "summary": "Store a new document",
+          "parameters": [
+            "Authorization",
+            "MetaData",
+            "file"
+          ],
+          "responses": [
+            "201",
+            "401",
+            "403",
+            "404"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 7,
+    "title": "Payit Universal API ",
+    "description": "Universal API to access Payit Open Banking functions.",
+    "endpoints": [
+      {
+        "path": "/health",
+        "method": "GET",
+        "summary": "Health of API",
+        "parameters": [],
+        "responses": [
+          "200"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit/bank-list",
+        "method": "GET",
+        "summary": "Eligible Banks",
+        "parameters": [
+          "Accept",
+          "Authorization",
+          "CustomerID"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit",
+        "method": "POST",
+        "summary": "Initiate Payments",
+        "parameters": [
+          "x-transaction-ID",
+          "x-customer-device",
+          "x-user-consent",
+          "x-customer-app",
+          "Accept",
+          "Authorization",
+          "CustomerID"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit/jwks",
+        "method": "GET",
+        "summary": "Retrive the signature",
+        "parameters": [
+          "Accept",
+          "Authorization",
+          "CustomerID"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/mechant-payments-confirm",
+        "method": "POST",
+        "summary": "Payment Confirmation Webhook",
+        "parameters": [
+          "x-transaction-ID",
+          "payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments-confirm/paymentReferenceID/{paymentReferenceID}/tppReferenceID/{tppReferenceID}",
+        "method": "PATCH",
+        "summary": "Awaiting Payment Status Update Webhook",
+        "parameters": [
+          "x-transaction-ID",
+          "payit-signature",
+          "PaymentReferenceID",
+          "TPPReferenceID"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "500"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit/refund",
+        "method": "POST",
+        "summary": "Refund Request",
+        "parameters": [
+          "Accept",
+          "Authorization",
+          "CustomerID"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-refunds-confirm",
+        "method": "POST",
+        "summary": "Refund Confirmation Webhook",
+        "parameters": [
+          "payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "500"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit/reconciliation/{filetype}/{date}/{run}",
+        "method": "GET",
+        "summary": "Reconciliation Files",
+        "parameters": [
+          "filetype",
+          "date",
+          "run",
+          "Authorization",
+          "CustomerID"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/{CustomerID}/payit/reconciliation-version/{reconciliationVersion}",
+        "method": "POST",
+        "summary": "Reconciliation Version",
+        "parameters": [
+          "Authorization",
+          "CustomerID",
+          "reconciliationVersion"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Payit Universal API ",
+      "version": "1.0",
+      "description": "Universal API to access Payit Open Banking functions.",
+      "base_urls": [
+        "https://localhost:7061/api"
+      ],
+      "endpoints": [
+        {
+          "path": "/health",
+          "method": "GET",
+          "summary": "Health of API",
+          "parameters": [],
+          "responses": [
+            "200"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit/bank-list",
+          "method": "GET",
+          "summary": "Eligible Banks",
+          "parameters": [
+            "Accept",
+            "Authorization",
+            "CustomerID"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit",
+          "method": "POST",
+          "summary": "Initiate Payments",
+          "parameters": [
+            "x-transaction-ID",
+            "x-customer-device",
+            "x-user-consent",
+            "x-customer-app",
+            "Accept",
+            "Authorization",
+            "CustomerID"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit/jwks",
+          "method": "GET",
+          "summary": "Retrive the signature",
+          "parameters": [
+            "Accept",
+            "Authorization",
+            "CustomerID"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/mechant-payments-confirm",
+          "method": "POST",
+          "summary": "Payment Confirmation Webhook",
+          "parameters": [
+            "x-transaction-ID",
+            "payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments-confirm/paymentReferenceID/{paymentReferenceID}/tppReferenceID/{tppReferenceID}",
+          "method": "PATCH",
+          "summary": "Awaiting Payment Status Update Webhook",
+          "parameters": [
+            "x-transaction-ID",
+            "payit-signature",
+            "PaymentReferenceID",
+            "TPPReferenceID"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "500"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit/refund",
+          "method": "POST",
+          "summary": "Refund Request",
+          "parameters": [
+            "Accept",
+            "Authorization",
+            "CustomerID"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-refunds-confirm",
+          "method": "POST",
+          "summary": "Refund Confirmation Webhook",
+          "parameters": [
+            "payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "500"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit/reconciliation/{filetype}/{date}/{run}",
+          "method": "GET",
+          "summary": "Reconciliation Files",
+          "parameters": [
+            "filetype",
+            "date",
+            "run",
+            "Authorization",
+            "CustomerID"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/{CustomerID}/payit/reconciliation-version/{reconciliationVersion}",
+          "method": "POST",
+          "summary": "Reconciliation Version",
+          "parameters": [
+            "Authorization",
+            "CustomerID",
+            "reconciliationVersion"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 8,
+    "title": "VRP API Specification",
+    "description": "Merchant integration VRP API Specification",
+    "endpoints": [
+      {
+        "path": "/eligible-banks/{companyId}/{brandId}",
+        "method": "GET",
+        "summary": "Eligible Banks",
+        "parameters": [
+          "Authorization",
+          "brandId",
+          "companyId",
+          "paymentType",
+          "Accept"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents",
+        "method": "POST",
+        "summary": "Initiate Consent",
+        "parameters": [
+          "Authorization",
+          "Accept",
+          "x-consent-ID",
+          "x-user-consent",
+          "payload"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/merchant-vrp-consent-confirm",
+        "method": "POST",
+        "summary": "Consent Confirmation Webhook",
+        "parameters": [
+          "ConsentConfirm-Param",
+          "x-consent-ID",
+          "payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{companyId}/{brandId}/{consentPayitId}",
+        "method": "DELETE",
+        "summary": "Revoke Consent",
+        "parameters": [
+          "Authorization",
+          "Accept",
+          "brandId",
+          "companyId",
+          "consentPayitId",
+          "x-consent-ID"
+        ],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-payments",
+        "method": "POST",
+        "summary": "Initiate VRP Payment",
+        "parameters": [
+          "Accept",
+          "Authorization",
+          "payload",
+          "x-consent-ID",
+          "x-transaction-ID"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments-confirm",
+        "method": "POST",
+        "summary": "Payment Confirmation Webhook",
+        "parameters": [
+          "PaymentConfirm-Param",
+          "x-transaction-ID",
+          "Payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments-confirm/PaymentReferenceID/{PaymentReferenceID}/TPPReferenceID/{TPPReferenceID}",
+        "method": "PATCH",
+        "summary": "Awaiting Payment Status Update Webhook",
+        "parameters": [
+          "PaymentStatusPatch-Param",
+          "x-transaction-ID",
+          "Payit-signature",
+          "PaymentReferenceID",
+          "TPPReferenceID"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-refunds",
+        "method": "POST",
+        "summary": "Refund Request",
+        "parameters": [
+          "Authorization",
+          "Accept",
+          "payload"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-refunds-confirm",
+        "method": "POST",
+        "summary": "Refund Confirmation Webhook",
+        "parameters": [
+          "payit-signature",
+          "payload"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/reconciliation-version/{companyId}/{reconciliationVersion}",
+        "method": "POST",
+        "summary": "Reconciliation Version",
+        "parameters": [
+          "companyId",
+          "reconciliationVersion",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "500"
+        ]
+      },
+      {
+        "path": "/download/reconciliation/{filetype}/{date}/{run}",
+        "method": "GET",
+        "summary": "Reconciliation Files",
+        "parameters": [
+          "filetype",
+          "date",
+          "run",
+          "companyIdentification",
+          "brandIdentification",
+          "x-FOV-indicator",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "VRP API Specification",
+      "version": "3.0.0",
+      "description": "Merchant integration VRP API Specification",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/eligible-banks/{companyId}/{brandId}",
+          "method": "GET",
+          "summary": "Eligible Banks",
+          "parameters": [
+            "Authorization",
+            "brandId",
+            "companyId",
+            "paymentType",
+            "Accept"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents",
+          "method": "POST",
+          "summary": "Initiate Consent",
+          "parameters": [
+            "Authorization",
+            "Accept",
+            "x-consent-ID",
+            "x-user-consent",
+            "payload"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/merchant-vrp-consent-confirm",
+          "method": "POST",
+          "summary": "Consent Confirmation Webhook",
+          "parameters": [
+            "ConsentConfirm-Param",
+            "x-consent-ID",
+            "payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{companyId}/{brandId}/{consentPayitId}",
+          "method": "DELETE",
+          "summary": "Revoke Consent",
+          "parameters": [
+            "Authorization",
+            "Accept",
+            "brandId",
+            "companyId",
+            "consentPayitId",
+            "x-consent-ID"
+          ],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-payments",
+          "method": "POST",
+          "summary": "Initiate VRP Payment",
+          "parameters": [
+            "Accept",
+            "Authorization",
+            "payload",
+            "x-consent-ID",
+            "x-transaction-ID"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments-confirm",
+          "method": "POST",
+          "summary": "Payment Confirmation Webhook",
+          "parameters": [
+            "PaymentConfirm-Param",
+            "x-transaction-ID",
+            "Payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments-confirm/PaymentReferenceID/{PaymentReferenceID}/TPPReferenceID/{TPPReferenceID}",
+          "method": "PATCH",
+          "summary": "Awaiting Payment Status Update Webhook",
+          "parameters": [
+            "PaymentStatusPatch-Param",
+            "x-transaction-ID",
+            "Payit-signature",
+            "PaymentReferenceID",
+            "TPPReferenceID"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-refunds",
+          "method": "POST",
+          "summary": "Refund Request",
+          "parameters": [
+            "Authorization",
+            "Accept",
+            "payload"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-refunds-confirm",
+          "method": "POST",
+          "summary": "Refund Confirmation Webhook",
+          "parameters": [
+            "payit-signature",
+            "payload"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/reconciliation-version/{companyId}/{reconciliationVersion}",
+          "method": "POST",
+          "summary": "Reconciliation Version",
+          "parameters": [
+            "companyId",
+            "reconciliationVersion",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "500"
+          ]
+        },
+        {
+          "path": "/download/reconciliation/{filetype}/{date}/{run}",
+          "method": "GET",
+          "summary": "Reconciliation Files",
+          "parameters": [
+            "filetype",
+            "date",
+            "run",
+            "companyIdentification",
+            "brandIdentification",
+            "x-FOV-indicator",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 9,
+    "title": "Screening Query API",
+    "description": "An API allowing consumers to query the screening and political exposure of natural persons or entities",
+    "endpoints": [
+      {
+        "path": "/financial-crimes/entities/status",
+        "method": "POST",
+        "summary": "Query financial crime screening for an entity",
+        "parameters": [
+          "x-fapi-interaction-id",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      },
+      {
+        "path": "/financial-crimes/persons/status",
+        "method": "POST",
+        "summary": "Query financial crime screening for a natural person",
+        "parameters": [
+          "x-fapi-interaction-id",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      },
+      {
+        "path": "/politically-exposed-persons/status",
+        "method": "POST",
+        "summary": "Query political exposure screening for a natural person",
+        "parameters": [
+          "x-fapi-interaction-id",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      },
+      {
+        "path": "/sanctions/entities/status",
+        "method": "POST",
+        "summary": "Query sanction screening for an entity",
+        "parameters": [
+          "x-fapi-interaction-id",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      },
+      {
+        "path": "/sanctions/persons/status",
+        "method": "POST",
+        "summary": "Query sanction screening for a natural person",
+        "parameters": [
+          "x-fapi-interaction-id",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Screening Query API",
+      "version": "1.0.0",
+      "description": "An API allowing consumers to query the screening and political exposure of natural persons or entities",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/financial-crimes/entities/status",
+          "method": "POST",
+          "summary": "Query financial crime screening for an entity",
+          "parameters": [
+            "x-fapi-interaction-id",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        },
+        {
+          "path": "/financial-crimes/persons/status",
+          "method": "POST",
+          "summary": "Query financial crime screening for a natural person",
+          "parameters": [
+            "x-fapi-interaction-id",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        },
+        {
+          "path": "/politically-exposed-persons/status",
+          "method": "POST",
+          "summary": "Query political exposure screening for a natural person",
+          "parameters": [
+            "x-fapi-interaction-id",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        },
+        {
+          "path": "/sanctions/entities/status",
+          "method": "POST",
+          "summary": "Query sanction screening for an entity",
+          "parameters": [
+            "x-fapi-interaction-id",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        },
+        {
+          "path": "/sanctions/persons/status",
+          "method": "POST",
+          "summary": "Query sanction screening for a natural person",
+          "parameters": [
+            "x-fapi-interaction-id",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 10,
+    "title": "Payout Service APIs",
+    "description": "This page lists all the rest apis for Payout Service",
+    "endpoints": [
+      {
+        "path": "/merchant/payouts",
+        "method": "POST",
+        "summary": "Create payout request",
+        "parameters": [
+          "payoutInitiationRequest",
+          "x-fapi-interaction-id",
+          "x-idempotency-key",
+          "x-jws-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant/payouts/{payoutId}",
+        "method": "GET",
+        "summary": "Get payout status by payout id",
+        "parameters": [
+          "payoutId",
+          "x-fapi-interaction-id",
+          "x-jws-signature"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant/payouts/{payoutId}/cancel",
+        "method": "PUT",
+        "summary": "Cancel payout by payout id",
+        "parameters": [
+          "payoutId",
+          "x-fapi-interaction-id",
+          "x-jws-signature"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant/payouts/{payoutId}/unlock",
+        "method": "PUT",
+        "summary": "Unlock payout request in payment journey",
+        "parameters": [
+          "payoutId",
+          "x-fapi-interaction-id",
+          "x-jws-signature"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant/payouts/{payoutId}/sendReminder",
+        "method": "PUT",
+        "summary": "Send reminder: to send the Payment link again as a Reminder Email",
+        "parameters": [
+          "payoutId",
+          "x-fapi-interaction-id",
+          "x-jws-signature"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Payout Service APIs",
+      "version": "1.0-SNAPSHOT",
+      "description": "This page lists all the rest apis for Payout Service",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/merchant/payouts",
+          "method": "POST",
+          "summary": "Create payout request",
+          "parameters": [
+            "payoutInitiationRequest",
+            "x-fapi-interaction-id",
+            "x-idempotency-key",
+            "x-jws-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant/payouts/{payoutId}",
+          "method": "GET",
+          "summary": "Get payout status by payout id",
+          "parameters": [
+            "payoutId",
+            "x-fapi-interaction-id",
+            "x-jws-signature"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant/payouts/{payoutId}/cancel",
+          "method": "PUT",
+          "summary": "Cancel payout by payout id",
+          "parameters": [
+            "payoutId",
+            "x-fapi-interaction-id",
+            "x-jws-signature"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant/payouts/{payoutId}/unlock",
+          "method": "PUT",
+          "summary": "Unlock payout request in payment journey",
+          "parameters": [
+            "payoutId",
+            "x-fapi-interaction-id",
+            "x-jws-signature"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant/payouts/{payoutId}/sendReminder",
+          "method": "PUT",
+          "summary": "Send reminder: to send the Payment link again as a Reminder Email",
+          "parameters": [
+            "payoutId",
+            "x-fapi-interaction-id",
+            "x-jws-signature"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 11,
+    "title": "Audit Document API",
+    "description": "",
+    "endpoints": [
+      {
+        "path": "/audit",
+        "method": "POST",
+        "summary": "Audit document events",
+        "parameters": [
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Audit Document API",
+      "version": "1.0",
+      "description": null,
+      "base_urls": [
+        "https://api.natwest.com/documents/v1.0/audit"
+      ],
+      "endpoints": [
+        {
+          "path": "/audit",
+          "method": "POST",
+          "summary": "Audit document events",
+          "parameters": [
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 12,
+    "title": "Confirmation of Funds API Specification",
+    "description": "Swagger for Confirmation of Funds API Specification",
+    "endpoints": [
+      {
+        "path": "/funds-confirmation-consents",
+        "method": "POST",
+        "summary": "Create Funds Confirmation Consent",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/funds-confirmation-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get Funds Confirmation Consent",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/funds-confirmation-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete Funds Confirmation Consent",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/funds-confirmations",
+        "method": "POST",
+        "summary": "Create Funds Confirmation",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Confirmation of Funds API Specification",
+      "version": "4.0.0",
+      "description": "Swagger for Confirmation of Funds API Specification",
+      "base_urls": [
+        "https://api.natwest.com/open-banking/v4.0/cbpii"
+      ],
+      "endpoints": [
+        {
+          "path": "/funds-confirmation-consents",
+          "method": "POST",
+          "summary": "Create Funds Confirmation Consent",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/funds-confirmation-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get Funds Confirmation Consent",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/funds-confirmation-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete Funds Confirmation Consent",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/funds-confirmations",
+          "method": "POST",
+          "summary": "Create Funds Confirmation",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 13,
+    "title": "Document Delete API",
+    "description": "",
+    "endpoints": [
+      {
+        "path": "/delete",
+        "method": "DELETE",
+        "summary": "Delete a document",
+        "parameters": [
+          "Authorization",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Document Delete API",
+      "version": "1.0",
+      "description": null,
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/delete",
+          "method": "DELETE",
+          "summary": "Delete a document",
+          "parameters": [
+            "Authorization",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 14,
+    "title": "Event Subscription API Specification - ASPSP Endpoints",
+    "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+    "endpoints": [
+      {
+        "path": "/",
+        "method": "POST",
+        "summary": "Create Event Subscription",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "summary": "Get Event Subscriptions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "GET",
+        "summary": "Get Event Subscription By ID",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "PUT",
+        "summary": "Change Event Subscription",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "DELETE",
+        "summary": "Delete Event Subscription",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events",
+        "method": "POST",
+        "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Event Subscription API Specification - ASPSP Endpoints",
+      "version": "v3.1.4-RC1",
+      "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/",
+          "method": "POST",
+          "summary": "Create Event Subscription",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/",
+          "method": "GET",
+          "summary": "Get Event Subscriptions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "GET",
+          "summary": "Get Event Subscription By ID",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "PUT",
+          "summary": "Change Event Subscription",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "DELETE",
+          "summary": "Delete Event Subscription",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events",
+          "method": "POST",
+          "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 15,
+    "title": "Dynamic Client Registration API",
+    "description": "This specification defines the APIs for a TPP to submit a Software Statement Assertion to an ASPSP for the purpose of creating OAuth clients that are registered with ASPSP.",
+    "endpoints": [
+      {
+        "path": "/register/v1.0",
+        "method": "POST",
+        "summary": " Registering Open Banking & Discretionary OAuth Clients",
+        "parameters": [
+          "clientRegistrationRequest"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "409",
+          "500"
+        ]
+      },
+      {
+        "path": "/register/v1.1/cop/register",
+        "method": "POST",
+        "summary": "Registering Confirmation of Payee OAuth Clients",
+        "parameters": [
+          "clientCopRegistrationRequest"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "409",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Dynamic Client Registration API",
+      "version": "1.0",
+      "description": "This specification defines the APIs for a TPP to submit a Software Statement Assertion to an ASPSP for the purpose of creating OAuth clients that are registered with ASPSP.",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/register/v1.0",
+          "method": "POST",
+          "summary": " Registering Open Banking & Discretionary OAuth Clients",
+          "parameters": [
+            "clientRegistrationRequest"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "409",
+            "500"
+          ]
+        },
+        {
+          "path": "/register/v1.1/cop/register",
+          "method": "POST",
+          "summary": "Registering Confirmation of Payee OAuth Clients",
+          "parameters": [
+            "clientCopRegistrationRequest"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "409",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 16,
+    "title": "API Specification",
+    "description": "Merchant integration API specification. Detailed list of error codes can be downloaded from the \"Appendix\" section from above.",
+    "endpoints": [
+      {
+        "path": "/eligible-banks/{companyId}/{brandId}",
+        "method": "GET",
+        "summary": "Eligible Banks",
+        "parameters": [
+          "companyId",
+          "brandId",
+          "Accept",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments/embedded",
+        "method": "POST",
+        "summary": "Initiate Payment (Embedded)",
+        "parameters": [
+          "x-transaction-ID",
+          "x-FOV-indicator",
+          "x-customer-device",
+          "x-customer-app",
+          "x-user-consent",
+          "Authorization",
+          "Accept"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments",
+        "method": "POST",
+        "summary": "Initiate Payment (Hosted)",
+        "parameters": [
+          "x-transaction-ID",
+          "x-FOV-indicator",
+          "x-customer-device",
+          "x-customer-app",
+          "Accept",
+          "Authorization"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-scheduled-payments",
+        "method": "POST",
+        "summary": "Initiate Scheduled Payment (Hosted)",
+        "parameters": [
+          "x-transaction-ID",
+          "x-FOV-indicator",
+          "x-customer-device",
+          "x-customer-app",
+          "Accept",
+          "Authorization"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments/{companyId}/{brandId}/{tppReferenceId}",
+        "method": "GET",
+        "summary": "Get payment status",
+        "parameters": [
+          "Authorization",
+          "companyId",
+          "brandId",
+          "tppReferenceId"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments-confirm",
+        "method": "POST",
+        "summary": "Payment Confirmation Webhook",
+        "parameters": [
+          "x-transaction-ID",
+          "payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-payments-confirm/paymentReferenceID/{paymentReferenceID}/tppReferenceID/{tppReferenceID}",
+        "method": "PATCH",
+        "summary": "Awaiting Payment Status Update Webhook",
+        "parameters": [
+          "x-transaction-ID",
+          "payit-signature",
+          "paymentReferenceID",
+          "tppReferenceID"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-refunds",
+        "method": "POST",
+        "summary": "Refund Request",
+        "parameters": [
+          "Authorization",
+          "Accept"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/merchant-refunds-confirm",
+        "method": "POST",
+        "summary": "Refund Confirmation Webhook",
+        "parameters": [
+          "payit-signature"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "500"
+        ]
+      },
+      {
+        "path": "/reconciliation-version/{companyId}/{reconciliationVersion}",
+        "method": "POST",
+        "summary": "Reconciliation Version",
+        "parameters": [
+          "companyId",
+          "reconciliationVersion",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "500"
+        ]
+      },
+      {
+        "path": "/download/reconciliation/{filetype}/{date}/{run}",
+        "method": "GET",
+        "summary": "Reconciliation Files",
+        "parameters": [
+          "filetype",
+          "date",
+          "run",
+          "companyIdentification",
+          "brandIdentification",
+          "x-FOV-indicator",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "API Specification",
+      "version": "3.0.3",
+      "description": "Merchant integration API specification. Detailed list of error codes can be downloaded from the \"Appendix\" section from above.",
+      "base_urls": [
+        "/localhost/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/eligible-banks/{companyId}/{brandId}",
+          "method": "GET",
+          "summary": "Eligible Banks",
+          "parameters": [
+            "companyId",
+            "brandId",
+            "Accept",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments/embedded",
+          "method": "POST",
+          "summary": "Initiate Payment (Embedded)",
+          "parameters": [
+            "x-transaction-ID",
+            "x-FOV-indicator",
+            "x-customer-device",
+            "x-customer-app",
+            "x-user-consent",
+            "Authorization",
+            "Accept"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments",
+          "method": "POST",
+          "summary": "Initiate Payment (Hosted)",
+          "parameters": [
+            "x-transaction-ID",
+            "x-FOV-indicator",
+            "x-customer-device",
+            "x-customer-app",
+            "Accept",
+            "Authorization"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-scheduled-payments",
+          "method": "POST",
+          "summary": "Initiate Scheduled Payment (Hosted)",
+          "parameters": [
+            "x-transaction-ID",
+            "x-FOV-indicator",
+            "x-customer-device",
+            "x-customer-app",
+            "Accept",
+            "Authorization"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments/{companyId}/{brandId}/{tppReferenceId}",
+          "method": "GET",
+          "summary": "Get payment status",
+          "parameters": [
+            "Authorization",
+            "companyId",
+            "brandId",
+            "tppReferenceId"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments-confirm",
+          "method": "POST",
+          "summary": "Payment Confirmation Webhook",
+          "parameters": [
+            "x-transaction-ID",
+            "payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-payments-confirm/paymentReferenceID/{paymentReferenceID}/tppReferenceID/{tppReferenceID}",
+          "method": "PATCH",
+          "summary": "Awaiting Payment Status Update Webhook",
+          "parameters": [
+            "x-transaction-ID",
+            "payit-signature",
+            "paymentReferenceID",
+            "tppReferenceID"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-refunds",
+          "method": "POST",
+          "summary": "Refund Request",
+          "parameters": [
+            "Authorization",
+            "Accept"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/merchant-refunds-confirm",
+          "method": "POST",
+          "summary": "Refund Confirmation Webhook",
+          "parameters": [
+            "payit-signature"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "500"
+          ]
+        },
+        {
+          "path": "/reconciliation-version/{companyId}/{reconciliationVersion}",
+          "method": "POST",
+          "summary": "Reconciliation Version",
+          "parameters": [
+            "companyId",
+            "reconciliationVersion",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "500"
+          ]
+        },
+        {
+          "path": "/download/reconciliation/{filetype}/{date}/{run}",
+          "method": "GET",
+          "summary": "Reconciliation Files",
+          "parameters": [
+            "filetype",
+            "date",
+            "run",
+            "companyIdentification",
+            "brandIdentification",
+            "x-FOV-indicator",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 17,
+    "title": "Open Data API",
+    "description": "Latest Swagger specification for OpenData Personal Current Account data",
+    "endpoints": [
+      {
+        "path": "/atms",
+        "method": "GET",
+        "summary": "Retrieve ATMs",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/atms",
+        "method": "HEAD",
+        "summary": "Get header for list of ATMs endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/branches",
+        "method": "GET",
+        "summary": "Retrieve branches",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/branches",
+        "method": "HEAD",
+        "summary": "Get header for branches endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/personal-current-accounts",
+        "method": "GET",
+        "summary": "Retrieve personal current accounts",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/personal-current-accounts",
+        "method": "HEAD",
+        "summary": "Get header for PCA endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/business-current-accounts",
+        "method": "GET",
+        "summary": "Retrieve business current account products",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/business-current-accounts",
+        "method": "HEAD",
+        "summary": "Get header for the BCA endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/unsecured-sme-loans",
+        "method": "GET",
+        "summary": "Retrieve Unsecured SME Loan products",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/unsecured-sme-loans",
+        "method": "HEAD",
+        "summary": "Get header for Unsecured SME Loan products endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/commercial-credit-cards",
+        "method": "GET",
+        "summary": "Retrieve Commercial Credit Card products",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/commercial-credit-cards",
+        "method": "HEAD",
+        "summary": "Get header for Commercial Credit Card products endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Open Data API",
+      "version": "v2.2",
+      "description": "Latest Swagger specification for OpenData Personal Current Account data",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/atms",
+          "method": "GET",
+          "summary": "Retrieve ATMs",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/atms",
+          "method": "HEAD",
+          "summary": "Get header for list of ATMs endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/branches",
+          "method": "GET",
+          "summary": "Retrieve branches",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/branches",
+          "method": "HEAD",
+          "summary": "Get header for branches endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/personal-current-accounts",
+          "method": "GET",
+          "summary": "Retrieve personal current accounts",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/personal-current-accounts",
+          "method": "HEAD",
+          "summary": "Get header for PCA endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/business-current-accounts",
+          "method": "GET",
+          "summary": "Retrieve business current account products",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/business-current-accounts",
+          "method": "HEAD",
+          "summary": "Get header for the BCA endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/unsecured-sme-loans",
+          "method": "GET",
+          "summary": "Retrieve Unsecured SME Loan products",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/unsecured-sme-loans",
+          "method": "HEAD",
+          "summary": "Get header for Unsecured SME Loan products endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/commercial-credit-cards",
+          "method": "GET",
+          "summary": "Retrieve Commercial Credit Card products",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/commercial-credit-cards",
+          "method": "HEAD",
+          "summary": "Get header for Commercial Credit Card products endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 18,
+    "title": "Carbon Planner API Specification",
+    "description": "Swagger for Carbon Planner API Specification",
+    "endpoints": [
+      {
+        "path": "/open/api/v1/users/registration",
+        "method": "POST",
+        "summary": "Create new guest user record into database",
+        "parameters": [],
+        "responses": [
+          "201",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/secure/api/v1/users/all",
+        "method": "GET",
+        "summary": "Retrieve all users",
+        "parameters": [],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/secure/api/v1/users/{username}",
+        "method": "GET",
+        "summary": "Retrieve the details of a User based on username",
+        "parameters": [
+          "username"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/secure/api/v1/users/{userId}",
+        "method": "GET",
+        "summary": "Retrieve the details of a User based on userId",
+        "parameters": [
+          "userId"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/secure/api/v1/users/{userid}",
+        "method": "DELETE",
+        "summary": "Delete the user details",
+        "parameters": [
+          "userid"
+        ],
+        "responses": [
+          "202",
+          "204",
+          "401",
+          "403",
+          "404"
+        ]
+      },
+      {
+        "path": "/api/v1/purchase-profile/sync-status",
+        "method": "POST",
+        "summary": "Sync Status",
+        "parameters": [],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Carbon Planner API Specification",
+      "version": "v1.0",
+      "description": "Swagger for Carbon Planner API Specification",
+      "base_urls": [
+        "https://ob.sandbox.natwest.com/zerocode/futuresoln.org/CP-API-Specification/v1.0"
+      ],
+      "endpoints": [
+        {
+          "path": "/open/api/v1/users/registration",
+          "method": "POST",
+          "summary": "Create new guest user record into database",
+          "parameters": [],
+          "responses": [
+            "201",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/secure/api/v1/users/all",
+          "method": "GET",
+          "summary": "Retrieve all users",
+          "parameters": [],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/secure/api/v1/users/{username}",
+          "method": "GET",
+          "summary": "Retrieve the details of a User based on username",
+          "parameters": [
+            "username"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/secure/api/v1/users/{userId}",
+          "method": "GET",
+          "summary": "Retrieve the details of a User based on userId",
+          "parameters": [
+            "userId"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/secure/api/v1/users/{userid}",
+          "method": "DELETE",
+          "summary": "Delete the user details",
+          "parameters": [
+            "userid"
+          ],
+          "responses": [
+            "202",
+            "204",
+            "401",
+            "403",
+            "404"
+          ]
+        },
+        {
+          "path": "/api/v1/purchase-profile/sync-status",
+          "method": "POST",
+          "summary": "Sync Status",
+          "parameters": [],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 19,
+    "title": "Payment Initiation API",
+    "description": "Swagger for Payment Initiation API Specification",
+    "endpoints": [
+      {
+        "path": "/domestic-payment-consents",
+        "method": "POST",
+        "summary": "Create Domestic Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payment-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get Domestic Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payment-consents/{ConsentId}/funds-confirmation",
+        "method": "GET",
+        "summary": "Get Domestic Payment Consents Funds Confirmation",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payments",
+        "method": "POST",
+        "summary": "Create Domestic Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payments/{DomesticPaymentId}",
+        "method": "GET",
+        "summary": "Get Domestic Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payment-consents (balance transfer)",
+        "method": "POST",
+        "summary": "Create Domestic Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payment-consents/{ConsentId} (balance transfer)",
+        "method": "GET",
+        "summary": "Get Domestic Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payments (balance transfer)",
+        "method": "POST",
+        "summary": "Create Domestic Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-payments/{DomesticPaymentId} (balance transfer)",
+        "method": "GET",
+        "summary": "Get Domestic Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-scheduled-payment-consents",
+        "method": "POST",
+        "summary": "Create Domestic Scheduled Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-scheduled-payment-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get Domestic Scheduled Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-scheduled-payments",
+        "method": "POST",
+        "summary": "Create Domestic Scheduled Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-scheduled-payments/{DomesticScheduledPaymentId}",
+        "method": "GET",
+        "summary": "Get Domestic Scheduled Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-standing-order-consents",
+        "method": "POST",
+        "summary": "Create Domestic Standing Order Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-standing-order-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get Domestic Standing Order Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-standing-orders",
+        "method": "POST",
+        "summary": "Create Domestic Standing Orders",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-standing-orders/{DomesticStandingOrderId}",
+        "method": "GET",
+        "summary": "Get Domestic Standing Orders",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/file-payment-consents",
+        "method": "POST",
+        "summary": "Create File Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/file-payment-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get File Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/file-payment-consents/{ConsentId}/file",
+        "method": "POST",
+        "summary": "Create File Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/file-payments",
+        "method": "POST",
+        "summary": "Create File Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/file-payments/{FilePaymentId}",
+        "method": "GET",
+        "summary": "Get File Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-payment-consents",
+        "method": "POST",
+        "summary": "Create International Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-payment-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get International Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-payment-consents/{ConsentId}/funds-confirmation",
+        "method": "GET",
+        "summary": "Get International Payment Consents Funds Confirmation",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-payments",
+        "method": "POST",
+        "summary": "Create International Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-payments/{InternationalPaymentId}",
+        "method": "GET",
+        "summary": "Get International Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-scheduled-payment-consents",
+        "method": "POST",
+        "summary": "Create International Scheduled Payment Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-scheduled-payment-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get International Scheduled Payment Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-scheduled-payments",
+        "method": "POST",
+        "summary": "Create International Scheduled Payments",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/international-scheduled-payments/{InternationalScheduledPaymentId}",
+        "method": "GET",
+        "summary": "Get International Scheduled Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Payment Initiation API",
+      "version": "4.0.0",
+      "description": "Swagger for Payment Initiation API Specification",
+      "base_urls": [
+        "/open-banking/v4.0/pisp"
+      ],
+      "endpoints": [
+        {
+          "path": "/domestic-payment-consents",
+          "method": "POST",
+          "summary": "Create Domestic Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payment-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get Domestic Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payment-consents/{ConsentId}/funds-confirmation",
+          "method": "GET",
+          "summary": "Get Domestic Payment Consents Funds Confirmation",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payments",
+          "method": "POST",
+          "summary": "Create Domestic Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payments/{DomesticPaymentId}",
+          "method": "GET",
+          "summary": "Get Domestic Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payment-consents (balance transfer)",
+          "method": "POST",
+          "summary": "Create Domestic Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payment-consents/{ConsentId} (balance transfer)",
+          "method": "GET",
+          "summary": "Get Domestic Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payments (balance transfer)",
+          "method": "POST",
+          "summary": "Create Domestic Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-payments/{DomesticPaymentId} (balance transfer)",
+          "method": "GET",
+          "summary": "Get Domestic Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-scheduled-payment-consents",
+          "method": "POST",
+          "summary": "Create Domestic Scheduled Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-scheduled-payment-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get Domestic Scheduled Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-scheduled-payments",
+          "method": "POST",
+          "summary": "Create Domestic Scheduled Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-scheduled-payments/{DomesticScheduledPaymentId}",
+          "method": "GET",
+          "summary": "Get Domestic Scheduled Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-standing-order-consents",
+          "method": "POST",
+          "summary": "Create Domestic Standing Order Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-standing-order-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get Domestic Standing Order Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-standing-orders",
+          "method": "POST",
+          "summary": "Create Domestic Standing Orders",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-standing-orders/{DomesticStandingOrderId}",
+          "method": "GET",
+          "summary": "Get Domestic Standing Orders",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/file-payment-consents",
+          "method": "POST",
+          "summary": "Create File Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/file-payment-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get File Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/file-payment-consents/{ConsentId}/file",
+          "method": "POST",
+          "summary": "Create File Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/file-payments",
+          "method": "POST",
+          "summary": "Create File Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/file-payments/{FilePaymentId}",
+          "method": "GET",
+          "summary": "Get File Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-payment-consents",
+          "method": "POST",
+          "summary": "Create International Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-payment-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get International Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-payment-consents/{ConsentId}/funds-confirmation",
+          "method": "GET",
+          "summary": "Get International Payment Consents Funds Confirmation",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-payments",
+          "method": "POST",
+          "summary": "Create International Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-payments/{InternationalPaymentId}",
+          "method": "GET",
+          "summary": "Get International Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-scheduled-payment-consents",
+          "method": "POST",
+          "summary": "Create International Scheduled Payment Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-scheduled-payment-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get International Scheduled Payment Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-scheduled-payments",
+          "method": "POST",
+          "summary": "Create International Scheduled Payments",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/international-scheduled-payments/{InternationalScheduledPaymentId}",
+          "method": "GET",
+          "summary": "Get International Scheduled Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 20,
+    "title": "Document Search API",
+    "description": "The Document Search API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+    "endpoints": [
+      {
+        "path": "/search",
+        "method": "POST",
+        "summary": "Search in the repository using metadata",
+        "parameters": [
+          "Authorization",
+          "contentType",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Document Search API",
+      "version": "1.0",
+      "description": "The Document Search API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/search",
+          "method": "POST",
+          "summary": "Search in the repository using metadata",
+          "parameters": [
+            "Authorization",
+            "contentType",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 21,
+    "title": "Personal Loan Quotes",
+    "description": "This is Personal Loan Quotes",
+    "endpoints": [
+      {
+        "path": "/customer/v1/search",
+        "method": "POST",
+        "summary": "Identify a customer",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "408",
+          "415",
+          "422",
+          "429",
+          "500",
+          "502",
+          "503",
+          "504"
+        ]
+      },
+      {
+        "path": "/illustrations/v1/criteria/personal-loan",
+        "method": "GET",
+        "summary": "Retrieve criteria parameters for loan illustration",
+        "parameters": [
+          "customerId"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "415",
+          "422",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/illustrations/v1/quote/personal-loan",
+        "method": "POST",
+        "summary": "Retrieve loan illustration",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "415",
+          "422",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Personal Loan Quotes",
+      "version": "1.0.0",
+      "description": "This is Personal Loan Quotes",
+      "base_urls": [
+        "https://api.natwest.com/"
+      ],
+      "endpoints": [
+        {
+          "path": "/customer/v1/search",
+          "method": "POST",
+          "summary": "Identify a customer",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "408",
+            "415",
+            "422",
+            "429",
+            "500",
+            "502",
+            "503",
+            "504"
+          ]
+        },
+        {
+          "path": "/illustrations/v1/criteria/personal-loan",
+          "method": "GET",
+          "summary": "Retrieve criteria parameters for loan illustration",
+          "parameters": [
+            "customerId"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "415",
+            "422",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/illustrations/v1/quote/personal-loan",
+          "method": "POST",
+          "summary": "Retrieve loan illustration",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "415",
+            "422",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 22,
+    "title": "Event Subscription API Specification - ASPSP Endpoints",
+    "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+    "endpoints": [
+      {
+        "path": "/",
+        "method": "POST",
+        "summary": "Create Event Subscription",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "summary": "Get Event Subscriptions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "GET",
+        "summary": "Get Event Subscription By ID",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "PUT",
+        "summary": "Change Event Subscription",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "DELETE",
+        "summary": "Delete Event Subscription",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events",
+        "method": "POST",
+        "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events/resend",
+        "method": "POST",
+        "summary": "Resend Events which have yet to be successfully sent as a Real Time Notification",
+        "parameters": [],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "405",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Event Subscription API Specification - ASPSP Endpoints",
+      "version": "v3.1.4-RC1",
+      "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/",
+          "method": "POST",
+          "summary": "Create Event Subscription",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/",
+          "method": "GET",
+          "summary": "Get Event Subscriptions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "GET",
+          "summary": "Get Event Subscription By ID",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "PUT",
+          "summary": "Change Event Subscription",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "DELETE",
+          "summary": "Delete Event Subscription",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events",
+          "method": "POST",
+          "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events/resend",
+          "method": "POST",
+          "summary": "Resend Events which have yet to be successfully sent as a Real Time Notification",
+          "parameters": [],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "405",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 23,
+    "title": "Indicative Swaps Price API Specification",
+    "description": "OAS3 for Indicative Swaps Price API",
+    "endpoints": [
+      {
+        "path": "/indicative/quote",
+        "method": "GET",
+        "summary": "Get Indicative Swaps Price",
+        "parameters": [
+          "Authorisation",
+          "currency",
+          "indexName",
+          "indexTenor",
+          "swapTenor",
+          "notional",
+          "clearingVenue",
+          "swapType",
+          "direction"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "415",
+          "422",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Indicative Swaps Price API Specification",
+      "version": "v1",
+      "description": "OAS3 for Indicative Swaps Price API",
+      "base_urls": [
+        "https://api.natwest.com/trade-execution/fixed-income/swaps/v1",
+        "https://ob.sandbox.natwest.com/zerocode/fixed-income.org/IndicativeSwapsPrice/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/indicative/quote",
+          "method": "GET",
+          "summary": "Get Indicative Swaps Price",
+          "parameters": [
+            "Authorisation",
+            "currency",
+            "indexName",
+            "indexTenor",
+            "swapTenor",
+            "notional",
+            "clearingVenue",
+            "swapType",
+            "direction"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "415",
+            "422",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 24,
+    "title": "FCA Service Metrics - PCA",
+    "description": "Swagger specification for FCA Service Metrics for Personal Current Accounts",
+    "endpoints": [
+      {
+        "path": "/fca-service-metrics/pca",
+        "method": "GET",
+        "summary": "Retrieve personal current account FCA metrics",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/fca-service-metrics/pca",
+        "method": "HEAD",
+        "summary": "Get header for personal current account FCA metrics endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      },
+      {
+        "path": "/fca-service-metrics/bca",
+        "method": "GET",
+        "summary": "Retrieve business current account FCA metrics",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "408",
+          "429",
+          "500",
+          "503",
+          "default"
+        ]
+      },
+      {
+        "path": "/fca-service-metrics/bca",
+        "method": "HEAD",
+        "summary": "Get header for business current account FCA metrics endpoint",
+        "parameters": [
+          "If-Modified-Since",
+          "If-None-Match"
+        ],
+        "responses": [
+          "default"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "FCA Service Metrics - PCA",
+      "version": "v1.0",
+      "description": "Swagger specification for FCA Service Metrics for Personal Current Accounts",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/fca-service-metrics/pca",
+          "method": "GET",
+          "summary": "Retrieve personal current account FCA metrics",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/fca-service-metrics/pca",
+          "method": "HEAD",
+          "summary": "Get header for personal current account FCA metrics endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        },
+        {
+          "path": "/fca-service-metrics/bca",
+          "method": "GET",
+          "summary": "Retrieve business current account FCA metrics",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "408",
+            "429",
+            "500",
+            "503",
+            "default"
+          ]
+        },
+        {
+          "path": "/fca-service-metrics/bca",
+          "method": "HEAD",
+          "summary": "Get header for business current account FCA metrics endpoint",
+          "parameters": [
+            "If-Modified-Since",
+            "If-None-Match"
+          ],
+          "responses": [
+            "default"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 25,
+    "title": "All FXMP External API's",
+    "description": "All FXmicropay External API's are integrated here so that user can view the sample request and response of all of them with description.",
+    "endpoints": [
+      {
+        "path": "/rates",
+        "method": "POST",
+        "summary": "Get Rates",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      },
+      {
+        "path": "/transactions",
+        "method": "POST",
+        "summary": "Submit Transactions API",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      },
+      {
+        "path": "/payments",
+        "method": "POST",
+        "summary": "Submit Payment API",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      },
+      {
+        "path": "/settlementAdvices",
+        "method": "POST",
+        "summary": "Submit Settlement Advice",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      },
+      {
+        "path": "/report",
+        "method": "POST",
+        "summary": "Netting Report",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      },
+      {
+        "path": "/api",
+        "method": "POST",
+        "summary": "XML RPC API",
+        "parameters": [
+          "authorisation"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "422",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "All FXMP External API's",
+      "version": "v1",
+      "description": "All FXmicropay External API's are integrated here so that user can view the sample request and response of all of them with description.",
+      "base_urls": [
+        "https://api.natwest.com/fxmicropay/v3"
+      ],
+      "endpoints": [
+        {
+          "path": "/rates",
+          "method": "POST",
+          "summary": "Get Rates",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        },
+        {
+          "path": "/transactions",
+          "method": "POST",
+          "summary": "Submit Transactions API",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        },
+        {
+          "path": "/payments",
+          "method": "POST",
+          "summary": "Submit Payment API",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        },
+        {
+          "path": "/settlementAdvices",
+          "method": "POST",
+          "summary": "Submit Settlement Advice",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        },
+        {
+          "path": "/report",
+          "method": "POST",
+          "summary": "Netting Report",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        },
+        {
+          "path": "/api",
+          "method": "POST",
+          "summary": "XML RPC API",
+          "parameters": [
+            "authorisation"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "422",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 26,
+    "title": "Account and Transaction API Specification",
+    "description": "Swagger for Account and Transaction API Specification",
+    "endpoints": [
+      {
+        "path": "/account-access-consents",
+        "method": "POST",
+        "summary": "Create Account Access Consents",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Get Account Access Consents",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/account-access-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete Account Access Consents",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts",
+        "method": "GET",
+        "summary": "Get Accounts",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}",
+        "method": "GET",
+        "summary": "Get Account",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/balances",
+        "method": "GET",
+        "summary": "Get Balances",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/beneficiaries",
+        "method": "GET",
+        "summary": "Get Beneficiaries",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/direct-debits",
+        "method": "GET",
+        "summary": "Get Direct Debits",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/offers",
+        "method": "GET",
+        "summary": "Get Offers",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/product",
+        "method": "GET",
+        "summary": "Get Products",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/scheduled-payments",
+        "method": "GET",
+        "summary": "Get Scheduled Payments",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/standing-orders",
+        "method": "GET",
+        "summary": "Get Standing Orders",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/statements",
+        "method": "GET",
+        "summary": "Get Statements",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/transactions",
+        "method": "GET",
+        "summary": "Get Transactions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/accounts/{AccountId}/card-holder-names",
+        "method": "GET",
+        "summary": "card-holder-names",
+        "parameters": [
+          "AccountId",
+          "x-fapi-financial-id",
+          "x-fapi-auth-date",
+          "x-fapi-customer-ip-address",
+          "x-fapi-interaction-id",
+          "Authorization"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Account and Transaction API Specification",
+      "version": "v4.0.0",
+      "description": "Swagger for Account and Transaction API Specification",
+      "base_urls": [
+        "https://api.natwest.com/open-banking/v4.0/aisp"
+      ],
+      "endpoints": [
+        {
+          "path": "/account-access-consents",
+          "method": "POST",
+          "summary": "Create Account Access Consents",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Get Account Access Consents",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/account-access-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete Account Access Consents",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts",
+          "method": "GET",
+          "summary": "Get Accounts",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}",
+          "method": "GET",
+          "summary": "Get Account",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/balances",
+          "method": "GET",
+          "summary": "Get Balances",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/beneficiaries",
+          "method": "GET",
+          "summary": "Get Beneficiaries",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/direct-debits",
+          "method": "GET",
+          "summary": "Get Direct Debits",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/offers",
+          "method": "GET",
+          "summary": "Get Offers",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/product",
+          "method": "GET",
+          "summary": "Get Products",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/scheduled-payments",
+          "method": "GET",
+          "summary": "Get Scheduled Payments",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/standing-orders",
+          "method": "GET",
+          "summary": "Get Standing Orders",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/statements",
+          "method": "GET",
+          "summary": "Get Statements",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/transactions",
+          "method": "GET",
+          "summary": "Get Transactions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/accounts/{AccountId}/card-holder-names",
+          "method": "GET",
+          "summary": "card-holder-names",
+          "parameters": [
+            "AccountId",
+            "x-fapi-financial-id",
+            "x-fapi-auth-date",
+            "x-fapi-customer-ip-address",
+            "x-fapi-interaction-id",
+            "Authorization"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 27,
+    "title": "InLife Screening API",
+    "description": "An API allowing consumers to create a set of clients to be submitted for screening by GCS",
+    "endpoints": [
+      {
+        "path": "/people",
+        "method": "POST",
+        "summary": "Add a person's details for screening",
+        "parameters": [
+          "x-fapi-interaction-id"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "420",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      },
+      {
+        "path": "/companies",
+        "method": "POST",
+        "summary": "Add a company's details for screening",
+        "parameters": [
+          "x-fapi-interaction-id"
+        ],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "415",
+          "420",
+          "422",
+          "429",
+          "500",
+          "503"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "InLife Screening API",
+      "version": "1.2.0",
+      "description": "An API allowing consumers to create a set of clients to be submitted for screening by GCS",
+      "base_urls": [
+        "https://api.natwest.com/screening/v1/inlife"
+      ],
+      "endpoints": [
+        {
+          "path": "/people",
+          "method": "POST",
+          "summary": "Add a person's details for screening",
+          "parameters": [
+            "x-fapi-interaction-id"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "420",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        },
+        {
+          "path": "/companies",
+          "method": "POST",
+          "summary": "Add a company's details for screening",
+          "parameters": [
+            "x-fapi-interaction-id"
+          ],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "415",
+            "420",
+            "422",
+            "429",
+            "500",
+            "503"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 28,
+    "title": "OBL VRP Profile",
+    "description": "VRP OpenAPI Specification",
+    "endpoints": [
+      {
+        "path": "/domestic-vrp-consents",
+        "method": "POST",
+        "summary": "Create a domestic VRP consent",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}",
+        "method": "GET",
+        "summary": "Retrieve a domestic VRP consent",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}",
+        "method": "DELETE",
+        "summary": "Delete a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrp-consents/{ConsentId}/funds-confirmation",
+        "method": "POST",
+        "summary": "Confirm availability of funds for a VRP",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrps",
+        "method": "POST",
+        "summary": "Create a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "406",
+          "409",
+          "415",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/domestic-vrps/{DomesticVRPId}",
+        "method": "GET",
+        "summary": "Retrieve a domestic VRP",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "406",
+          "415",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "OBL VRP Profile",
+      "version": "4.0.0",
+      "description": "VRP OpenAPI Specification",
+      "base_urls": [
+        "https://api.natwest.com/open-banking/v4.0/pisp"
+      ],
+      "endpoints": [
+        {
+          "path": "/domestic-vrp-consents",
+          "method": "POST",
+          "summary": "Create a domestic VRP consent",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}",
+          "method": "GET",
+          "summary": "Retrieve a domestic VRP consent",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}",
+          "method": "DELETE",
+          "summary": "Delete a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrp-consents/{ConsentId}/funds-confirmation",
+          "method": "POST",
+          "summary": "Confirm availability of funds for a VRP",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrps",
+          "method": "POST",
+          "summary": "Create a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "406",
+            "409",
+            "415",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/domestic-vrps/{DomesticVRPId}",
+          "method": "GET",
+          "summary": "Retrieve a domestic VRP",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "406",
+            "415",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 29,
+    "title": "Document Update API",
+    "description": "The Document Update API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+    "endpoints": [
+      {
+        "path": "/update",
+        "method": "PUT",
+        "summary": "Change an existing document",
+        "parameters": [
+          "Authorization",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Document Update API",
+      "version": "1.0",
+      "description": "The Document Update API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/update",
+          "method": "PUT",
+          "summary": "Change an existing document",
+          "parameters": [
+            "Authorization",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 30,
+    "title": "Login With Bank",
+    "description": "A flow that enables a customer to use their NatWest Group online banking credentials to authorise or reject a login to third-party applications.",
+    "endpoints": [
+      {
+        "path": "/authorization.oauth2",
+        "method": "GET",
+        "summary": "Initiates the login flow",
+        "parameters": [
+          "client_id",
+          "response_type",
+          "nonce",
+          "request"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Login With Bank",
+      "version": "1.0",
+      "description": "A flow that enables a customer to use their NatWest Group online banking credentials to authorise or reject a login to third-party applications.",
+      "base_urls": [
+        "https://secure1.natwest.com/as"
+      ],
+      "endpoints": [
+        {
+          "path": "/authorization.oauth2",
+          "method": "GET",
+          "summary": "Initiates the login flow",
+          "parameters": [
+            "client_id",
+            "response_type",
+            "nonce",
+            "request"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 31,
+    "title": "Event Subscription API Specification - ASPSP Endpoints",
+    "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+    "endpoints": [
+      {
+        "path": "/",
+        "method": "POST",
+        "summary": "Create Event Subscription",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "422",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "summary": "Get Event Subscriptions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "GET",
+        "summary": "Get Event Subscription By ID",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "PUT",
+        "summary": "Change Event Subscription",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "422",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "DELETE",
+        "summary": "Delete Event Subscription",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events",
+        "method": "POST",
+        "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events/resend",
+        "method": "POST",
+        "summary": "Resend Events which have yet to be successfully sent as a Real Time Notification",
+        "parameters": [],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "405",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Event Subscription API Specification - ASPSP Endpoints",
+      "version": "v3.1.4-RC1",
+      "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/",
+          "method": "POST",
+          "summary": "Create Event Subscription",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "422",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/",
+          "method": "GET",
+          "summary": "Get Event Subscriptions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "GET",
+          "summary": "Get Event Subscription By ID",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "PUT",
+          "summary": "Change Event Subscription",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "422",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "DELETE",
+          "summary": "Delete Event Subscription",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events",
+          "method": "POST",
+          "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events/resend",
+          "method": "POST",
+          "summary": "Resend Events which have yet to be successfully sent as a Real Time Notification",
+          "parameters": [],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "405",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 32,
+    "title": "Manage Controls API",
+    "description": "Update the existing controls selected by customers",
+    "endpoints": [
+      {
+        "path": "/permissions-preferences/v1.0/upsert/controls",
+        "method": "PUT",
+        "summary": "",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Manage Controls API",
+      "version": "2.0",
+      "description": "Update the existing controls selected by customers",
+      "base_urls": [
+        "https://api.natwest.com"
+      ],
+      "endpoints": [
+        {
+          "path": "/permissions-preferences/v1.0/upsert/controls",
+          "method": "PUT",
+          "summary": "",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 33,
+    "title": "Event Subscription API Specification - ASPSP Endpoints",
+    "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+    "endpoints": [
+      {
+        "path": "/",
+        "method": "POST",
+        "summary": "Create Event Subscription",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/",
+        "method": "GET",
+        "summary": "Get Event Subscriptions",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "GET",
+        "summary": "Get Event Subscription By ID",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "PUT",
+        "summary": "Change Event Subscription",
+        "parameters": [],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/{EventSubscriptionId}",
+        "method": "DELETE",
+        "summary": "Delete Event Subscription",
+        "parameters": [],
+        "responses": [
+          "204",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/events",
+        "method": "POST",
+        "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+        "parameters": [],
+        "responses": [
+          "201",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "406",
+          "429",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Event Subscription API Specification - ASPSP Endpoints",
+      "version": "v3.1.4-RC1",
+      "description": "Swagger for Event Subscription API Specification - ASPSP Endpoints",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/",
+          "method": "POST",
+          "summary": "Create Event Subscription",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/",
+          "method": "GET",
+          "summary": "Get Event Subscriptions",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "GET",
+          "summary": "Get Event Subscription By ID",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "PUT",
+          "summary": "Change Event Subscription",
+          "parameters": [],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/{EventSubscriptionId}",
+          "method": "DELETE",
+          "summary": "Delete Event Subscription",
+          "parameters": [],
+          "responses": [
+            "204",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/events",
+          "method": "POST",
+          "summary": "Get Events which have yet to be successfully sent as a Real Time Notification\"",
+          "parameters": [],
+          "responses": [
+            "201",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "406",
+            "429",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 34,
+    "title": "AISP API Specification",
+    "description": "AISP REST API",
+    "endpoints": [
+      {
+        "path": "/oauth2/token",
+        "method": "GET",
+        "summary": "Get Bearer Token",
+        "parameters": [
+          "grant_type",
+          "client_secret",
+          "client_id"
+        ],
+        "responses": [
+          "200"
+        ]
+      },
+      {
+        "path": "/ais-consents",
+        "method": "POST",
+        "summary": "Create Account Access Consent",
+        "parameters": [
+          "x-transaction-ID",
+          "Authorization",
+          "Accept"
+        ],
+        "responses": [
+          "201"
+        ]
+      },
+      {
+        "path": "/eligible-banks",
+        "method": "GET",
+        "summary": "Get All Eligible Banks",
+        "parameters": [
+          "SortCode",
+          "BrandId",
+          "Authorization",
+          "Accept"
+        ],
+        "responses": [
+          "200"
+        ]
+      },
+      {
+        "path": "/accounts",
+        "method": "GET",
+        "summary": "Retrieve Accounts",
+        "parameters": [
+          "x-transaction-id",
+          "Authorization",
+          "x-consent-payit-id",
+          "Accept"
+        ],
+        "responses": [
+          "200"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "AISP API Specification",
+      "version": "2.0.0",
+      "description": "AISP REST API",
+      "base_urls": [
+        "https://lp2api.natwestpayit.com/lp2nos-account",
+        "https://login.microsoftonline.com/a67f64d9-57b9-4c56-b2a2-8bfb5f86966a"
+      ],
+      "endpoints": [
+        {
+          "path": "/oauth2/token",
+          "method": "GET",
+          "summary": "Get Bearer Token",
+          "parameters": [
+            "grant_type",
+            "client_secret",
+            "client_id"
+          ],
+          "responses": [
+            "200"
+          ]
+        },
+        {
+          "path": "/ais-consents",
+          "method": "POST",
+          "summary": "Create Account Access Consent",
+          "parameters": [
+            "x-transaction-ID",
+            "Authorization",
+            "Accept"
+          ],
+          "responses": [
+            "201"
+          ]
+        },
+        {
+          "path": "/eligible-banks",
+          "method": "GET",
+          "summary": "Get All Eligible Banks",
+          "parameters": [
+            "SortCode",
+            "BrandId",
+            "Authorization",
+            "Accept"
+          ],
+          "responses": [
+            "200"
+          ]
+        },
+        {
+          "path": "/accounts",
+          "method": "GET",
+          "summary": "Retrieve Accounts",
+          "parameters": [
+            "x-transaction-id",
+            "Authorization",
+            "x-consent-payit-id",
+            "Accept"
+          ],
+          "responses": [
+            "200"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 35,
+    "title": "FX Rates API Specification",
+    "description": "OAS3 for FX Rates API Specification",
+    "endpoints": [
+      {
+        "path": "/quote/indicative",
+        "method": "GET",
+        "summary": "Get Indicative Quote",
+        "parameters": [
+          "authorisation",
+          "fromCurrency",
+          "toCurrency",
+          "amount",
+          "inverse",
+          "amountCurrency",
+          "decimalPlaces",
+          "margin"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "415",
+          "422",
+          "429",
+          "500"
+        ]
+      },
+      {
+        "path": "/quote/indicative/all",
+        "method": "GET",
+        "summary": "Get Indicative Batch Quotes",
+        "parameters": [
+          "authorisation",
+          "baseCurrencies",
+          "margin"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "415",
+          "422",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "FX Rates API Specification",
+      "version": "v1",
+      "description": "OAS3 for FX Rates API Specification",
+      "base_urls": [
+        "https://api.natwest.com/trade-execution/fx/v1",
+        "https://ob.sandbox.natwest.com/zerocode/foreign-exchange.org/IndicativeFXRatesAPI/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/quote/indicative",
+          "method": "GET",
+          "summary": "Get Indicative Quote",
+          "parameters": [
+            "authorisation",
+            "fromCurrency",
+            "toCurrency",
+            "amount",
+            "inverse",
+            "amountCurrency",
+            "decimalPlaces",
+            "margin"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "415",
+            "422",
+            "429",
+            "500"
+          ]
+        },
+        {
+          "path": "/quote/indicative/all",
+          "method": "GET",
+          "summary": "Get Indicative Batch Quotes",
+          "parameters": [
+            "authorisation",
+            "baseCurrencies",
+            "margin"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "415",
+            "422",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 36,
+    "title": "Indicative Bonds Price API Specification",
+    "description": "OAS3 for Indicative Bonds Price API",
+    "endpoints": [
+      {
+        "path": "/indicative/quote",
+        "method": "GET",
+        "summary": "Get Indicative Bonds Price",
+        "parameters": [
+          "Authorisation",
+          "isin",
+          "quantity",
+          "direction"
+        ],
+        "responses": [
+          "200",
+          "400",
+          "401",
+          "403",
+          "404",
+          "405",
+          "415",
+          "422",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Indicative Bonds Price API Specification",
+      "version": "v1",
+      "description": "OAS3 for Indicative Bonds Price API",
+      "base_urls": [
+        "https://api.natwest.com/trade-execution/fixed-income/bonds/v1",
+        "https://ob.sandbox.natwest.com/zerocode/fixed-income.org/IndicativeBondsPrice/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/indicative/quote",
+          "method": "GET",
+          "summary": "Get Indicative Bonds Price",
+          "parameters": [
+            "Authorisation",
+            "isin",
+            "quantity",
+            "direction"
+          ],
+          "responses": [
+            "200",
+            "400",
+            "401",
+            "403",
+            "404",
+            "405",
+            "415",
+            "422",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 37,
+    "title": "Client Access Management",
+    "description": "Client Access Management APIs allow API consumers to directly manage client access via APIs upon agreement.",
+    "endpoints": [
+      {
+        "path": "/direct-access",
+        "method": "GET",
+        "summary": "Retrieve the list of customer identifiers for own direct access",
+        "parameters": [],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Client Access Management",
+      "version": "1",
+      "description": "Client Access Management APIs allow API consumers to directly manage client access via APIs upon agreement.",
+      "base_urls": [
+        "https://api.natwest.com/client-access-management/v1"
+      ],
+      "endpoints": [
+        {
+          "path": "/direct-access",
+          "method": "GET",
+          "summary": "Retrieve the list of customer identifiers for own direct access",
+          "parameters": [],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404",
+            "500"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": 38,
+    "title": "Document Retrieval API",
+    "description": "The Document Retrieval API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+    "endpoints": [
+      {
+        "path": "/content",
+        "method": "POST",
+        "summary": "Retrieve a document from the repository",
+        "parameters": [
+          "Authorization",
+          "body"
+        ],
+        "responses": [
+          "200",
+          "401",
+          "403",
+          "404",
+          "500"
+        ]
+      }
+    ],
+    "raw": {
+      "title": "Document Retrieval API",
+      "version": "1.0",
+      "description": "The Document Retrieval API provides programmatic access to our document repository, enabling applications to manage documents with increased efficiency, improved information control, and reduced cost.",
+      "base_urls": [],
+      "endpoints": [
+        {
+          "path": "/content",
+          "method": "POST",
+          "summary": "Retrieve a document from the repository",
+          "parameters": [
+            "Authorization",
+            "body"
+          ],
+          "responses": [
+            "200",
+            "401",
+            "403",
+            "404",
+            "500"
+          ]
+        }
+      ]
+    }
+  }
+]

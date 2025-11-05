@@ -1,0 +1,314 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Dynamic Client Registration API",
+        "description": "This specification defines the APIs for a TPP to submit a Software Statement Assertion to an ASPSP for the purpose of creating OAuth clients that are registered with ASPSP.",
+        "version": "1.0"
+    },
+    "host": "api.natwest.com",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/register/v1.0": {
+            "post": {
+                "summary": " Registering Open Banking & Discretionary OAuth Clients",
+                "description": " Registering Open Banking & Discretionary OAuth Clients",
+                "consumes": [
+                    "application/jwt"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "clientRegistrationRequest",
+                        "schema": {
+                            "type": "string",
+                            "format": "byte",
+                            "example": "eyJhbGciOiJQUzI1NiJ9.eyJpc3MiOiJpc3N1ZXIiLCJpYXQiOjE1NDk1Mzk1NjMsImV4cCI6MTU0OTUzOTg2MywiYXVkIjoiYXVkaWVuY2UiLCJqdGkiOiJ5NlhWWTI1c0FKcTk2ZC05bUJGRWV3IiwiY2xpZW50X2lkIjoiY2xpZW50X2lkIiwiY2xpZW50X3NlY3JldCI6ImNsaWVudF9zZWNyZXQiLCJyZWRpcmVjdF91cmlzIjpbInJlZGlyZWN0X3VyaSJdLCJ0b2tlbl9lbmRwb2ludF9hdXRoX21ldGhvZCI6InRva2VuX2VuZHBvaW50X2F1dGhfbWV0aG9kIiwicmVzcG9uc2VfdHlwZXMiOlsicmVzcG9uc2VfdHlwZSJdLCJzb2Z0d2FyZV9pZCI6InNvZnR3YXJlX2lkIiwic2NvcGUiOiJzY29wZSIsInNvZnR3YXJlX3N0YXRlbWVudCI6ImV5SmhiR2NpT2lKU1V6STFOaUlzSW10cFpDSTZJbVJUTTBoRmVuTjVWa3BQVEhwUlZraEpWV3RQU2tVeVNYRnJiVE41U0dJMFFsbGZVR0pDUlZSWGFsazlJaXdpZEhsd0lqb2lTbGRVSW4wLmV5SnBZWFFpT2pFMU5EUTNPRGN6TnpZc0ltbHpjeUk2SWs5d1pXNUNZVzVyYVc1bklFeDBaQ0lzSW1wMGFTSTZJa2QwUXpoMU1qaG9TbGw2YlZwcVpuUTNTelpWVWlJc0ltOXlaMTlqYjI1MFlXTjBjeUk2VzNzaVpXMWhhV3dpT2lKa1lYWnBaQzVwYm1kaGJHeEFjbUp6TG1OdkxuVnJJaXdpYm1GdFpTSTZJa0oxYzJsdVpYTnpJaXdpY0dodmJtVWlPaUl3TnpjMk9UazFOekU0T1NJc0luUjVjR1VpT2lKQ2RYTnBibVZ6Y3lKOUxIc2laVzFoYVd3aU9pSmtZWFpwWkM1cGJtZGhiR3hBY21KekxtTnZMblZySWl3aWJtRnRaU0k2SWxSbFkyaHVhV05oYkNJc0luQm9iMjVsSWpvaU1EYzNOams1TlRjeE9Ea2lMQ0owZVhCbElqb2lWR1ZqYUc1cFkyRnNJbjFkTENKdmNtZGZhV1FpT2lJd01ERTFPREF3TURBd2FtWjNlRmhCUVZFaUxDSnZjbWRmYW5kcmMxOWxibVJ3YjJsdWRDSTZJbWgwZEhCek9pOHZhMlY1YzNSdmNtVXViM0JsYm1KaGJtdHBibWQwWlhOMExtOXlaeTUxYXk4d01ERTFPREF3TURBd2FtWjNlRmhCUVZFdk1EQXhOVGd3TURBd01HcG1kM2hZUVVGUkxtcDNhM01pTENKdmNtZGZhbmRyYzE5eVpYWnZhMlZrWDJWdVpIQnZhVzUwSWpvaWFIUjBjSE02THk5clpYbHpkRzl5WlM1dmNHVnVZbUZ1YTJsdVozUmxjM1F1YjNKbkxuVnJMekF3TVRVNE1EQXdNREJxWm5kNFdFRkJVUzl5WlhadmEyVmtMekF3TVRVNE1EQXdNREJxWm5kNFdFRkJVUzVxZDJ0eklpd2liM0puWDI1aGJXVWlPaUpPWVhScGIyNWhiQ0JYWlhOMGJXbHVjM1JsY2lCQ1lXNXJJRkJzWXlJc0ltOXlaMTl6ZEdGMGRYTWlPaUpCWTNScGRtVWlMQ0p2Y21kaGJtbHpZWFJwYjI1ZlkyOXRjR1YwWlc1MFgyRjFkR2h2Y21sMGVWOWpiR0ZwYlhNaU9uc2lZWFYwYUc5eWFYTmhkR2x2Ym5NaU9sdDdJbTFsYldKbGNsOXpkR0YwWlNJNklrZENJaXdpY205c1pYTWlPbHNpUVVsVFVDSXNJbEJKVTFBaVhYMHNleUp0WlcxaVpYSmZjM1JoZEdVaU9pSkpSU0lzSW5KdmJHVnpJanBiSWtGSlUxQWlMQ0pRU1ZOUUlsMTlMSHNpYldWdFltVnlYM04wWVhSbElqb2lUa3dpTENKeWIyeGxjeUk2V3lKQlNWTlFJaXdpVUVsVFVDSmRmVjBzSW1GMWRHaHZjbWwwZVY5cFpDSTZJa1pEUVVkQ1VpSXNJbkpsWjJsemRISmhkR2x2Ymw5cFpDSTZJakV5TVRnM09DSXNJbk4wWVhSMWN5STZJa0ZqZEdsMlpTSjlMQ0p6YjJaMGQyRnlaVjlqYkdsbGJuUmZaR1Z6WTNKcGNIUnBiMjRpT2lKRGNtVmhkR1ZrSUdadmNpQlRZWFJvYVhOb0lGTm9ZVzV0ZFdkaGRtVnNYRzVEY21WaGRHVmtJR0o1SUZOcGJXOXVJRWhsZDJsdWN5QmNibFJvYVhNZ1UxTkJJSGRwYkd3Z1ltVWdkWE5sWkNCaWVTQkVSVk1nU1VGTklIUmxZVzBnWm05eUlIUm9aV2x5SUdobFlYSjBZbVZoZENCamJHbGxiblFnSWl3aWMyOW1kSGRoY21WZlkyeHBaVzUwWDJsa0lqb2lOMVZwTUdsdWVHbFRWV2hYTkdOeWJVWjZkVnAzWnlJc0luTnZablIzWVhKbFgyTnNhV1Z1ZEY5dVlXMWxJam9pUkVWVElFbEJUU0JJWldGeWRHSmxZWFFnWTJ4cFpXNTBJQ2hVWlhOMElFNVhRaWtpTENKemIyWjBkMkZ5WlY5amJHbGxiblJmZFhKcElqb2lhSFIwY0hNNkx5OWtaWFpsYkc5d1pYSXVibUYwZDJWemRDNWpiMjB2WkhWdGJYbGpiR2xsYm5RdVkyOXRJaXdpYzI5bWRIZGhjbVZmWlc1MmFYSnZibTFsYm5RaU9pSnpZVzVrWW05NElpd2ljMjltZEhkaGNtVmZhV1FpT2lJM1ZXa3dhVzU0YVZOVmFGYzBZM0p0Um5wMVduZG5JaXdpYzI5bWRIZGhjbVZmYW5kcmMxOWxibVJ3YjJsdWRDSTZJbWgwZEhCek9pOHZhMlY1YzNSdmNtVXViM0JsYm1KaGJtdHBibWQwWlhOMExtOXlaeTUxYXk4d01ERTFPREF3TURBd2FtWjNlRmhCUVZFdk4xVnBNR2x1ZUdsVFZXaFhOR055YlVaNmRWcDNaeTVxZDJ0eklpd2ljMjltZEhkaGNtVmZhbmRyYzE5eVpYWnZhMlZrWDJWdVpIQnZhVzUwSWpvaWFIUjBjSE02THk5clpYbHpkRzl5WlM1dmNHVnVZbUZ1YTJsdVozUmxjM1F1YjNKbkxuVnJMekF3TVRVNE1EQXdNREJxWm5kNFdFRkJVUzl5WlhadmEyVmtMemRWYVRCcGJuaHBVMVZvVnpSamNtMUdlblZhZDJjdWFuZHJjeUlzSW5OdlpuUjNZWEpsWDJ4dloyOWZkWEpwSWpvaWFIUjBjSE02THk5a1pYWmxiRzl3WlhJdWJtRjBkMlZ6ZEM1amIyMHZiRzluYnk1d2JtY2lMQ0p6YjJaMGQyRnlaVjl0YjJSbElqb2lUR2wyWlNJc0luTnZablIzWVhKbFgyOXVYMkpsYUdGc1psOXZabDl2Y21jaU9pSWlMQ0p6YjJaMGQyRnlaVjl3YjJ4cFkzbGZkWEpwSWpvaWFIUjBjSE02THk5a1pYWmxiRzl3WlhJdWJtRjBkMlZ6ZEM1amIyMHZaSFZ0Ylhsd2IyeHBZM2t1WTI5dElpd2ljMjltZEhkaGNtVmZjbVZrYVhKbFkzUmZkWEpwY3lJNld5Sm9kSFJ3Y3pvdkwyUmxkbVZzYjNCbGNpNXVZWFIzWlhOMExtTnZiUzlrZFcxdGVYSmxaR2x5WldOMExtTnZiU0pkTENKemIyWjBkMkZ5WlY5eWIyeGxjeUk2V3lKQlNWTlFJaXdpVUVsVFVDSmRMQ0p6YjJaMGQyRnlaVjkwYjNOZmRYSnBJam9pYUhSMGNITTZMeTlrWlhabGJHOXdaWEl1Ym1GMGQyVnpkQzVqYjIwdlpIVnRiWGwwWlhKdExtTnZiU0lzSW5OdlpuUjNZWEpsWDNabGNuTnBiMjRpT2pBdU1YMC5PM1ZaUXdRZlFyZFExRnpfRTFNMHFicXNOWXUzdFl2ejR2SkdibUJid3VoczVqVWZtY0Zpek0tUVFSOVpsRFY1b3hPOWZKamxGSmRRWXM1VDRSNWV2STdDQ1JienZLQkF2bGp5cjk3ak5yRVFwNUpmZnV6cDB3VHpJeVlydnMyWnZud19oMGRHMGtqbWpJQllVYmxIN04xV2M5T1FqVlA2cm9qWng4NjduMDA0ZjFheGU5dUtUX1Z4UGtZY1Ryd2lTSVdGMGZCM1BxMDhNclVaWXZrbWt1bnlMb1I2T296N1dFb0hqTlFXdURYYkNPTzRueEFuVU9aMEQ0MG5RcEx6SkZmR2E1M2VIT3gwZEdocWNJcmpleENsclVjM0c3bG9RZjZpTUZFYWNjV3NCYmdHVDBCNmZEbkg1WFFGTnJxWEFRb3Vfb2k2Y1dBMjV6X0NvVk1raUEiLCJhcHBsaWNhdGlvbl90eXBlIjoiYXBwbGljYXRpb25fdHlwZSIsImlkX3Rva2VuX3NpZ25lZF9yZXNwb25zZV9hbGciOiJpZF90b2tlbl9zaWduZWRfcmVzcG9uc2VfYWxnIiwicmVxdWVzdF9vYmplY3Rfc2lnbmluZ19hbGciOiJyZXF1ZXN0X29iamVjdF9zaWduaW5nX2FsZyIsInRva2VuX2VuZHBvaW50X2F1dGhfc2lnbmluZ19hbGciOiJ0b2tlbl9lbmRwb2ludF9hdXRoX3NpZ25pbmdfYWxnIiwidGxzX2NsaWVudF9hdXRoX2RuIjoidGxzX2NsaWVudF9hdXRoX2RuIn0.g7eRAYXld7R-9Fu7tNQ9rFMk9SrtwJdjCjHO7S-B3cCrVfy1L_C6zyefqen7qBt7FOaMt7aCLk_J1VCGkJ2oppc-Qfgb6sDNuQWUkK7ESVE1SHKQAX3IwB60atYkRvkMN_SY02Au7PFlLVYTntIRgMCfWRcn_Q_UXcPU4jxSdvUHyVypcgbwl1GuHXPjxt_MkoKes_SMASYsbiNxBIXrXEJxMZszg1nsI8H1rnIWl2QfcyVcWQ1lvuz_Lkx76XZpmlm8TY1hnezmdNucuMIGqP4zxCsjnZP5gNAe6IPHWe9HZip2BCE_Wj7H0BNf3DL5ayQJ60R8mwEboPnUao3x-Q"
+                        },
+                        "required": true,
+                        "description": "Registering TPP Client Registration Request JWT"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Client successfully registered",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "client_id": {
+                                    "type": "string",
+                                    "example": "7Ui0inxiSUhW4crmFzuZwg"
+                                },
+                                "redirect_uris": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string"
+                                    }
+                                },
+                                "grant_types": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "enum": [
+                                            "authorization_code",
+                                            "refresh_token",
+                                            "client_credentials"
+                                        ]
+                                    }
+                                },
+                                "client_name": {
+                                    "type": "string",
+                                    "example": "DES IAM Heartbeat client (Test NWB)"
+                                },
+                                "token_endpoint_auth_method": {
+                                    "type": "string",
+                                    "enum": [
+                                        "private_key_jwt"
+                                    ]
+                                },
+                                "logo_uri": {
+                                    "type": "string",
+                                    "example": "https://developer.natwest.com/logo.png"
+                                },
+                                "software_statement": {
+                                    "type": "string",
+                                    "format": "byte",
+                                    "example": "eyJhbGciOiJSUzI1NiIsImtpZCI6ImRTM0hFenN5VkpPTHpRVkhJVWtPSkUySXFrbTN5SGI0QllfUGJCRVRXalk9IiwidHlwIjoiSldUIn0.eyJpYXQiOjE1NDQ3ODczNzYsImlzcyI6Ik9wZW5CYW5raW5nIEx0ZCIsImp0aSI6Ikd0Qzh1MjhoSll6bVpqZnQ3SzZVUiIsIm9yZ19jb250YWN0cyI6W3siZW1haWwiOiJkYXZpZC5pbmdhbGxAcmJzLmNvLnVrIiwibmFtZSI6IkJ1c2luZXNzIiwicGhvbmUiOiIwNzc2OTk1NzE4OSIsInR5cGUiOiJCdXNpbmVzcyJ9LHsiZW1haWwiOiJkYXZpZC5pbmdhbGxAcmJzLmNvLnVrIiwibmFtZSI6IlRlY2huaWNhbCIsInBob25lIjoiMDc3Njk5NTcxODkiLCJ0eXBlIjoiVGVjaG5pY2FsIn1dLCJvcmdfaWQiOiIwMDE1ODAwMDAwamZ3eFhBQVEiLCJvcmdfandrc19lbmRwb2ludCI6Imh0dHBzOi8va2V5c3RvcmUub3BlbmJhbmtpbmd0ZXN0Lm9yZy51ay8wMDE1ODAwMDAwamZ3eFhBQVEvMDAxNTgwMDAwMGpmd3hYQUFRLmp3a3MiLCJvcmdfandrc19yZXZva2VkX2VuZHBvaW50IjoiaHR0cHM6Ly9rZXlzdG9yZS5vcGVuYmFua2luZ3Rlc3Qub3JnLnVrLzAwMTU4MDAwMDBqZnd4WEFBUS9yZXZva2VkLzAwMTU4MDAwMDBqZnd4WEFBUS5qd2tzIiwib3JnX25hbWUiOiJOYXRpb25hbCBXZXN0bWluc3RlciBCYW5rIFBsYyIsIm9yZ19zdGF0dXMiOiJBY3RpdmUiLCJvcmdhbmlzYXRpb25fY29tcGV0ZW50X2F1dGhvcml0eV9jbGFpbXMiOnsiYXV0aG9yaXNhdGlvbnMiOlt7Im1lbWJlcl9zdGF0ZSI6IkdCIiwicm9sZXMiOlsiQUlTUCIsIlBJU1AiXX0seyJtZW1iZXJfc3RhdGUiOiJJRSIsInJvbGVzIjpbIkFJU1AiLCJQSVNQIl19LHsibWVtYmVyX3N0YXRlIjoiTkwiLCJyb2xlcyI6WyJBSVNQIiwiUElTUCJdfV0sImF1dGhvcml0eV9pZCI6IkZDQUdCUiIsInJlZ2lzdHJhdGlvbl9pZCI6IjEyMTg3OCIsInN0YXR1cyI6IkFjdGl2ZSJ9LCJzb2Z0d2FyZV9jbGllbnRfZGVzY3JpcHRpb24iOiJDcmVhdGVkIGZvciBTYXRoaXNoIFNoYW5tdWdhdmVsXG5DcmVhdGVkIGJ5IFNpbW9uIEhld2lucyBcblRoaXMgU1NBIHdpbGwgYmUgdXNlZCBieSBERVMgSUFNIHRlYW0gZm9yIHRoZWlyIGhlYXJ0YmVhdCBjbGllbnQgIiwic29mdHdhcmVfY2xpZW50X2lkIjoiN1VpMGlueGlTVWhXNGNybUZ6dVp3ZyIsInNvZnR3YXJlX2NsaWVudF9uYW1lIjoiREVTIElBTSBIZWFydGJlYXQgY2xpZW50IChUZXN0IE5XQikiLCJzb2Z0d2FyZV9jbGllbnRfdXJpIjoiaHR0cHM6Ly9kZXZlbG9wZXIubmF0d2VzdC5jb20vZHVtbXljbGllbnQuY29tIiwic29mdHdhcmVfZW52aXJvbm1lbnQiOiJzYW5kYm94Iiwic29mdHdhcmVfaWQiOiI3VWkwaW54aVNVaFc0Y3JtRnp1WndnIiwic29mdHdhcmVfandrc19lbmRwb2ludCI6Imh0dHBzOi8va2V5c3RvcmUub3BlbmJhbmtpbmd0ZXN0Lm9yZy51ay8wMDE1ODAwMDAwamZ3eFhBQVEvN1VpMGlueGlTVWhXNGNybUZ6dVp3Zy5qd2tzIiwic29mdHdhcmVfandrc19yZXZva2VkX2VuZHBvaW50IjoiaHR0cHM6Ly9rZXlzdG9yZS5vcGVuYmFua2luZ3Rlc3Qub3JnLnVrLzAwMTU4MDAwMDBqZnd4WEFBUS9yZXZva2VkLzdVaTBpbnhpU1VoVzRjcm1GenVad2cuandrcyIsInNvZnR3YXJlX2xvZ29fdXJpIjoiaHR0cHM6Ly9kZXZlbG9wZXIubmF0d2VzdC5jb20vbG9nby5wbmciLCJzb2Z0d2FyZV9tb2RlIjoiTGl2ZSIsInNvZnR3YXJlX29uX2JlaGFsZl9vZl9vcmciOiIiLCJzb2Z0d2FyZV9wb2xpY3lfdXJpIjoiaHR0cHM6Ly9kZXZlbG9wZXIubmF0d2VzdC5jb20vZHVtbXlwb2xpY3kuY29tIiwic29mdHdhcmVfcmVkaXJlY3RfdXJpcyI6WyJodHRwczovL2RldmVsb3Blci5uYXR3ZXN0LmNvbS9kdW1teXJlZGlyZWN0LmNvbSJdLCJzb2Z0d2FyZV9yb2xlcyI6WyJBSVNQIiwiUElTUCJdLCJzb2Z0d2FyZV90b3NfdXJpIjoiaHR0cHM6Ly9kZXZlbG9wZXIubmF0d2VzdC5jb20vZHVtbXl0ZXJtLmNvbSIsInNvZnR3YXJlX3ZlcnNpb24iOjAuMX0.O3VZQwQfQrdQ1Fz_E1M0qbqsNYu3tYvz4vJGbmBbwuhs5jUfmcFizM-QQR9ZlDV5oxO9fJjlFJdQYs5T4R5evI7CCRbzvKBAvljyr97jNrEQp5Jffuzp0wTzIyYrvs2Zvnw_h0dG0kjmjIBYUblH7N1Wc9OQjVP6rojZx867n004f1axe9uKT_VxPkYcTrwiSIWF0fB3Pq08MrUZYvkmkunyLoR6Ooz7WEoHjNQWuDXbCOO4nxAnUOZ0D40nQpLzJFfGa53eHOx0dGhqcIrjexClrUc3G7loQf6iMFEaccWsBbgGT0B6fDnH5XQFNrqXAQou_oi6cWA25z_CoVMkiA"
+                                },
+                                "jwks_uri": {
+                                    "type": "string"
+                                },
+                                "scope": {
+                                    "type": "string",
+                                    "example": "openid payments profile accounts"
+                                },
+                                "tos": {
+                                    "type": "string",
+                                    "example": "https://developer.natwest.com/tos.html"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "invalid_client",
+                                        "invalid_client_metadata",
+                                        "invalid_redirect_uri",
+                                        "invalid_request",
+                                        "invalid_software_statement",
+                                        "unsupported_token_endpoint_auth_method"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Only private_key_jwt is supported"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "invalid_client"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Invalid Client Status."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "server_error"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Registration service is currently unavailable. Please try later."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register/v1.1/cop/register": {
+            "post": {
+                "summary": "Registering Confirmation of Payee OAuth Clients",
+                "description": "Registering Confirmation of Payee OAuth Clients",
+                "consumes": [
+                    "application/jwt"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "clientCopRegistrationRequest",
+                        "schema": {
+                            "type": "string",
+                            "format": "byte",
+                            "example": "eyJraWQiOiJNQmd1ckM5WHhId0Zvam1iQWVxREkySzY1alNGU2hLMCIsInR5cCI6IkpXUyIsImFsZyI6IlBTMjU2In0.eyJ0b2tlbl9lbmRwb2ludF9hdXRoX3NpZ25pbmdfYWxnIjoiUFMyNTYiLCJncmFudF90eXBlcyI6WyJjbGllbnRfY3JlZGVudGlhbHMiXSwiaXNzIjoiME1ZYzE2RDlvN1ZVM2pWbzh0bERiViIsInRsc19jbGllbnRfYXV0aF9zdWJqZWN0X2RuIjoiQ049ME1ZYzE2RDlvN1ZVM2pWbzh0bERiViwgT1U9aktxQjQ4Sm53dVB2aDFmOEdjLE89UGF5LlVLLEM9R0IiLCJyZWRpcmVjdF91cmlzIjpbImh0dHBzOlwvXC9kZXZlbG9wZXIubmF0d2VzdC5jb21cL2R1bW15X3JlZGlyZWN0Lmh0bWwiXSwidG9rZW5fZW5kcG9pbnRfYXV0aF9tZXRob2QiOiJwcml2YXRlX2tleV9qd3QiLCJhdWQiOiJqS3FCNDhKbnd1UHZoMWY4R2MiLCJzb2Z0d2FyZV9zdGF0ZW1lbnQiOiJleUowZVhBaU9pSktWMVFpTENKcmFXUWlPaUpNTWxVelZrbE9jWEV0VFZGT2EwVnphM1J5WVRWM1MyVkNiVVkzYjNaSldrcEpiR05PU0MxdFlVeHpJaXdpWVd4bklqb2lVRk15TlRZaWZRLmV5SnpiMlowZDJGeVpWOXBaQ0k2SWpCTldXTXhOa1E1YnpkV1ZUTnFWbTg0ZEd4RVlsWWlMQ0pwYzNNaU9pSlFZWGt1VlVzaUxDSnBZWFFpT2pFM01qRTVNalk1Tmpnc0ltcDBhU0k2SWpZM01qaG1Nak5sTFRSbE16QXROREl4TWkwNVl6RmhMV1ZtTnpKbVlqRXhaalU1TWlJc0luTnZablIzWVhKbFgyTnNhV1Z1ZEY5cFpDSTZJakJOV1dNeE5rUTViemRXVlROcVZtODRkR3hFWWxZaUxDSnpiMlowZDJGeVpWOWpiR2xsYm5SZlpHVnpZM0pwY0hScGIyNGlPaUpFUTFJZ1ZHVnpkQ0JEYkdsbGJuUWdabTl5SUU1aGRGZGxjM1FpTENKemIyWjBkMkZ5WlY5amJHbGxiblJmYm1GdFpTSTZJazVoZEhkbGMzUWdSRU5TSUZSbGMzUWdRMnhwWlc1MElpd2ljMjltZEhkaGNtVmZZMnhwWlc1MFgzVnlhU0k2SW1oMGRIQnpPaTh2WkdWMlpXeHZjR1Z5TG01aGRIZGxjM1F1WTI5dEwyUjFiVzE1WDJOc2FXVnVkQzVvZEcxc0lpd2ljMjltZEhkaGNtVmZkbVZ5YzJsdmJpSTZJakV1TUNJc0luTnZablIzWVhKbFgyVnVkbWx5YjI1dFpXNTBJam9pU1c1a2RYTjBjbmtnVkdWemRDSXNJbk52Wm5SM1lYSmxYMnAzYTNOZlpXNWtjRzlwYm5RaU9pSm9kSFJ3Y3pvdkwydGxlWE4wYjNKbExtbHVaSFZ6ZEhKNWRHVnpkQzV3WVhsdFpXNTBjeTF6WlhKMmFXTmxjeTVqYnk1MWF5OWpiM0F2YWt0eFFqUTRTbTUzZFZCMmFERm1PRWRqTHpCTldXTXhOa1E1YnpkV1ZUTnFWbTg0ZEd4RVlsWXVhbmRyY3lJc0luTnZablIzWVhKbFgycDNhM05mY21WMmIydGxaRjlsYm1Sd2IybHVkQ0k2SW1oMGRIQnpPaTh2YTJWNWMzUnZjbVV1YVc1a2RYTjBjbmwwWlhOMExuQmhlVzFsYm5SekxYTmxjblpwWTJWekxtTnZMblZyTDJOdmNDOXFTM0ZDTkRoS2JuZDFVSFpvTVdZNFIyTXZjbVYyYjJ0bFpDOHdUVmxqTVRaRU9XODNWbFV6YWxadk9IUnNSR0pXTG1wM2EzTWlMQ0p6YjJaMGQyRnlaVjlzYjJkdlgzVnlhU0k2SW1oMGRIQnpPaTh2ZDNkM0xtSjFjMmx1WlhOekxtNWhkSGRsYzNRdVkyOXRMMlYwWXk5a1pYTnBaMjV6TDJSdGNDOWpiR2xsYm5Sc2FXSnpYMkpoYzJVdmFXMWhaMlZ6TDJsamIyNXpMMnh2WjI4dWNHNW5JaXdpYzI5bWRIZGhjbVZmYlc5a1pTSTZJbFJsYzNRaUxDSnpiMlowZDJGeVpWOXZibDlpWldoaGJHWmZiMlpmYjNKbklqb2lUbUYwZDJWemRDSXNJbk52Wm5SM1lYSmxYM0J2YkdsamVWOTFjbWtpT2lKb2RIUndjem92TDNkM2R5NWlZVzVyYjJaaGNHbHpMbU52YlM4aUxDSnpiMlowZDJGeVpWOXlaV1JwY21WamRGOTFjbWx6SWpwYkltaDBkSEJ6T2k4dlpHVjJaV3h2Y0dWeUxtNWhkSGRsYzNRdVkyOXRMMlIxYlcxNVgzSmxaR2x5WldOMExtaDBiV3dpWFN3aWMyOW1kSGRoY21WZmNtOXNaWE1pT2xzaVEwOVFVbVZ6Y0c5dVpHVnlJaXdpUTA5UVVtVnhkV1Z6ZEdWeUlsMHNJbk52Wm5SM1lYSmxYM1J2YzE5MWNta2lPaUpvZEhSd2N6b3ZMM2QzZHk1aVlXNXJiMlpoY0dsekxtTnZiUzhpTENKdmNtZGhibWx6WVhScGIyNWZZMjl0Y0dWMFpXNTBYMkYxZEdodmNtbDBlVjlqYkdGcGJYTWlPbnNpWVhWMGFHOXlhWFI1WDJsa0lqb2lVRUZaVlV0SFFsSWlMQ0p5WldkcGMzUnlZWFJwYjI1ZmFXUWlPaUl4TURBd01UQWlMQ0p6ZEdGMGRYTWlPaUpCWTNScGRtVWlMQ0poZFhSb2IzSnBjMkYwYVc5dWN5STZXM3NpYldWdFltVnlYM04wWVhSbElqb2lSMElpTENKeWIyeGxjeUk2V3lKRFQxQlNaWEYxWlhOMFpYSWlMQ0pEVDFCU1pYTndiMjVrWlhJaVhYMWRmU3dpYjNKblgzTjBZWFIxY3lJNklrRmpkR2wyWlNJc0ltOXlaMTlwWkNJNkltcExjVUkwT0VwdWQzVlFkbWd4WmpoSFl5SXNJbTl5WjE5dVlXMWxJam9pVG1GMGFXOXVZV3dnVjJWemRHMXBibk4wWlhJZ1FtRnVheUJRYkdNaUxDSnZjbWRmWTI5dWRHRmpkSE1pT2x0N0ltNWhiV1VpT2lKVVpXTm9ibWxqWVd3aUxDSmxiV0ZwYkNJNklpTkRiMjVtYVhKdFlYUnBiMjVQWmxCaGVXVmxVSEp2WkhWamRHbHZibE4xY0hCdmNuUkFjbUp2Y3k1amJ5NTFheUlzSW5Cb2IyNWxJam9pTURBNU1TQW9PVGt4TURBcElEYzNORFkwSWl3aWRIbHdaU0k2SWxSbFkyaHVhV05oYkNKOUxIc2libUZ0WlNJNklrSjFjMmx1WlhOeklpd2laVzFoYVd3aU9pSkhZWGxzWlM1aWNtOTBhR1Z5YzNSdmJrQnVZWFIzWlhOMExtTnZiU0lzSW5Cb2IyNWxJam9pTURBME5DQW9OemM1TmlrZ09UUTRNekF3SWl3aWRIbHdaU0k2SWtKMWMybHVaWE56SW4xZExDSnZjbWRmYW5kcmMxOWxibVJ3YjJsdWRDSTZJbWgwZEhCek9pOHZhMlY1YzNSdmNtVXVhVzVrZFhOMGNubDBaWE4wTG5CaGVXMWxiblJ6TFhObGNuWnBZMlZ6TG1OdkxuVnJMMk52Y0M5cVMzRkNORGhLYm5kMVVIWm9NV1k0UjJNdmFrdHhRalE0U201M2RWQjJhREZtT0VkakxtcDNhM01pTENKdmNtZGZhbmRyYzE5eVpYWnZhMlZrWDJWdVpIQnZhVzUwSWpvaWFIUjBjSE02THk5clpYbHpkRzl5WlM1cGJtUjFjM1J5ZVhSbGMzUXVjR0Y1YldWdWRITXRjMlZ5ZG1salpYTXVZMjh1ZFdzdlkyOXdMMnBMY1VJME9FcHVkM1ZRZG1neFpqaEhZeTl5WlhadmEyVmtMMnBMY1VJME9FcHVkM1ZRZG1neFpqaEhZeTVxZDJ0ekluMC5BTDg1cHpaSEFZbGNZQVZGNUhzZFliOUpQLWMwQXRjajNQT0IyQWg4Sno3cDBqNlFTQUNZd0c1V1I1OEY0WlREYUF6enVMV2VvRjRRU25oSks5T1lNbUJJUFM2LXJkRHI4VmVPN0hPcVhYaWR3SjdxUlo2eVFucjJRZ056T1JDNUdqdUw4XzVUZW9VZi10RjR1bEItNzA1NHY3LWRHeExsajVTLU9oNUhlMkxKeldhNjNHbW41WTctTDctY05QTkhxX0xlQ0pVdEFRSjRROGdoc1U0anpmWkJHTU5uUHZSTHNsMUtoaGVWMWQ2NU9abUI5dGRQd2NUMUh6SHFMUk8wRGk0eDFCX0FLNUI2LUxVS3NzUFBGcmxERWNwMnlyMjlNcGExQ19FNFhuTnRUNE12d2FVS0tLLWNTSlZ4LUdtUXY5UWZ6blExYy10cXNsQUJ6TmdkNnciLCJzb2Z0d2FyZV9pZCI6IjBNWWMxNkQ5bzdWVTNqVm84dGxEYlYiLCJzY29wZSI6Im9wZW5pZCBuYW1lLXZlcmlmaWNhdGlvbiBjb3BpbiIsInJlcXVlc3Rfb2JqZWN0X3NpZ25pbmdfYWxnIjoiUFMyNTYiLCJleHAiOjE3MjM0NTE3NjQsImlhdCI6MTcyMzQ1MTE2NCwianRpIjoiZDYzMDYxN2YtNGEyZC00N2NmLWE1YTAtNmM3MTI2M2U3NmVjIn0.jaj1xBwIBvewO_bkd8EMpgry9Np_rQcDhR8YrjkC60bV-usPmQeq5ciylHv1JGvR7UHsLSjLHqVk-xjFzoBu0Dukqp-DfSyoyXRQ2hOpCmQuoysOoKWKtbJzQT3eBeez1jv1jmurKuqeB9U7ZKfTWez_ztl7kPj69tlzmcrtf3buebrtK6Jn_csko6yxYcqXqRu0NhKALo0guDsTBN2wG38JJ5uFCqBRvt7yrkqUaKSAW_lA2YD1P7Tqsp167cEgsggzoQcPHLI4AIiccN6TG_Ny6I6FBVL-xKHA7AGEFH-z8ofHeBj4A-G57a80n6mrkJRdJcyMRCwyV1Ns45Vw8Q"
+                        },
+                        "required": true,
+                        "description": "Registering TPP Client Registration Request JWT"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Successful registration",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "client_id": {
+                                    "type": "string",
+                                    "example": "0MYc16D9o7VU3jVo8tlDbV"
+                                },
+                                "redirect_uris": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "https://developer.natwest.com/dummy_redirect.html"
+                                    }
+                                },
+                                "grant_types": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "string",
+                                        "example": "client_credentials"
+                                    }
+                                },
+                                "client_name": {
+                                    "type": "string",
+                                    "example": "Natwest DCR Test Client"
+                                },
+                                "token_endpoint_auth_method": {
+                                    "type": "string",
+                                    "example": "private_key_jwt"
+                                },
+                                "token_endpoint_auth_signing_alg": {
+                                    "type": "string",
+                                    "example": "PS256"
+                                },
+                                "logo_uri": {
+                                    "type": "string",
+                                    "example": "https://www.business.natwest.com/etc/designs/dmp/clientlibs_base/images/icons/logo.png"
+                                },
+                                "software_statement": {
+                                    "type": "string",
+                                    "example": "eyJ0eXAiOiJKV1QiLCJraWQiOiJMMlUzVklOcXEtTVFOa0Vza3RyYTV3S2VCbUY3b3ZJWkpJbGNOSC1tYUxzIiwiYWxnIjoiUFMyNTYifQ.eyJzb2Z0d2FyZV9pZCI6IjBNWWMxNkQ5bzdWVTNqVm84dGxEYlYiLCJpc3MiOiJQYXkuVUsiLCJpYXQiOjE3MjE5MjY5NjgsImp0aSI6IjY3MjhmMjNlLTRlMzAtNDIxMi05YzFhLWVmNzJmYjExZjU5MiIsInNvZnR3YXJlX2NsaWVudF9pZCI6IjBNWWMxNkQ5bzdWVTNqVm84dGxEYlYiLCJzb2Z0d2FyZV9jbGllbnRfZGVzY3JpcHRpb24iOiJEQ1IgVGVzdCBDbGllbnQgZm9yIE5hdFdlc3QiLCJzb2Z0d2FyZV9jbGllbnRfbmFtZSI6Ik5hdHdlc3QgRENSIFRlc3QgQ2xpZW50Iiwic29mdHdhcmVfY2xpZW50X3VyaSI6Imh0dHBzOi8vZGV2ZWxvcGVyLm5hdHdlc3QuY29tL2R1bW15X2NsaWVudC5odG1sIiwic29mdHdhcmVfdmVyc2lvbiI6IjEuMCIsInNvZnR3YXJlX2Vudmlyb25tZW50IjoiSW5kdXN0cnkgVGVzdCIsInNvZnR3YXJlX2p3a3NfZW5kcG9pbnQiOiJodHRwczovL2tleXN0b3JlLmluZHVzdHJ5dGVzdC5wYXltZW50cy1zZXJ2aWNlcy5jby51ay9jb3AvaktxQjQ4Sm53dVB2aDFmOEdjLzBNWWMxNkQ5bzdWVTNqVm84dGxEYlYuandrcyIsInNvZnR3YXJlX2p3a3NfcmV2b2tlZF9lbmRwb2ludCI6Imh0dHBzOi8va2V5c3RvcmUuaW5kdXN0cnl0ZXN0LnBheW1lbnRzLXNlcnZpY2VzLmNvLnVrL2NvcC9qS3FCNDhKbnd1UHZoMWY4R2MvcmV2b2tlZC8wTVljMTZEOW83VlUzalZvOHRsRGJWLmp3a3MiLCJzb2Z0d2FyZV9sb2dvX3VyaSI6Imh0dHBzOi8vd3d3LmJ1c2luZXNzLm5hdHdlc3QuY29tL2V0Yy9kZXNpZ25zL2RtcC9jbGllbnRsaWJzX2Jhc2UvaW1hZ2VzL2ljb25zL2xvZ28ucG5nIiwic29mdHdhcmVfbW9kZSI6IlRlc3QiLCJzb2Z0d2FyZV9vbl9iZWhhbGZfb2Zfb3JnIjoiTmF0d2VzdCIsInNvZnR3YXJlX3BvbGljeV91cmkiOiJodHRwczovL3d3dy5iYW5rb2ZhcGlzLmNvbS8iLCJzb2Z0d2FyZV9yZWRpcmVjdF91cmlzIjpbImh0dHBzOi8vZGV2ZWxvcGVyLm5hdHdlc3QuY29tL2R1bW15X3JlZGlyZWN0Lmh0bWwiXSwic29mdHdhcmVfcm9sZXMiOlsiQ09QUmVzcG9uZGVyIiwiQ09QUmVxdWVzdGVyIl0sInNvZnR3YXJlX3Rvc191cmkiOiJodHRwczovL3d3dy5iYW5rb2ZhcGlzLmNvbS8iLCJvcmdhbmlzYXRpb25fY29tcGV0ZW50X2F1dGhvcml0eV9jbGFpbXMiOnsiYXV0aG9yaXR5X2lkIjoiUEFZVUtHQlIiLCJyZWdpc3RyYXRpb25faWQiOiIxMDAwMTAiLCJzdGF0dXMiOiJBY3RpdmUiLCJhdXRob3Jpc2F0aW9ucyI6W3sibWVtYmVyX3N0YXRlIjoiR0IiLCJyb2xlcyI6WyJDT1BSZXF1ZXN0ZXIiLCJDT1BSZXNwb25kZXIiXX1dfSwib3JnX3N0YXR1cyI6IkFjdGl2ZSIsIm9yZ19pZCI6ImpLcUI0OEpud3VQdmgxZjhHYyIsIm9yZ19uYW1lIjoiTmF0aW9uYWwgV2VzdG1pbnN0ZXIgQmFuayBQbGMiLCJvcmdfY29udGFjdHMiOlt7Im5hbWUiOiJUZWNobmljYWwiLCJlbWFpbCI6IiNDb25maXJtYXRpb25PZlBheWVlUHJvZHVjdGlvblN1cHBvcnRAcmJvcy5jby51ayIsInBob25lIjoiMDA5MSAoOTkxMDApIDc3NDY0IiwidHlwZSI6IlRlY2huaWNhbCJ9LHsibmFtZSI6IkJ1c2luZXNzIiwiZW1haWwiOiJHYXlsZS5icm90aGVyc3RvbkBuYXR3ZXN0LmNvbSIsInBob25lIjoiMDA0NCAoNzc5NikgOTQ4MzAwIiwidHlwZSI6IkJ1c2luZXNzIn1dLCJvcmdfandrc19lbmRwb2ludCI6Imh0dHBzOi8va2V5c3RvcmUuaW5kdXN0cnl0ZXN0LnBheW1lbnRzLXNlcnZpY2VzLmNvLnVrL2NvcC9qS3FCNDhKbnd1UHZoMWY4R2MvaktxQjQ4Sm53dVB2aDFmOEdjLmp3a3MiLCJvcmdfandrc19yZXZva2VkX2VuZHBvaW50IjoiaHR0cHM6Ly9rZXlzdG9yZS5pbmR1c3RyeXRlc3QucGF5bWVudHMtc2VydmljZXMuY28udWsvY29wL2pLcUI0OEpud3VQdmgxZjhHYy9yZXZva2VkL2pLcUI0OEpud3VQdmgxZjhHYy5qd2tzIn0.AL85pzZHAYlcYAVF5HsdYb9JP-c0Atcj3POB2Ah8Jz7p0j6QSACYwG5WR58F4ZTDaAzzuLWeoF4QSnhJK9OYMmBIPS6-rdDr8VeO7HOqXXidwJ7qRZ6yQnr2QgNzORC5GjuL8_5TeoUf-tF4ulB-7054v7-dGxLlj5S-Oh5He2LJzWa63Gmn5Y7-L7-cNPNHq_LeCJUtAQJ4Q8ghsU4jzfZBGMNnPvRLsl1KhheV1d65OZmB9tdPwcT1HzHqLRO0Di4x1B_AK5B6-LUKssPPFrlDEcp2yr29Mpa1C_E4XnNtT4MvwaUKKK-cSJVx-GmQv9QfznQ1c-tqslABzNgd6w"
+                                },
+                                "jwks_uri": {
+                                    "type": "string"
+                                },
+                                "scope": {
+                                    "type": "string",
+                                    "example": "openid name-verification copin"
+                                },
+                                "tos": {
+                                    "type": "string",
+                                    "example": "https://www.bankofapis.com/"
+                                },
+                                "application_type": {
+                                    "type": "string",
+                                    "example": "web"
+                                },
+                                "request_object_signing_alg": {
+                                    "type": "string",
+                                    "example": "PS256"
+                                },
+                                "id_token_signed_response_alg": {
+                                    "type": "string",
+                                    "example": "PS256"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "unsupported_signing_alg",
+                                        "invalid_client_metadata",
+                                        "invalid_redirect_uri",
+                                        "invalid_request",
+                                        "invalid_software_statement",
+                                        "unsupported_token_endpoint_auth_method"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Invalid Signing algorithm"
+                                }
+                            }
+                        }
+                    },
+                    "409": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "invalid_client"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Invalid Client Status."
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Failure to register client",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "error": {
+                                    "type": "string",
+                                    "enum": [
+                                        "server_error"
+                                    ]
+                                },
+                                "error_description": {
+                                    "type": "string",
+                                    "example": "Registration service is currently unavailable. Please try later."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,332 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+        "title": "Manage Controls API",
+        "description": "Update the existing controls selected by customers",
+        "termsOfService": "http://localhost:8080",
+        "version": "2.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com",
+            "description": "Generated server url"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Manage Controls",
+            "description": "Operations pertaining to manage controls from collection"
+        }
+    ],
+    "paths": {
+        "/permissions-preferences/v1.0/upsert/controls": {
+            "put": {
+                "tags": [
+                    "Manage Controls"
+                ],
+                "description": "Manage controls for a particular customer using PUT operation",
+                "operationId": "getPaymentControlsActual",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/PaymentControlManageRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Your description",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/PaymentControlResponseItem"
+                                    }
+                                },
+                                "example": [
+                                    {
+                                        "cooloffExpiryTimestamp": "2024-01-05 12: 16: 14.213421",
+                                        "channel": "MOBILE",
+                                        "transactionId": "MOB-PMT-1234567-1468718ASd"
+                                    },
+                                    {
+                                        "cooloffExpiryTimestamp": "2024-01-05 12: 16: 14.213421",
+                                        "channel": "EBANKING",
+                                        "transactionId": "MOB-PMT-1234567-1468718ASd"
+                                    }
+                                ]
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "ErrorResponse": {
+                "type": "object",
+                "properties": {
+                    "timestamp": {
+                        "type": "string",
+                        "description": "timestamp",
+                        "example": "2024-05-06T08:40:15.792"
+                    },
+                    "status": {
+                        "type": "integer",
+                        "description": "Http status",
+                        "format": "int32",
+                        "example": 400
+                    },
+                    "coreErrorMessage": {
+                        "type": "string",
+                        "description": "Abstarct error message",
+                        "example": "validationError.invalidValues"
+                    },
+                    "api": {
+                        "type": "string",
+                        "enum": [
+                            "RDS_API",
+                            "PAYMENT_CONTROL_STD_API",
+                            "PAYMENT_MANAGE_STD_API",
+                            "PAYMENT_CONTROL_STD_DATA_API"
+                        ]
+                    },
+                    "path": {
+                        "type": "string"
+                    },
+                    "errorList": {
+                        "type": "array",
+                        "example": [
+                            "Request malformed.transactionTimestamp is not valid"
+                        ],
+                        "items": {
+                            "type": "string",
+                            "example": "[\"Request malformed.transactionTimestamp is not valid\"]"
+                        }
+                    }
+                }
+            },
+            "PaymentControlManageRequest": {
+                "required": [
+                    "requestPayload",
+                    "serviceHeader"
+                ],
+                "type": "object",
+                "properties": {
+                    "requestPayload": {
+                        "$ref": "#/components/schemas/RequestPayload"
+                    },
+                    "serviceHeader": {
+                        "$ref": "#/components/schemas/ServiceHeader"
+                    }
+                },
+                "description": "Search Criteria to view consents. Cannot null or empty."
+            },
+            "PaymentControlsItem": {
+                "type": "object",
+                "properties": {
+                    "controlType": {
+                        "type": "string",
+                        "description": "descriptive value of control type",
+                        "example": "INTERNATIONAL_PAYMENTS"
+                    },
+                    "controlValue": {
+                        "type": "string",
+                        "description": "descriptive value for control value",
+                        "example": "UNFREEZE"
+                    },
+                    "channel": {
+                        "type": "string",
+                        "description": "Channel for which controls are applicable",
+                        "example": "MOBILE"
+                    },
+                    "channelType": {
+                        "type": "string",
+                        "description": "Channel type",
+                        "example": "DIGITAL"
+                    }
+                },
+                "description": "Control Preference"
+            },
+            "RequestPayload": {
+                "required": [
+                    "brand",
+                    "customerContactType",
+                    "customerId",
+                    "customerType",
+                    "paymentControls"
+                ],
+                "type": "object",
+                "properties": {
+                    "customerId": {
+                        "pattern": "^[a-zA-Z0-9]*$",
+                        "type": "string",
+                        "description": "CustDB always 10 byte (never leading 0s) but we may require to onboard alphanumeric ids in the future",
+                        "example": "1234567890"
+                    },
+                    "customerType": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "Currently these are either Individual or Organisation",
+                        "example": "Individual"
+                    },
+                    "customerContactType": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "Set to CIN for CustDB",
+                        "example": "CIN"
+                    },
+                    "brand": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "Brand returned from ref data. Ref data has input/output field limit of 250 bytes",
+                        "example": "NWO"
+                    },
+                    "bankId": {
+                        "type": "string",
+                        "description": "BankId",
+                        "example": "123"
+                    },
+                    "sourceInstanceName": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "EDI standards are 3 char instance names",
+                        "example": "NWB"
+                    },
+                    "paymentControls": {
+                        "type": "array",
+                        "description": "Control Preference",
+                        "items": {
+                            "$ref": "#/components/schemas/PaymentControlsItem"
+                        }
+                    }
+                },
+                "description": "Request payload",
+                "example": {
+                    "customerId": "99408824824711711",
+                    "customerContactType": "CDB-ID",
+                    "customerType": "IND",
+                    "brand": "NWB",
+                    "sourceInstanceName": "NWB",
+                    "paymentControls": [
+                        {
+                            "controlType": "INTERNATIONAL_PAYMENTS",
+                            "controlValue": "UNFREEZE",
+                            "channel": "MOBILE"
+                        }
+                    ]
+                }
+            },
+            "ServiceHeader": {
+                "required": [
+                    "customerJourney",
+                    "recordUpdatedBy",
+                    "recordUpdatedTimestamp",
+                    "sourceId",
+                    "transactionId",
+                    "transactionTimestamp"
+                ],
+                "type": "object",
+                "properties": {
+                    "sourceId": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "Source Id",
+                        "example": "MOB"
+                    },
+                    "customerJourney": {
+                        "type": "string",
+                        "description": "Customer Journey responsible for transaction",
+                        "example": "PAYMENT"
+                    },
+                    "recordUpdatedBy": {
+                        "type": "string",
+                        "description": "Record updated by",
+                        "example": "mPlatform"
+                    },
+                    "mobileDeviceType": {
+                        "type": "string",
+                        "description": "Mobile device type",
+                        "example": "mobile device type"
+                    },
+                    "recordUpdatedTimestamp": {
+                        "type": "string",
+                        "description": "Record Updated Timestamp i.e. timestamp when the User updated his preference. It should be in GMT time zone.It should not be lesser than 24 hours and not greater than the current time",
+                        "example": "2022-03-25 14:23:34.1234560"
+                    },
+                    "transactionId": {
+                        "pattern": "\\S+",
+                        "type": "string",
+                        "description": "Transactions Id to uniquely define transaction. {sourceId-PMT-epochtime-uniqueId}",
+                        "example": "MOB-PMT-123456778-sample1"
+                    },
+                    "transactionTimestamp": {
+                        "type": "string",
+                        "description": "Transaction timestamp, when the request/transaction is sent to Controls Manage API. It should be in GMT time zone.It should not be lesser than 24 hours and not greater than the current time",
+                        "example": "2022-03-25 14:23:34.1234560"
+                    }
+                },
+                "description": "Service headers",
+                "example": {
+                    "sourceId": "MOB",
+                    "transactionId": "MOB-PMT-123456987345-demo51",
+                    "transactionTimestamp": "2024-04-29 01:51:26.123",
+                    "customerJourney": "PAYMENT",
+                    "mobileDeviceType": "apple",
+                    "recordUpdatedBy": "mPlatform",
+                    "recordUpdatedTimestamp": "2024-04-29 01:56:26.123"
+                }
+            },
+            "PaymentControlResponseItem": {
+                "required": [
+                    "channel",
+                    "cooloffExpiryTimestamp",
+                    "transactionId"
+                ],
+                "type": "object",
+                "properties": {
+                    "channel": {
+                        "type": "string",
+                        "description": "Channel for which controls are applicable",
+                        "example": "MOBILE"
+                    },
+                    "cooloffExpiryTimestamp": {
+                        "type": "string",
+                        "description": "Expiry timestamp for cool off window",
+                        "example": "2024-02-12 01:47:12.123456"
+                    },
+                    "transactionId": {
+                        "type": "string",
+                        "description": "Transactions Id to uniquely define transaction. {sourceId-PMT-epochtime-uniqueId}",
+                        "example": "MOB-PMT-123456778-sample1"
+                    }
+                }
+            }
+        }
+    }
+}

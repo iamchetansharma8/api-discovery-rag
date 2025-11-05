@@ -1,0 +1,375 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Client Access Management",
+        "version": "1",
+        "description": "Client Access Management APIs allow API consumers to directly manage client access via APIs upon agreement.",
+        "license": {
+            "url": "https://www.bankofapis.com/terms-and-conditions",
+            "name": "National Westminster Bank Plc Portal Terms and Conditions"
+        },
+        "termsOfService": "https://www.openbanking.org.uk/terms-conditions/"
+    },
+    "servers": [
+        {
+            "url": "https://api.natwest.com/client-access-management/v1",
+            "description": "Production"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Direct Access - Own Client Management",
+            "description": "Managing Direct Access of own client"
+        }
+    ],
+    "paths": {
+        "/direct-access": {
+            "get": {
+                "summary": "Retrieve the list of customer identifiers for own direct access",
+                "tags": [
+                    "Direct Access - Own Client Management"
+                ],
+                "responses": {
+                    "200": {
+                        "$ref": "#/components/responses/200-successful-get"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/401-unauthorised"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/403-forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/404-not-found"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/500-internal-server-error"
+                    }
+                },
+                "operationId": "get-permissions-direct-access-clientid-not-present"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "direct-access-response-body": {
+                "title": "direct-access-response-body",
+                "type": "object",
+                "properties": {
+                    "links": {
+                        "$ref": "#/components/schemas/links"
+                    },
+                    "meta": {
+                        "$ref": "#/components/schemas/meta"
+                    },
+                    "data": {
+                        "type": "object",
+                        "properties": {
+                            "directAccess": {
+                                "type": "object",
+                                "required": [
+                                    "customers",
+                                    "clientId"
+                                ],
+                                "properties": {
+                                    "clientId": {
+                                        "type": "string",
+                                        "description": "The clientId value",
+                                        "example": "7bwAM30XgRUtsbSuK6KfQurbs"
+                                    },
+                                    "customers": {
+                                        "type": "array",
+                                        "description": "The list of customer logins that the clientId should be allowed to have access to. ",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "customerId": {
+                                                    "type": "string",
+                                                    "description": "The customerId allowed Direct Access. This is required at login level."
+                                                },
+                                                "customerIdScheme": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "customerIdentificationNumber",
+                                                        "businessIdentificationNumber",
+                                                        "banklineId",
+                                                        "eqID"
+                                                    ],
+                                                    "description": "The scheme of the customerID"
+                                                }
+                                            },
+                                            "required": [
+                                                "customerId",
+                                                "customerIdScheme"
+                                            ],
+                                            "example": {
+                                                "customerId": 2998887779,
+                                                "customerIdScheme": "customerIdentificationNumber"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "required": [
+                            "directAccess",
+                            "clientId"
+                        ]
+                    }
+                },
+                "required": [
+                    "data",
+                    "links",
+                    "meta"
+                ]
+            },
+            "links": {
+                "title": "links",
+                "type": "object",
+                "description": "Links relevant to the payload",
+                "properties": {
+                    "self": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "first": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "prev": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "next": {
+                        "type": "string",
+                        "format": "uri"
+                    },
+                    "last": {
+                        "type": "string",
+                        "format": "uri"
+                    }
+                },
+                "additionalProperties": false,
+                "required": [
+                    "Self"
+                ]
+            },
+            "meta": {
+                "title": "meta",
+                "type": "object",
+                "description": "Meta Data relevant to the payload",
+                "properties": {
+                    "total-pages": {
+                        "type": "integer",
+                        "format": "int32"
+                    }
+                },
+                "additionalProperties": false
+            }
+        },
+        "securitySchemes": {},
+        "requestBodies": {},
+        "responses": {
+            "200-successful-get": {
+                "description": "Example response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "#/components/schemas/direct-access-response-body"
+                        }
+                    }
+                }
+            },
+            "400-bad-request": {
+                "description": "Example response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "title",
+                                "description"
+                            ]
+                        },
+                        "examples": {
+                            "Bad request": {
+                                "value": {
+                                    "status": 400,
+                                    "title": "Bad Request",
+                                    "description": "You sent a request we did not understand."
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "401-unauthorised": {
+                "description": "Example response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "title",
+                                "description"
+                            ]
+                        },
+                        "examples": {
+                            "Unauthorised": {
+                                "value": {
+                                    "status": 401,
+                                    "title": "Unauthorised",
+                                    "description": "Access credentials not present or invalid"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "403-forbidden": {
+                "description": "Your clientId is not authorised to directly manage the Direct Access for the requested clientId via API.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "title",
+                                "description"
+                            ]
+                        },
+                        "examples": {
+                            "Unauthorised operation": {
+                                "value": {
+                                    "status": 403,
+                                    "title": "Forbidden",
+                                    "description": "Access Denied"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404-not-found": {
+                "description": "clientId not found",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "title",
+                                "description"
+                            ]
+                        },
+                        "examples": {
+                            "clientId Not Found": {
+                                "value": {
+                                    "status": 404,
+                                    "title": "Not Found",
+                                    "description": "You sent a request for a client / organisation that does not exist"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "500-internal-server-error": {
+                "description": "Example response",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "description": "",
+                            "type": "object",
+                            "properties": {
+                                "status": {
+                                    "type": "number"
+                                },
+                                "title": {
+                                    "type": "string",
+                                    "minLength": 1
+                                },
+                                "description": {
+                                    "type": "string",
+                                    "minLength": 1
+                                }
+                            },
+                            "required": [
+                                "status",
+                                "title",
+                                "description"
+                            ]
+                        },
+                        "examples": {
+                            "500 Response": {
+                                "value": {
+                                    "status": 500,
+                                    "title": "Internal Server Error",
+                                    "description": "Our backend is non-functional, please try again later."
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
