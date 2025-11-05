@@ -413,7 +413,8 @@ from sentence_transformers import SentenceTransformer
 load_dotenv()
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-INDEX_DIR = os.path.join(BASE_DIR, "../data/faiss_index")
+INDEX_DIR = os.path.join(BASE_DIR, "data/faiss_index")
+
 MODEL_NAME = "all-MiniLM-L6-v2"
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 GROQ_MODEL = "llama-3.3-70b-versatile"
