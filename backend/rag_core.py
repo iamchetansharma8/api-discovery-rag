@@ -168,7 +168,7 @@ Below is detailed information for each of the top APIs:
 
 ---
 
-## 🧩 Response Format (for relevant queries)
+## 🧩 Response Format (for relevant queries, Note: Don't follow this format and give answer in 2-3 simple lines if you think query is irrelevant and politely decline)
 
 ### 🏷️ API Analysis for "{query}"
 
@@ -193,6 +193,7 @@ List all three APIs with their titles and match percentages, as a short Markdown
 - Highlight API names and endpoints in **bold** and `code` formatting.
 - Be concise, factual, and developer-friendly.
 - Do not justify similarity percentages — they’re only context.
+- very very important: Don't follow this format if you think query is unrelated to APIs. Use your own words to politely decline.
 """
 
 
@@ -219,6 +220,8 @@ def query_groq(prompt):
 def rag_answer(query):
     apis = get_top_apis_with_full_context(query, top_k=3)
     prompt = build_prompt(query, apis)
+    print("-------prompt-------")
+    print(prompt)
     return query_groq(prompt)
 
 
