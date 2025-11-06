@@ -170,16 +170,16 @@ Frontend runs at:
 ## 🖼️ Screenshots
 
 ### Home Page
-![Home Page](assets/screenshots/HomeScreen.png)
+![Home Page](screenshots/screenshots/HomeScreen.png)
 
 ### Example Relevant Query
-![Example Chat](assets/screenshots/APISampleQueryResponse.png)
+![Example Chat](screenshots/screenshots/APISampleQueryResponse.png)
 
 ### Example Unrelated Query
-![Example Chat](assets/screenshots/UnrelatedQuery.png)
+![Example Chat](screenshots/screenshots/UnrelatedQuery.png)
 
 ### About
-![Example Chat](assets/screenshots/About.png)
+![Example Chat](screenshots/screenshots/About.png)
 
 ------------------------------------------------------------------------
 
