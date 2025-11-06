@@ -78,6 +78,9 @@ export default function App() {
             <span className="bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
               API Sense
             </span>
+            <p className="text-xs text-gray-500 italic -mt-1">
+              Discover existing APIs intelligently
+            </p>
           </h1>
 
           <nav className="space-x-6 text-sm font-medium">
@@ -209,9 +212,9 @@ export default function App() {
               <p className="mb-4 leading-relaxed">
                 The dataset consists of{" "}
                 <strong>39 real Open Banking APIs</strong> scraped from{" "}
-                <strong>NatWest’s “Bank of API website”</strong>, embedded
-                with <code>all-MiniLM-L6-v2</code> to enable meaning-based
-                matching — not just keyword search.
+                <strong>NatWest’s “Bank of API website”</strong>, embedded with{" "}
+                <code>all-MiniLM-L6-v2</code> to enable meaning-based matching —
+                not just keyword search.
               </p>
 
               <p className="mb-4 leading-relaxed">

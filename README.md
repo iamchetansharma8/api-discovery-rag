@@ -167,6 +167,22 @@ Frontend runs at:
 
 ------------------------------------------------------------------------
 
+## 🖼️ Screenshots
+
+### Home Page
+![Home Page](assets/screenshots/HomeScreen.png)
+
+### Example Relevant Query
+![Example Chat](assets/screenshots/APISampleQueryResponse.png)
+
+### Example Unrelated Query
+![Example Chat](assets/screenshots/UnrelatedQuery.png)
+
+### About
+![Example Chat](assets/screenshots/About.png)
+
+------------------------------------------------------------------------
+
 ## 🧮 Core Logic
 
 ### **1. Vector Search**
