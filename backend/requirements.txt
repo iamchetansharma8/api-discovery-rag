@@ -1,7 +1,13 @@
+# fastapi
+# uvicorn
+# requests
+# python-dotenv
+# faiss-cpu
+# sentence-transformers
+# numpy
 fastapi
 uvicorn
 requests
-python-dotenv
 faiss-cpu
-sentence-transformers
-numpy
+sentence-transformers==2.2.2
+python-dotenv
