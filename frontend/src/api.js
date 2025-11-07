@@ -1,8 +1,8 @@
 const isProd = import.meta.env.MODE === "production";
 
-export const BASE_URL = isProd
-  ? "https://chetan1q-api-discovery-rag.hf.space"
-  : "http://127.0.0.1:8000";
+export const BASE_URL = "https://chetan1q-api-discovery-rag.hf.space"
+//   ? "https://chetan1q-api-discovery-rag.hf.space"
+//   : "http://127.0.0.1:8000";
 
 export async function queryBackend(message) {
   const res = await fetch(`${BASE_URL}/query`, {
